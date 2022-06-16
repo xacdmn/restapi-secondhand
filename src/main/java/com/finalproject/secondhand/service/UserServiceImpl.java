@@ -19,6 +19,15 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     @Override
+    public Users addUser(Users body) {
+        Users users = new Users();
+        users.setUsername(body.getUsername());
+        users.setEmail(body.getEmail());
+        users.setPassword(body.getPassword());
+        return userRepository.save(users);
+    }
+
+    @Override
     public List<Users> getAllUser() {
         return userRepository.findAll();
     }
@@ -40,8 +49,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String deleteUser(Integer id) {
+        Users users = userRepository.findById(id).orElseThrow(() -> new NoSuchElementException("User not found!"));
+        String result = users.getUsername();
         userRepository.deleteById(id);
-        return "User with " + id + "has been deleted";
+        return "Username " + result + " has been deleted";
     }
 
 }
