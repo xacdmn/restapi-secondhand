@@ -11,7 +11,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class UserUpdateDto {
 
-    private Integer id;
     private String email;
     private String password;
     private String address;

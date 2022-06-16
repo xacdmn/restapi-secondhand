@@ -9,6 +9,7 @@ import java.util.Optional;
 @Component
 public interface UserService {
 
+    Users addUser(Users body);
     List<Users> getAllUser();
     Optional<Users> getUserById(Integer id);
     Users updateUser(Users body, Integer id);

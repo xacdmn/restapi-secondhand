@@ -1,5 +1,6 @@
 package com.finalproject.secondhand.controller;
 
+import com.finalproject.secondhand.dto.user.UserCreateDto;
 import com.finalproject.secondhand.dto.user.UserUpdateDto;
 import com.finalproject.secondhand.entity.Users;
 import com.finalproject.secondhand.service.UserService;
@@ -23,12 +24,18 @@ public class UserController {
     @Autowired
     ModelMapper modelMapper;
 
-    @GetMapping("/all")
+    @PostMapping("/add")
+    public ResponseEntity<Users> addUser(@RequestBody UserCreateDto create) {
+        Users users = modelMapper.map(create, Users.class);
+        return new ResponseEntity<>(userService.addUser(users), HttpStatus.CREATED);
+    }
+
+    @GetMapping("/get")
     public ResponseEntity<List<Users>> getAllUser() {
         return new ResponseEntity<>(userService.getAllUser(), HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/get/{id}")
     public ResponseEntity<Optional<Users>> getUserById(@PathVariable Integer id) {
         return new ResponseEntity<>(userService.getUserById(id), HttpStatus.OK);
     }
