@@ -1,57 +1,40 @@
 package com.finalproject.secondhand.controller;
 
-import com.finalproject.secondhand.dto.ApiResponse;
-import com.finalproject.secondhand.dto.user.SigninDto;
-import com.finalproject.secondhand.dto.user.SignupDto;
-import com.finalproject.secondhand.dto.user.UserCreateDto;
-import com.finalproject.secondhand.dto.user.UserUpdateDto;
 import com.finalproject.secondhand.entity.Users;
-import com.finalproject.secondhand.repository.UserRepository;
 import com.finalproject.secondhand.service.UserService;
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
+@Controller
 public class UserController {
-
-    @Autowired
-    private UserRepository userRepository;
 
     @Autowired
     private UserService userService;
 
-    @GetMapping("/all")
-    public List<Users> findAllUser() {
-        return userRepository.findAll();
+    @GetMapping("/get-userByUsername/{username}")
+    public ResponseEntity<RestTemplate> getUserByUsername(@Schema(example = "Masukan username yang sudah dibuat") @PathVariable String username){
+        userService.getUserByUsername(username);
+        return new ResponseEntity<>(HttpStatus.FOUND);
     }
 
-    @PostMapping("/signup")
-    public ApiResponse signup(@RequestBody SignupDto signupDto) {
-        return userService.signup(signupDto);
+    @PostMapping("/add-users")
+    public ResponseEntity<RestTemplate> addUser (@RequestBody Users users){
+        userService.addUser(users);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @PostMapping("/signin")
-    public ApiResponse signin(@RequestBody SigninDto signinDto) {
-        return userService.signin(signinDto);
+    @PutMapping("/update-users")
+    public ResponseEntity<RestTemplate> updateUser(@RequestBody Users users){
+        userService.updateUsersbyEmail(users);
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
-
-    @PostMapping("/create")
-    public ApiResponse create(@RequestBody UserCreateDto create) {
-        return userService.createUser(create);
-    }
-
-    @PutMapping("/update/{id}")
-    public ApiResponse update(@RequestBody UserUpdateDto update, @Param("id") Integer id) {
-        return userService.updateUser(update, id);
-    }
-
-    @DeleteMapping("/delete/{id}")
-    public ApiResponse delete(@Param("id") Integer id) {
-        return userService.deleteUser(id);
-    }
-
 }
