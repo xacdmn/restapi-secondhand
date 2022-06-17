@@ -1,15 +1,18 @@
 package com.finalproject.secondhand.service;
 
 import com.finalproject.secondhand.entity.Users;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service
+import java.util.List;
+import java.util.Optional;
+
+@Component
 public interface UserService {
 
-    Users getUserByUsername(String username);
-
-    Users addUser(Users users);
-
-    Users updateUsersbyEmail(Users users);
+    Users addUser(Users body);
+    List<Users> getAllUser();
+    Optional<Users> getUserById(Integer id);
+    Users updateUser(Users body, Integer id);
+    String deleteUser(Integer id);
 
 }

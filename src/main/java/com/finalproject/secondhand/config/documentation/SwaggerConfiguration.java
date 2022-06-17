@@ -1,4 +1,4 @@
-package com.finalproject.secondhand.config;
+package com.finalproject.secondhand.config.documentation;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;

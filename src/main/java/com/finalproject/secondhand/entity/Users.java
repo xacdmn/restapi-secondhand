@@ -1,7 +1,9 @@
 package com.finalproject.secondhand.entity;
 
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -9,6 +11,8 @@ import javax.validation.constraints.Size;
 
 @Setter
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity(name = "users")
 @Table(uniqueConstraints = {
         @UniqueConstraint(columnNames = "username"),
@@ -40,13 +44,5 @@ public class Users {
     @Column(name = "phone")
     @Size(min = 12, max = 13)
     private Long phoneNumber;
-
-    public Users(String username, String email, String password) {
-        this.username = username;
-        this.email = email;
-        this.password = password;
-    }
-
-    public Users() {}
 
 }
