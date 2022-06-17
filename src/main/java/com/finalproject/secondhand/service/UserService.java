@@ -1,19 +1,18 @@
 package com.finalproject.secondhand.service;
 
-import com.finalproject.secondhand.dto.ApiResponse;
-import com.finalproject.secondhand.dto.user.SigninDto;
-import com.finalproject.secondhand.dto.user.SignupDto;
-import com.finalproject.secondhand.dto.user.UserCreateDto;
-import com.finalproject.secondhand.dto.user.UserUpdateDto;
-import org.springframework.stereotype.Service;
+import com.finalproject.secondhand.entity.Users;
+import org.springframework.stereotype.Component;
 
-@Service
+import java.util.List;
+import java.util.Optional;
+
+@Component
 public interface UserService {
 
-    public ApiResponse signup(SignupDto signupDto);
-    public ApiResponse signin(SigninDto signinDto);
-    public ApiResponse createUser(UserCreateDto create);
-    public ApiResponse updateUser(UserUpdateDto update, Integer id);
-    public ApiResponse deleteUser(Integer id);
+    Users addUser(Users body);
+    List<Users> getAllUser();
+    Optional<Users> getUserById(Integer id);
+    Users updateUser(Users body, Integer id);
+    String deleteUser(Integer id);
 
 }

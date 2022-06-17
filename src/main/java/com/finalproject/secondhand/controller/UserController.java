@@ -1,57 +1,54 @@
 package com.finalproject.secondhand.controller;
 
-import com.finalproject.secondhand.dto.ApiResponse;
-import com.finalproject.secondhand.dto.user.SigninDto;
-import com.finalproject.secondhand.dto.user.SignupDto;
 import com.finalproject.secondhand.dto.user.UserCreateDto;
 import com.finalproject.secondhand.dto.user.UserUpdateDto;
 import com.finalproject.secondhand.entity.Users;
-import com.finalproject.secondhand.repository.UserRepository;
 import com.finalproject.secondhand.service.UserService;
+import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
-@RestController
+@RestController @RequiredArgsConstructor
 @RequestMapping("/user")
 public class UserController {
 
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
     private UserService userService;
 
-    @GetMapping("/all")
-    public List<Users> findAllUser() {
-        return userRepository.findAll();
+    @Autowired
+    ModelMapper modelMapper;
+
+    @PostMapping("/add")
+    public ResponseEntity<Users> addUser(@RequestBody UserCreateDto create) {
+        Users users = modelMapper.map(create, Users.class);
+        return new ResponseEntity<>(userService.addUser(users), HttpStatus.CREATED);
     }
 
-    @PostMapping("/signup")
-    public ApiResponse signup(@RequestBody SignupDto signupDto) {
-        return userService.signup(signupDto);
+    @GetMapping("/get")
+    public ResponseEntity<List<Users>> getAllUser() {
+        return new ResponseEntity<>(userService.getAllUser(), HttpStatus.OK);
     }
 
-    @PostMapping("/signin")
-    public ApiResponse signin(@RequestBody SigninDto signinDto) {
-        return userService.signin(signinDto);
-    }
-
-    @PostMapping("/create")
-    public ApiResponse create(@RequestBody UserCreateDto create) {
-        return userService.createUser(create);
+    @GetMapping("/get/{id}")
+    public ResponseEntity<Optional<Users>> getUserById(@PathVariable Integer id) {
+        return new ResponseEntity<>(userService.getUserById(id), HttpStatus.OK);
     }
 
     @PutMapping("/update/{id}")
-    public ApiResponse update(@RequestBody UserUpdateDto update, @Param("id") Integer id) {
-        return userService.updateUser(update, id);
+    public ResponseEntity<Users> updateUser(@RequestBody UserUpdateDto update, @PathVariable Integer id) {
+        Users users = modelMapper.map(update, Users.class);
+        return new ResponseEntity<>(userService.updateUser(users, id), HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/delete/{id}")
-    public ApiResponse delete(@Param("id") Integer id) {
-        return userService.deleteUser(id);
+    public ResponseEntity<String> deleteUser(@PathVariable Integer id) {
+        return new ResponseEntity<>(userService.deleteUser(id), HttpStatus.ACCEPTED);
     }
 
 }
