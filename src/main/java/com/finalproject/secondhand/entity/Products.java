@@ -15,7 +15,7 @@ public class Products implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "product_id")
-    private int productId;
+    private Integer productId;
 
     @ManyToOne(targetEntity = Categories.class)
     @JoinColumn(name = "category_id", nullable = false)

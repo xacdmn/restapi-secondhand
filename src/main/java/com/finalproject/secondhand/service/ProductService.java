@@ -1,18 +1,18 @@
 package com.finalproject.secondhand.service;
 
 import com.finalproject.secondhand.entity.Products;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
+@Component
 public interface ProductService {
 
     Products addProduct(Products products);
     Products updateProductByName(Products product);
-    void deleteByName(String name);
+    String deleteById(Integer id);
     List<Products> getAllProduct();
-    List<Products> getProductByCategoryName(String category);
     List<Products> getProductByName(String name);
 
 }

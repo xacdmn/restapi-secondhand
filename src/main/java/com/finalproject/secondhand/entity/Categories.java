@@ -13,7 +13,7 @@ public class Categories implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "category_id", nullable = false)
-    private int categoryId;
+    private Integer categoryId;
 
     @Column(name = "name")
     private String categoryName;

@@ -3,9 +3,11 @@ package com.finalproject.secondhand.service;
 import com.finalproject.secondhand.entity.Products;
 import com.finalproject.secondhand.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class ProductServiceImpl implements ProductService {
     @Autowired
     private ProductRepository productRepository;
@@ -22,7 +24,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Products updateProductByName(Products product) {
-        Products update = productRepository.findProductsByName(product.getName());
+        Products update = productRepository.findByName(product.getName());
         update.setName(product.getName());
         update.setCategoryId(product.getCategoryId());
         update.setImage(product.getImage());
@@ -32,8 +34,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void deleteByName(String name) {
-        productRepository.deleteProductsByName(name);
+    public String deleteById(Integer id) {
+        productRepository.deleteById(id);
+        return "Product "+id+" deleted!";
     }
 
     @Override
@@ -41,14 +44,14 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.findAll();
     }
 
-    @Override
-    public List<Products> getProductByCategoryName(String category) {
-        return null;
-    }
+//    @Override
+//    public List<Products> getProductByCategoryName(String category) {
+//        return null;
+//    }
 
     @Override
     public List<Products> getProductByName(String name) {
-        return null;
+        return productRepository.findProductsByName(name);
     }
 }
 
