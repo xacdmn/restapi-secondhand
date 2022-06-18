@@ -1,18 +1,16 @@
 package com.finalproject.secondhand.entity;
 
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.util.HashSet;
+import java.util.Set;
 
 @Setter
 @Getter
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity(name = "users")
 @Table(uniqueConstraints = {
         @UniqueConstraint(columnNames = "username"),
@@ -22,8 +20,8 @@ import javax.validation.constraints.Size;
 public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
-    private Integer id;
+    @Column(name = "user_id")
+    private Integer userId;
 
     @Column(name = "username", nullable = false)
     @Size(max = 30)
@@ -45,4 +43,20 @@ public class Users {
     @Size(min = 12, max = 13)
     private Long phoneNumber;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "userRoles",
+            joinColumns = @JoinColumn(name = "Id"),
+            inverseJoinColumns = @JoinColumn(name = "roleId"))
+    private Set<Roles> roles = new HashSet<>();
+
+    public Users(String username, String email, String password) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+    }
+
+    public Users() {
+
+    }
 }
+
