@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -23,8 +24,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Products updateProductByName(Products product) {
-        Products update = productRepository.findByName(product.getName());
+    public Products updateProduct(Products product, Integer id) {
+        Products update = productRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Product not found!"));
         update.setName(product.getName());
         update.setCategoryId(product.getCategoryId());
         update.setImage(product.getImage());
