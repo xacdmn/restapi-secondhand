@@ -1,59 +1,50 @@
 package com.finalproject.secondhand.controller;
 
-
+import com.finalproject.secondhand.dto.user.UserUpdateDto;
 import com.finalproject.secondhand.entity.Users;
 import com.finalproject.secondhand.service.UserService;
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Controller
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/user")
+@RequestMapping("/api")
 public class UserController {
 
     @Autowired
-    private UserService userService;
+    private final UserService userService;
 
-    @GetMapping("/get-username/{username}")
-    public ResponseEntity getUserByUsername(@Schema(example = "Fill in Name") @PathVariable String username){
-        Users users = userService.getUserByUsername(username);
+    @Autowired
+    ModelMapper modelMapper;
 
-        Map<String, Object> respBody = new HashMap<>();
-        respBody.put("Id User", users.getUserId());
-        respBody.put("Nama Lengkap", users.getUsername());
-        respBody.put("Email", users.getEmail());
-        return new ResponseEntity(respBody, HttpStatus.FOUND);
+    @GetMapping("/user/get")
+    public ResponseEntity<List<Users>> getAllUsers() {
+        return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
     }
 
-    @PostMapping("/add-users")
-    public ResponseEntity addUser(@Schema(example = "{" +
-            "\"userId\":\"1\","+
-            "\"username\":\"Wahyu\","+
-            "\"password\":\"passWahyu\"," +
-            "\"email\":\"wahyu@email.com\"}")@RequestBody Users users){
-        userService.addUser(users);
-        return new ResponseEntity(users, HttpStatus.CREATED);
+    @GetMapping("/user/get/{userId}")
+    public ResponseEntity<Optional<Users>> getUsersById(@PathVariable Integer userId) {
+        return new ResponseEntity<>(userService.getUserById(userId), HttpStatus.OK);
     }
 
-    @PutMapping("/update-users")
-    public ResponseEntity updateUser(@Schema(example = "{" +
-            "\"userId\":\"1\","+
-            "\"username\":\"Ivan\","+
-            "\"password\":\"passIvan\"," +
-            "\"email\":\"ivan@email.com\"}") @RequestBody Users users){
-        userService.updateUserById(users);
-        return new ResponseEntity(users, HttpStatus.ACCEPTED);
+    @PutMapping("/user/update/{userId}")
+    public ResponseEntity<Users> updateUsers(@RequestBody UserUpdateDto userUpdateDto, @PathVariable Integer userId) {
+        Users users = modelMapper.map(userUpdateDto, Users.class);
+        return new ResponseEntity<>(userService.updateUsers(users, userId), HttpStatus.ACCEPTED);
+    }
+
+    @DeleteMapping("/user/delete/{userId}")
+    public ResponseEntity<String> deleteUsers(@PathVariable Integer userId){
+        return new ResponseEntity<>(userService.deleteUser(userId), HttpStatus.ACCEPTED);
     }
 
 }

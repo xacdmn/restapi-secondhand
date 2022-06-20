@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "kategori")
+@Entity(name = "categories")
 public class Categories {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -21,4 +21,3 @@ public class Categories {
     @Column(nullable = false, length = 10)
     private String categoryName;
 }
-

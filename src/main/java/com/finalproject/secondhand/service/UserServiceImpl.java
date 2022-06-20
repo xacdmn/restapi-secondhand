@@ -18,37 +18,28 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     @Override
-    public Users getUserByUsername(String username) {
-        return userRepository.findByUsername(username);
+    public List<Users> getAllUsers() {
+        return userRepository.findAll();
     }
 
     @Override
-    public Users getUserByEmail(String email) {
-        return userRepository.findByEmail(email);
+    public Optional<Users> getUserById(Integer userId) {
+        return userRepository.findById(userId);
     }
 
     @Override
-    public Users addUser(Users users) {
-        users.setUsername(users.getUsername());
-        users.setEmail(users.getEmail());
-        users.setPassword(users.getPassword());
+    public Users updateUsers(Users body, Integer userId) {
+        Users users = userRepository.findById(userId).orElseThrow(() -> new NoSuchElementException("User tidak ditemukan!"));
+        users.setFullname(body.getFullname());
+        users.setCity(body.getCity());
+        users.setAddress(body.getAddress());
+        users.setPhoneNumber(body.getPhoneNumber());
         return userRepository.save(users);
     }
 
     @Override
-    public Users updateUserById(Users users) {
-        users.getUsername();
-        Users updateUser = userRepository.findById(users.getUserId()).get();
-        updateUser.setUsername(users.getUsername());
-        updateUser.setEmail(users.getEmail());
-        updateUser.setPassword(users.getPassword());
-        updateUser.setAddress(users.getAddress());
-        updateUser.setPhoneNumber(users.getPhoneNumber());
-        return userRepository.save(updateUser);
-    }
-
-    @Override
-    public List<Users> getAllUsers() {
-        return userRepository.findAll();
+    public String deleteUser(Integer userId) {
+        userRepository.deleteById(userId);
+        return "User telah dihapus";
     }
 }
