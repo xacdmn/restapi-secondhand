@@ -1,22 +1,26 @@
 package com.finalproject.secondhand.entity;
 
 
+import com.finalproject.secondhand.Enum.Role;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.Collection;
 
 @Setter
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity(name = "users")
 @Table(uniqueConstraints = {
         @UniqueConstraint(columnNames = "username"),
         @UniqueConstraint(columnNames = "email")
 })
-
 public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -51,20 +55,12 @@ public class Users {
     @Size(min = 12, max = 13)
     private Long phoneNumber;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "userRoles",
-            joinColumns = @JoinColumn(name = "Id"),
-            inverseJoinColumns = @JoinColumn(name = "roleId"))
-    private Set<Roles> roles = new HashSet<>();
+    @Column(name = "image")
+    @Size(min = 12, max = 13)
+    private String imageProfil;
 
-    public Users(String username, String email, String password) {
-        this.username = username;
-        this.email = email;
-        this.password = password;
-    }
+    @ManyToMany(fetch = FetchType.EAGER )
+    private Collection<Roles> roles = new ArrayList<>();
 
-    public Users() {
-
-    }
 }
 

@@ -1,4 +1,4 @@
-package com.finalproject.secondhand.dto.response;
+package com.finalproject.secondhand.dto.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,8 +9,10 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class MessageResponse {
+public class SignupDto {
 
-    private String message;
+    private String username;
+    private String email;
+    private String password;
 
 }
