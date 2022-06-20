@@ -23,6 +23,10 @@ public class Users {
     @Column(name = "user_id")
     private Integer userId;
 
+    @Column(name = "fullname")
+    @Size(max = 30)
+    private String fullname;
+
     @Column(name = "username", nullable = false)
     @Size(max = 30)
     private String username;
@@ -34,6 +38,10 @@ public class Users {
     @Column(name = "password", nullable = false)
     @Size(min = 8)
     private String password;
+
+    @Column(name = "city")
+    @Size(max = 20)
+    private String city;
 
     @Column(name = "address")
     @Size(max = 200)

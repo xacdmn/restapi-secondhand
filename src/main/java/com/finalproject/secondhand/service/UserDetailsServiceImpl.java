@@ -1,6 +1,6 @@
 package com.finalproject.secondhand.service;
 
-import com.finalproject.secondhand.entity.UserDetailsImpl;
+import com.finalproject.secondhand.dto.user.UserDetailsImpl;
 import com.finalproject.secondhand.entity.Users;
 import com.finalproject.secondhand.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

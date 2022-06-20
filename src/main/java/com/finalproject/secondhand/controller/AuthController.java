@@ -2,6 +2,10 @@ package com.finalproject.secondhand.controller;
 
 import com.finalproject.secondhand.Enum.Role;
 import com.finalproject.secondhand.config.JwtUtils;
+import com.finalproject.secondhand.dto.response.JwtResponse;
+import com.finalproject.secondhand.dto.response.MessageResponse;
+import com.finalproject.secondhand.dto.user.SignupRequest;
+import com.finalproject.secondhand.dto.user.UserDetailsImpl;
 import com.finalproject.secondhand.entity.*;
 import com.finalproject.secondhand.repository.RoleRepository;
 import com.finalproject.secondhand.repository.UserRepository;
@@ -42,6 +46,7 @@ public class AuthController {
 
     @Autowired
     JwtUtils jwtUtils;
+
     public AuthController(){
     }
 
@@ -54,7 +59,7 @@ public class AuthController {
         this.passwordEncoder = passwordEncoder;
     }
 
-    @PostMapping("/Signin")
+    @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser (@Valid @RequestBody Map<String, Object> login){
         Users users = userRepository.findByEmail(login.get("email").toString());
 
@@ -71,7 +76,7 @@ public class AuthController {
                 userDetails.getEmail(), roles));
     }
 
-    @PostMapping("/Signup")
+    @PostMapping("/signup")
     public ResponseEntity<MessageResponse> registerUser (@Valid @RequestBody SignupRequest signupRequest){
         boolean emailExist = userRepository.existsByEmail(signupRequest.getEmail());
         if(Boolean.TRUE.equals(emailExist)){

@@ -1,6 +1,7 @@
-package com.finalproject.secondhand.entity;
+package com.finalproject.secondhand.dto.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.finalproject.secondhand.entity.Users;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -39,7 +40,7 @@ public class UserDetailsImpl implements UserDetails {
                 .collect(Collectors.toList());
         return new UserDetailsImpl(
                 Long.valueOf(user.getUserId()),
-                user.getUsername(),
+                user.getFullname(),
                 user.getEmail(),
                 user.getPassword(),
                 authorities
