@@ -1,7 +1,5 @@
 package com.finalproject.secondhand.entity;
 
-
-import com.finalproject.secondhand.Enum.Role;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -52,11 +50,10 @@ public class Users {
     private String address;
 
     @Column(name = "phone")
-    @Size(min = 12, max = 13)
-    private Long phoneNumber;
+    @Size(min = 10)
+    private String phone;
 
-    @Column(name = "image")
-    @Size(min = 12, max = 13)
+    @Column(name = "image_profil")
     private String imageProfil;
 
     @ManyToMany(fetch = FetchType.EAGER )
