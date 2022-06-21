@@ -5,6 +5,7 @@ import com.finalproject.secondhand.dto.user.UserUpdateDto;
 import com.finalproject.secondhand.entity.Users;
 import com.finalproject.secondhand.service.CloudinaryStorageService;
 import com.finalproject.secondhand.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,12 +35,14 @@ public class UserController {
     @Autowired
     ModelMapper modelMapper;
 
+    @Operation(summary = "Register user")
     @PostMapping("/signup")
     public ResponseEntity<Users> postUsers(@RequestBody SignupDto signupDto) {
         Users users = modelMapper.map(signupDto, Users.class);
         return new ResponseEntity<>(userService.addUsers(users), HttpStatus.CREATED);
     }
 
+    @Operation(summary = "Find all user")
     @GetMapping("/get")
     public ResponseEntity<List<Users>> getAllUsers() {
         return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
@@ -50,11 +53,13 @@ public class UserController {
         return authentication.getName();
     }
 
+    @Operation(summary = "Find user by userId")
     @GetMapping("/get/{userId}")
     public ResponseEntity<Optional<Users>> getUsersById(@PathVariable Integer userId) {
         return new ResponseEntity<>(userService.getUserById(userId), HttpStatus.OK);
     }
 
+    @Operation(summary = "Edit user profil")
     @PutMapping(value = "/update",
             consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE})
