@@ -12,9 +12,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.*;
 
 
@@ -46,7 +44,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public Users postUsers(Users body) {
+    public Users addUsers(Users body) {
         Users usersExists = userRepository.findByUsername(body.getUsername());
         if(usersExists != null){
             throw  new IllegalArgumentException(String.format("User with username '%s' already exists", body.getUsername()));
@@ -69,23 +67,19 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public Users updateUsers(MultipartFile file, String fullName, String city, String address, Long phoneNumber, Integer userId) {
-        Users users = userRepository.findById(userId).orElseThrow(() -> new NoSuchElementException("User tidak ditemukan!"));
-        try {
-            users.setImageProfil(Base64.getEncoder().encodeToString(file.getBytes()));
-        }catch (IOException e){
-            e.printStackTrace();
-        }
-        users.setFullname(fullName);
-        users.setCity(city);
-        users.setAddress(address);
-        users.setPhoneNumber(phoneNumber);
+    public Users updateUsers(Users body, String username) {
+        Users users = userRepository.findByUsername(username);
+        users.setFullname(body.getFullname());
+        users.setCity(body.getCity());
+        users.setAddress(body.getAddress());
+        users.setPhone(body.getPhone());
+        users.setImageProfil(body.getImageProfil());
         return userRepository.save(users);
     }
 
     @Override
     public String deleteUser(Integer userId) {
         userRepository.deleteById(userId);
-        return "User telah dihapus";
+        return "Success delete user";
     }
 }

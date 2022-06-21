@@ -1,6 +1,5 @@
 package com.finalproject.secondhand.entity;
 
-import com.finalproject.secondhand.Enum.Role;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
