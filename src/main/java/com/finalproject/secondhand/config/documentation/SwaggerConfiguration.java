@@ -1,7 +1,6 @@
 package com.finalproject.secondhand.config.documentation;
 
 import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,20 +11,14 @@ import org.springframework.context.annotation.Configuration;
 public class SwaggerConfiguration {
 
     @Bean
-    public OpenAPI customOpenAPI(@Value("Ini baru pembuatan awal") String appDescription,
-                                 @Value("Alpha test") String appVersion) {
-        return new OpenAPI().info(
-                new Info()
-                        .title("SecondHand")
-                        .version(appVersion)
-                        .description(appDescription)
-                        .termsOfService("https://swager.io/terms")
-                        .contact(new Contact()
-                                .name("Kelompok 5")
-                                .url("https://gitlab.com/wahyuprh/finalprojetcbinar"))
-                        .license(new License()
-                                .name("Apache 2.1")
-                                .url("https://springdocs.org"))
-        );
+    public OpenAPI custom(@Value("Rest Api E-Comerce Final Project") String appDescription, @Value("v1.0.0") String appversion) {
+        return new OpenAPI().info(new Info()
+                .title("Documentation for Market Place API's")
+                .version(appversion)
+                .description(appDescription)
+                .termsOfService("https://swagger.io/terms")
+                .license(new License()
+                        .name("Apache 2.0")
+                        .url("https://springdocs.org")));
     }
 }
