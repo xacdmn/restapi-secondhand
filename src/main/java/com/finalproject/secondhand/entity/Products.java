@@ -19,7 +19,7 @@ public class Products implements Serializable {
 
     @ManyToOne(targetEntity = Categories.class)
     @JoinColumn(name = "category_id", nullable = false)
-    private Integer categoryId;
+    private Categories categoryId;
 
     @Column(name = "image", nullable = false)
     private String image;
