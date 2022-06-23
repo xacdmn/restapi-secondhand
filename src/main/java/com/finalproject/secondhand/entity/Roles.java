@@ -6,14 +6,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
-@Setter
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "roles")
-public class Roles implements Serializable{
+@Entity(name = "role")
+public class Roles {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idRole;

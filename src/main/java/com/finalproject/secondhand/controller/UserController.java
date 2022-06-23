@@ -23,11 +23,10 @@ import java.util.Optional;
 @Controller
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/user")
 public class UserController {
 
     @Autowired
-    private final UserService userService;
+    private UserService userService;
 
     @Autowired
     private final CloudinaryStorageService cloudinaryStorageService;
@@ -37,30 +36,30 @@ public class UserController {
 
     @Operation(summary = "Register user")
     @PostMapping("/signup")
-    public ResponseEntity<Users> postUsers(@RequestBody SignupDto signupDto) {
+    public ResponseEntity<Users> addUsers(@RequestBody SignupDto signupDto) {
         Users users = modelMapper.map(signupDto, Users.class);
         return new ResponseEntity<>(userService.addUsers(users), HttpStatus.CREATED);
     }
 
-    @Operation(summary = "Find all user")
-    @GetMapping("/get")
-    public ResponseEntity<List<Users>> getAllUsers() {
-        return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
-    }
-
-    @GetMapping("/current")
+    @GetMapping("/api/user/current")
     public String currentUser(Authentication authentication){
         return authentication.getName();
     }
 
+    @Operation(summary = "Find all user")
+    @GetMapping("/api/user/get")
+    public ResponseEntity<List<Users>> getAllUsers() {
+        return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
+    }
+
     @Operation(summary = "Find user by userId")
-    @GetMapping("/get/{userId}")
+    @GetMapping("/api/user/get/{userId}")
     public ResponseEntity<Optional<Users>> getUsersById(@PathVariable Integer userId) {
         return new ResponseEntity<>(userService.getUserById(userId), HttpStatus.OK);
     }
 
     @Operation(summary = "Edit user profil")
-    @PutMapping(value = "/update",
+    @PutMapping(value = "/api/user/update",
             consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Users> updateUsers(UserUpdateDto userUpdateDto, Authentication authentication) {
@@ -75,7 +74,8 @@ public class UserController {
         return new ResponseEntity<>(userService.updateUsers(users, username), HttpStatus.ACCEPTED);
     }
 
-    @DeleteMapping("/delete/{userId}")
+    @Operation(summary = "Delete user by userId")
+    @DeleteMapping("/api/user/delete/{userId}")
     public ResponseEntity<String> deleteUsers(@PathVariable Integer userId){
         return new ResponseEntity<>(userService.deleteUser(userId), HttpStatus.ACCEPTED);
     }

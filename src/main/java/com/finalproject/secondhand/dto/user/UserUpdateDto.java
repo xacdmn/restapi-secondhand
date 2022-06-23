@@ -4,12 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Accessors(chain = true)
 public class UserUpdateDto {
 
     private String fullname;
@@ -17,4 +19,5 @@ public class UserUpdateDto {
     private String address;
     private String phone;
     private MultipartFile imageProfil;
+
 }

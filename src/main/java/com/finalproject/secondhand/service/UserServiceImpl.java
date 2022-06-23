@@ -1,6 +1,5 @@
 package com.finalproject.secondhand.service;
 
-import com.finalproject.secondhand.entity.Roles;
 import com.finalproject.secondhand.entity.Users;
 import com.finalproject.secondhand.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
-
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -29,19 +27,17 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Users users = userRepository.findByUsername(username);
-        if(users != null){
+        Users user = userRepository.findByUsername(username);
+        if(user != null){
             log.info("User found in the database : {}", username);
         }else{
             log.error("User not found in the database");
         }
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        assert users != null;
-        for (Roles roles : users.getRoles()) {
-            authorities.add(new SimpleGrantedAuthority(roles.getRoleName()));
-        }
-        return new org.springframework.security.core.userdetails.User(users.getUsername(), users.getPassword(), authorities);
-    }
+        assert user != null;
+        user.getRoles().forEach(role -> authorities.add(new SimpleGrantedAuthority(role.getRoleName())));
+        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
+  }
 
     @Override
     public Users addUsers(Users body) {
@@ -81,5 +77,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public String deleteUser(Integer userId) {
         userRepository.deleteById(userId);
         return "Success delete user";
+    }
+
+    @Override
+    public Users findByUsername(String username) {
+        return userRepository.findByUsername(username);
     }
 }

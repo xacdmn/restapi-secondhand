@@ -14,6 +14,7 @@ public interface UserService {
     Optional<Users> getUserById(Integer userId);
     Users updateUsers(Users body, String username);
     String deleteUser(Integer userId);
+    Users findByUsername(String username);
 
 
 }
