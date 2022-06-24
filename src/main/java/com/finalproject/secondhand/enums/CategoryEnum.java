@@ -1,9 +1,8 @@
 package com.finalproject.secondhand.enums;
 
-public enum Category {
+public enum CategoryEnum {
     MOBIL,
     RUMAH,
     MOTOR,
     ELEKTORNIK,
-    GADGET
 }

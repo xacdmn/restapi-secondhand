@@ -1,19 +1,27 @@
 package com.finalproject.secondhand.service;
 
+import com.finalproject.secondhand.dto.product.ProductDto;
 import com.finalproject.secondhand.entity.Products;
+import com.finalproject.secondhand.enums.CategoryEnum;
+import com.finalproject.secondhand.repository.CategorieRepository;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Component
 public interface ProductService {
 
-    Products addProduct(Products products);
-    Products updateProduct(Products product, Integer id);
-    String deleteById(Integer id);
-    List<Products> getAllProduct();
-    List<Products> getProductByName(String name);
+    void save(ProductDto productDto);
+
+    List<Products> findAll();
+
+    List<Products> findByProductName(String productName);
+
+    List<Products> findByCategories(CategoryEnum categoryEnum);
+
+    boolean delete(Integer productId);
+
+    boolean update(ProductDto productDto);
 
 }
 
