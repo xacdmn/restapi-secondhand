@@ -13,7 +13,7 @@ public class SwaggerConfiguration {
     @Bean
     public OpenAPI custom(@Value("Rest Api E-Comerce Final Project") String appDescription, @Value("v1.0.0") String appversion) {
         return new OpenAPI().info(new Info()
-                .title("Documentation for Market Place API's")
+                .title("Documentation for E-Commerce API's")
                 .version(appversion)
                 .description(appDescription)
                 .termsOfService("https://swagger.io/terms")

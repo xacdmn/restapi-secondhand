@@ -13,14 +13,14 @@ public class CloudinaryConfig {
     @Bean
     public Cloudinary cloudinaryAccount() {
         return new Cloudinary(ObjectUtils.asMap(
-                "cloud_name","dseuf434q",
-                "api_key","649664353883695",
-                "api_secret","FNkhl4FUComE8ZpW1dWW7fyGRqw"
+                "cloud_name", "dseuf434q",
+                "api_key", "649664353883695",
+                "api_secret", "FNkhl4FUComE8ZpW1dWW7fyGRqw"
         ));
     }
 
     @Bean
-    public CloudinaryStorageService cloudinaryStorageService(){
+    public CloudinaryStorageService cloudinaryStorageService() {
         return new CloudinaryStorageServiceImpl(cloudinaryAccount());
     }
 

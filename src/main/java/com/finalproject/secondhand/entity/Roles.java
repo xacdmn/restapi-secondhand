@@ -1,24 +1,29 @@
 package com.finalproject.secondhand.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.finalproject.secondhand.enums.ERole;
+import lombok.*;
+import lombok.experimental.Accessors;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 @Setter
 @Getter
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity(name = "roles")
-public class Roles implements Serializable{
+@Accessors(chain = true)
+@ToString
+public class Roles {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idRole;
+    private long id;
 
-    @Column
-    private String roleName;
+    @Enumerated(EnumType.STRING)
+    private ERole role;
 
+    public Roles() {
+
+    }
+
+    public Roles(ERole role) {
+        this.role = role;
+    }
 }

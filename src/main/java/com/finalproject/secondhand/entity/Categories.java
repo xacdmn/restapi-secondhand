@@ -1,23 +1,28 @@
 package com.finalproject.secondhand.entity;
 
-import lombok.AllArgsConstructor;
+import com.finalproject.secondhand.enums.CategoryEnum;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 
-@Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
+@Getter
+@Accessors(chain = true)
 @Entity(name = "categories")
 public class Categories {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "category_id", nullable = false)
-    private Integer categoryId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-    @Column(nullable = false, length = 10)
-    private String categoryName;
+    @Enumerated(EnumType.STRING)
+    private CategoryEnum category;
+
+    public Categories() {
+    }
+
+    public Categories(CategoryEnum categoryEnum) {
+        this.category = categoryEnum;
+    }
 }

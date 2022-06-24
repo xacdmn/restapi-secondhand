@@ -10,10 +10,11 @@ public class SuccessDataResult<T> extends DataResult<T> {
         super(data, true, message);
     }
 
-    public SuccessDataResult(){
+    public SuccessDataResult() {
         super(null, true);
     }
-    public SuccessDataResult(String message){
+
+    public SuccessDataResult(String message) {
         super(null, true, message);
     }
 
