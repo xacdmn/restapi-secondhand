@@ -1,9 +1,7 @@
 package com.finalproject.secondhand.dto.product;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import lombok.experimental.Accessors;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
@@ -22,9 +20,6 @@ public class ProductDto {
     private Set<String> categories = new HashSet<>();
     @NotNull
     private BigDecimal price;
-    @NotNull
-    @JsonIgnore
-    private MultipartFile productImage;
     @NotNull
     private String description;
     @NotNull
