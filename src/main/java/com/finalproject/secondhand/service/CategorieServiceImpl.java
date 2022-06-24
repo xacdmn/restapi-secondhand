@@ -1,52 +1,30 @@
 package com.finalproject.secondhand.service;
 
 import com.finalproject.secondhand.entity.Categories;
+import com.finalproject.secondhand.enums.CategoryEnum;
 import com.finalproject.secondhand.repository.CategorieRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
-
 @Service
-@RequiredArgsConstructor
-public class CategorieServiceImpl implements CategorieService{
+public class CategorieServiceImpl implements CategorieService {
 
     @Autowired
-    private CategorieRepository categorieRepository;
+    private CategorieRepository categoryRepository;
 
-    @Override
-    public List<Categories> getAllCategorie() {
-        return categorieRepository.findAll();
+    public Optional<Categories> findByCategory(CategoryEnum category) {
+        return categoryRepository.findByCategory(category);
     }
 
-    @Override
-    public Categories addCategorie(Categories body) {
-        categorieRepository.save(body);
-        return body;
+    public List<Categories> findAll() {
+        return categoryRepository.findAll();
     }
 
-    @Override
-    public Optional<Categories> getCategorieById(Integer categoryId) {
-        return categorieRepository.findById(categoryId);
-    }
-
-    @Override
-    public Categories updateCategorie(Categories body, Integer categoryId) {
-        Categories categories = categorieRepository.findById(categoryId).orElseThrow(() -> new NoSuchElementException("Kategori tidak ditemukan!"));
-        categories.setCategoryName(body.getCategoryName());
-        return categorieRepository.save(categories);
-    }
-
-    @Override
-    public String deleteCategorie(Integer categoryId) {
-        Categories categories = categorieRepository.findById(categoryId).orElseThrow(() -> new NoSuchElementException("Kategori tidak ditemukan!"));
-        String result = categories.getCategoryName();
-        categorieRepository.deleteById(categoryId);
-        return "Kategori " + result + " telah dihapus";
+    public void save(Categories categories) {
+        categoryRepository.save(categories);
     }
 
 }

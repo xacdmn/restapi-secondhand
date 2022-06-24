@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 public interface CloudinaryStorageService {
 
     DataResult<?> upload(MultipartFile multipartFile);
-    DataResult<?>delete(String publicIdOfImage);
+
+    DataResult<?> delete(String publicIdOfImage);
 
 }
