@@ -4,6 +4,7 @@ import com.finalproject.secondhand.dto.user.SignupDto;
 import com.finalproject.secondhand.dto.user.UserUpdateDto;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -39,13 +40,6 @@ public class Users {
     public Users(SignupDto signupDto) {
         email = signupDto.getEmail();
         username = signupDto.getUsername();
-    }
-
-    public Users(UserUpdateDto userUpdateDto) {
-        fullname = userUpdateDto.getFullname();
-        city = userUpdateDto.getCity();
-        address = userUpdateDto.getAddress();
-        phone = userUpdateDto.getPhone();;
     }
 }
 

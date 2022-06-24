@@ -23,7 +23,7 @@ public interface UserService {
     boolean existsEmail(String email);
 
     //UPDATE
-    boolean update(UserUpdateDto update, String username);
+    Users update(Users users);
 
     //DELETE
     String deleteById(Integer userId);

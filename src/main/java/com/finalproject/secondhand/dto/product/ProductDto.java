@@ -19,7 +19,7 @@ public class ProductDto {
     @NotNull
     private Set<String> categories = new HashSet<>();
     @NotNull
-    private BigDecimal price;
+    private String price;
     @NotNull
     private String description;
     @NotNull

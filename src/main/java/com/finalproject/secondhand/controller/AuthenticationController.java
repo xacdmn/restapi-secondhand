@@ -76,7 +76,6 @@ public class AuthenticationController {
         logger.info("User " + userDetails.getUsername() + " logged in.");
         logger.info(token);
         Optional<Users> user = userService.findByUsername(userDetails.getUsername());
-
         if (!user.isPresent()) {
             return new ResponseEntity<>("User or password incorrect", HttpStatus.FORBIDDEN);
         }

@@ -1,22 +1,21 @@
 package com.finalproject.secondhand.service;
 
 import com.finalproject.secondhand.dto.user.SignupDto;
-import com.finalproject.secondhand.dto.user.UserUpdateDto;
 import com.finalproject.secondhand.entity.Users;
-import com.finalproject.secondhand.enums.ERole;
+//import com.finalproject.secondhand.enums.ERole;
 import com.finalproject.secondhand.repository.UserRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
-import static org.apache.commons.lang3.EnumUtils.getEnumIgnoreCase;
+//import static org.apache.commons.lang3.EnumUtils.getEnumIgnoreCase;
 
 @Service
 public class UserServiceImpl implements UserService {
-    private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
+//    private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
 
     @Autowired
     private UserRepository userRepository;
@@ -67,13 +66,10 @@ public class UserServiceImpl implements UserService {
         return findByEmail(email).isPresent();
     }
 
-    public boolean update(UserUpdateDto update, String username) {
-        if (userRepository.findByUsername(username).isPresent()) {
-            userRepository.save(new Users(update));
-            return true;
-        }
-        return false;
+    public Users update(Users users) {
+       return userRepository.save(users);
     }
+
 
     @Override
     public String deleteById(Integer userId) {
