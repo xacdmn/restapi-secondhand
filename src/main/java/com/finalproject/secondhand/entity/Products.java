@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,7 +17,7 @@ public class Products {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer productId;
     private String productName;
-    private BigDecimal price;
+    private String price;
     private String description;
     private String seller;
     private String city;

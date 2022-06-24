@@ -1,8 +1,8 @@
 package com.finalproject.secondhand.controller;
 
+import com.finalproject.secondhand.service.MapperServiceImpl;
 import com.finalproject.secondhand.dto.user.UserUpdateDto;
 import com.finalproject.secondhand.entity.Users;
-import com.finalproject.secondhand.service.CloudinaryStorageService;
 import com.finalproject.secondhand.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -10,12 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -28,7 +26,7 @@ public class UserController {
     private UserService userService;
 
     @Autowired
-    private CloudinaryStorageService cloudinaryStorageService;
+    private MapperServiceImpl mapperUser;
 
     @Operation(summary = "List user")
     @GetMapping("users")
@@ -60,18 +58,11 @@ public class UserController {
 
     @Operation(summary = "Update user profil")
     @PutMapping(value = "update",
-            consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<?> updateUsers(UserUpdateDto userUpdateDto, Authentication authentication, @ModelAttribute MultipartFile imageProfil) {
-        String username = authentication.getName();
-        Map<?, ?> uploadImage = (Map<?, ?>) cloudinaryStorageService.upload(imageProfil).getData();
-        Users users = new Users();
-        users.setFullname(userUpdateDto.getFullname());
-        users.setCity(userUpdateDto.getCity());
-        users.setAddress(userUpdateDto.getAddress());
-        users.setPhone(userUpdateDto.getPhone());
-        users.setImageProfil(uploadImage.get("url").toString());
-        userService.update(userUpdateDto, username);
-        return new ResponseEntity<>("User updated", HttpStatus.ACCEPTED);
+            consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<?> updateUsers(@ModelAttribute @Valid UserUpdateDto update) {
+        userService.update(mapperUser.mapUpdate(update));
+        return new ResponseEntity<>("Update user successfull", HttpStatus.ACCEPTED);
     }
 
 }
