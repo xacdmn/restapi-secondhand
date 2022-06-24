@@ -1,6 +1,6 @@
 package com.finalproject.secondhand.result;
 
-public class ErrorDataResult<T> extends DataResult<T> {
+public class ErrorDataResult<T> extends  DataResult<T>{
     public ErrorDataResult(T data) {
         super(data, false);
     }
@@ -9,11 +9,11 @@ public class ErrorDataResult<T> extends DataResult<T> {
         super(data, false, message);
     }
 
-    public ErrorDataResult() {
+    public ErrorDataResult(){
         super(null, false);
     }
 
-    public ErrorDataResult(String message) {
+    public ErrorDataResult(String message){
         super(null, false, message);
     }
 }
