@@ -1,29 +1,23 @@
 package com.finalproject.secondhand.entity;
 
-import com.finalproject.secondhand.enums.ERole;
-import lombok.*;
-import lombok.experimental.Accessors;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
-@Setter
 @Getter
-@Entity(name = "roles")
-@Accessors(chain = true)
-@ToString
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity(name = "role")
 public class Roles {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Integer idRole;
 
-    @Enumerated(EnumType.STRING)
-    private ERole role;
+    @Column
+    private String roleName;
 
-    public Roles() {
-
-    }
-
-    public Roles(ERole role) {
-        this.role = role;
-    }
 }
