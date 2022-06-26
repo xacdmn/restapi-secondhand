@@ -1,6 +1,6 @@
 package com.finalproject.secondhand.controller;
 
-import com.finalproject.secondhand.service.MapperServiceImpl;
+import com.finalproject.secondhand.dto.user.UserDto;
 import com.finalproject.secondhand.dto.user.UserUpdateDto;
 import com.finalproject.secondhand.entity.Users;
 import com.finalproject.secondhand.service.UserService;
@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -25,34 +26,33 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private MapperServiceImpl mapperUser;
+
 
     @Operation(summary = "List user")
     @GetMapping("users")
     public ResponseEntity<?> listUsers() {
-        List<Users> users = userService.findAll();
+        List<UserDto> users = userService.findAll();
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
     @Operation(summary = "Find user by id")
     @GetMapping("{userId}")
     public ResponseEntity<?> findById(@PathVariable("userId") Integer userId) {
-        Optional<Users> users = userService.findById(userId);
+        Optional<UserDto> users = userService.findById(userId);
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
     @Operation(summary = "Find user by username")
     @GetMapping("{username}")
-    public ResponseEntity<?> email(@PathVariable("username") String username) {
-        Optional<Users> users = userService.findByUsername(username);
+    public ResponseEntity<?> findByUsername(@PathVariable("username") String username) {
+        Optional<UserDto> users = userService.findByUsername(username);
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
     @Operation(summary = "Find user by email")
     @GetMapping("{email}")
     public ResponseEntity<?> findByEmail(@PathVariable("email") String email) {
-        Optional<Users> users = userService.findByEmail(email);
+        Optional<UserDto> users = userService.findByEmail(email);
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
@@ -60,8 +60,9 @@ public class UserController {
     @PutMapping(value = "update",
             consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<?> updateUsers(@ModelAttribute @Valid UserUpdateDto update) {
-        userService.update(mapperUser.mapUpdate(update));
+    public ResponseEntity<?> updateUsers(@ModelAttribute @Valid UserUpdateDto update, Authentication authentication) {
+        String username = authentication.getName();
+        userService.update(update, username);
         return new ResponseEntity<>("Update user successfull", HttpStatus.ACCEPTED);
     }
 

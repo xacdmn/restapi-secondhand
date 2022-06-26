@@ -31,7 +31,7 @@ public class Products {
         description = productDto.getDescription();
         seller= productDto.getSeller();
         city = productDto.getCity();
-        productImage = productDto.getProductImage().toString();
+        productImage = productDto.getProductName();
     }
 
     public Products(){}

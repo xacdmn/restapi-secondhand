@@ -1,7 +1,7 @@
 package com.finalproject.secondhand.repository;
 
 import com.finalproject.secondhand.entity.Products;
-import com.finalproject.secondhand.enums.CategoryEnum;
+import com.finalproject.secondhand.enums.ECategory;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -13,7 +13,7 @@ import java.util.List;
 public interface ProductRepository extends JpaRepository<Products, Integer> {
     List<Products> findAllByOrderByProductIdAsc();
 
-    List<Products> findByCategories(CategoryEnum categoryEnum);
+    List<Products> findByCategories(ECategory ECategory);
 
     List<Products> findByProductName(String productName);
 }

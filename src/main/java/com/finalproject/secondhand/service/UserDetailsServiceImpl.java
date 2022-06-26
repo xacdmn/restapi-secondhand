@@ -1,6 +1,7 @@
 package com.finalproject.secondhand.service;
 
 import com.finalproject.secondhand.dto.user.SignupDto;
+import com.finalproject.secondhand.dto.user.UserDto;
 import com.finalproject.secondhand.entity.UserDetailsImpl;
 import com.finalproject.secondhand.entity.Users;
 import org.slf4j.Logger;
@@ -27,12 +28,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<Users> users = userService.findByUsername(username);
-        if (!users.isPresent()) {
+        Optional<UserDto> user = userService.findByUsername(username);
+        if (!user.isPresent()) {
             throw new UsernameNotFoundException("User " + username + " not found.");
         } else {
             LOGGER.info("Found user : " + username);
-            return new UserDetailsImpl(users.get());
+            return new UserDetailsImpl(new Users(user.get().setPassword(user.get().getPassword())));
         }
     }
 }

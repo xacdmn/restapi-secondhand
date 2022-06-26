@@ -1,6 +1,7 @@
 package com.finalproject.secondhand.service;
 
 import com.finalproject.secondhand.dto.user.SignupDto;
+import com.finalproject.secondhand.dto.user.UserDto;
 import com.finalproject.secondhand.dto.user.UserUpdateDto;
 import com.finalproject.secondhand.entity.Users;
 import org.springframework.stereotype.Component;
@@ -15,15 +16,15 @@ public interface UserService {
     void save(SignupDto signupDto);
 
     //READ
-    List<Users> findAll();
-    Optional<Users> findById(Integer userId);
-    Optional<Users> findByUsername(String username);
-    Optional<Users> findByEmail(String email);
+    List<UserDto> findAll();
+    Optional<UserDto> findById(Integer userId);
+    Optional<UserDto> findByUsername(String username);
+    Optional<UserDto> findByEmail(String email);
     boolean existsUsername(String username);
     boolean existsEmail(String email);
 
     //UPDATE
-    Users update(Users users);
+    void update(UserUpdateDto update, String username);
 
     //DELETE
     String deleteById(Integer userId);

@@ -2,7 +2,7 @@ package com.finalproject.secondhand.service;
 
 import com.finalproject.secondhand.dto.product.ProductDto;
 import com.finalproject.secondhand.entity.Products;
-import com.finalproject.secondhand.enums.CategoryEnum;
+import com.finalproject.secondhand.enums.ECategory;
 import com.finalproject.secondhand.repository.ProductRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,13 +30,13 @@ public class ProductServiceImpl implements ProductService {
         Products products = new Products(productDto);
         if (productDto.getCategories().isEmpty()) {
             products.getCategories().add(
-                    categorieService.findByCategory(CategoryEnum.RUMAH).orElseThrow(() ->
+                    categorieService.findByCategory(ECategory.RUMAH).orElseThrow(() ->
                             new RuntimeException("Error: No category 'RUMAH' Found"))
             );
         } else {
             logger.info(categorieService.findAll().toString());
             productDto.getCategories().forEach(category -> products.getCategories().add(
-                    categorieService.findByCategory(getEnumIgnoreCase(CategoryEnum.class, category)).orElseThrow(() ->
+                    categorieService.findByCategory(getEnumIgnoreCase(ECategory.class, category)).orElseThrow(() ->
                             new RuntimeException("Error: No category '" + category + "' Found. Use `RUMAH` as default."))
             ));
         }
@@ -54,8 +54,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Products> findByCategories(CategoryEnum categoryEnum) {
-        return productRepository.findByCategories(categoryEnum);
+    public List<Products> findByCategories(ECategory ECategory) {
+        return productRepository.findByCategories(ECategory);
     }
 
     @Override

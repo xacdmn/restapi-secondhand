@@ -34,13 +34,15 @@ public class UserDetailsImpl implements UserDetails {
         this.username = users.getUsername();
         this.email = users.getEmail();
         this.password = users.getPassword();
+        this.address = users.getAddress();
         this.city = users.getCity();
         this.address = users.getAddress();
         this.phone = users.getPhone();
+        this.imageProfil = users.getImageProfil();
         this.authorities = users
                 .getRoles()
                 .stream()
-                .map(roles -> new SimpleGrantedAuthority(roles.getRole().name()))
+                .map(role -> new SimpleGrantedAuthority(role.getRole().name()))
                 .collect(Collectors.toList());
     }
 
