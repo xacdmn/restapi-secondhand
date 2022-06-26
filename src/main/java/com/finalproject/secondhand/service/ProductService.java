@@ -2,8 +2,7 @@ package com.finalproject.secondhand.service;
 
 import com.finalproject.secondhand.dto.product.ProductDto;
 import com.finalproject.secondhand.entity.Products;
-import com.finalproject.secondhand.enums.CategoryEnum;
-import com.finalproject.secondhand.repository.CategorieRepository;
+import com.finalproject.secondhand.enums.ECategory;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -17,7 +16,7 @@ public interface ProductService {
 
     List<Products> findByProductName(String productName);
 
-    List<Products> findByCategories(CategoryEnum categoryEnum);
+    List<Products> findByCategories(ECategory ECategory);
 
     boolean delete(Integer productId);
 

@@ -14,7 +14,7 @@ import javax.persistence.*;
 public class Roles {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Integer roleId;
 
     @Enumerated(EnumType.STRING)
     private ERole role;

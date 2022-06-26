@@ -1,6 +1,6 @@
 package com.finalproject.secondhand.entity;
 
-import com.finalproject.secondhand.enums.CategoryEnum;
+import com.finalproject.secondhand.enums.ECategory;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -17,12 +17,12 @@ public class Categories {
     private Integer id;
 
     @Enumerated(EnumType.STRING)
-    private CategoryEnum category;
+    private ECategory category;
 
     public Categories() {
     }
 
-    public Categories(CategoryEnum categoryEnum) {
-        this.category = categoryEnum;
+    public Categories(ECategory eCategory) {
+        this.category = eCategory;
     }
 }

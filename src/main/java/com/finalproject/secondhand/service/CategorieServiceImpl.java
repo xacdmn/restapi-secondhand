@@ -1,7 +1,7 @@
 package com.finalproject.secondhand.service;
 
 import com.finalproject.secondhand.entity.Categories;
-import com.finalproject.secondhand.enums.CategoryEnum;
+import com.finalproject.secondhand.enums.ECategory;
 import com.finalproject.secondhand.repository.CategorieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,7 +15,7 @@ public class CategorieServiceImpl implements CategorieService {
     @Autowired
     private CategorieRepository categoryRepository;
 
-    public Optional<Categories> findByCategory(CategoryEnum category) {
+    public Optional<Categories> findByCategory(ECategory category) {
         return categoryRepository.findByCategory(category);
     }
 
