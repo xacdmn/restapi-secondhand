@@ -1,5 +1,6 @@
 package com.finalproject.secondhand.dto.product;
 
+import com.finalproject.secondhand.entity.Users;
 import lombok.*;
 import lombok.experimental.Accessors;
 
@@ -13,16 +14,36 @@ import java.util.Set;
 @Accessors(chain = true)
 public class ProductDto {
     private Integer id;
+
+    private Users userId;
+
     @NotNull
     private String productName;
+
     @NotNull
     private Set<String> categories = new HashSet<>();
+
     @NotNull
-    private String price;
+    private BigDecimal price;
+
     @NotNull
     private String description;
+
     @NotNull
     private String seller;
+
     @NotNull
     private String city;
+
+    @NotNull
+    private String image1;
+
+    private String image2;
+
+    private String image3;
+
+    private String image4;
+
+    @NotNull
+    private Boolean status;
 }
