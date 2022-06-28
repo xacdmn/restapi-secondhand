@@ -2,8 +2,8 @@ package com.finalproject.secondhand.config;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
-import com.finalproject.secondhand.service.CloudinaryStorageService;
-import com.finalproject.secondhand.service.CloudinaryStorageServiceImpl;
+import com.finalproject.secondhand.service.image.CloudinaryStorageService;
+import com.finalproject.secondhand.service.image.CloudinaryStorageServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

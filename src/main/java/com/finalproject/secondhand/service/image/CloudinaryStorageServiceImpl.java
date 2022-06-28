@@ -1,4 +1,4 @@
-package com.finalproject.secondhand.service;
+package com.finalproject.secondhand.service.image;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
@@ -14,7 +14,7 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-public class CloudinaryStorageServiceImpl implements CloudinaryStorageService{
+public class CloudinaryStorageServiceImpl implements CloudinaryStorageService {
 
     private final Cloudinary cloudinary;
 
