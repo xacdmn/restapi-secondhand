@@ -39,8 +39,6 @@ public class ProductController {
         Map<?, ?> uploadImage4 = (Map<?, ?>) cloudinaryStorageService.upload(productDto.getImage4()).getData();
         Products products = new Products();
         products.setProductName(productDto.getProductName());
-//        products.setUsersId(productDto.getUserId());
-//        products.setCategories(productDto.getCategories());
         products.setDescription(productDto.getDescription());
         products.setPrice(productDto.getPrice());
         products.setImage1(uploadImage1.get("url").toString());
