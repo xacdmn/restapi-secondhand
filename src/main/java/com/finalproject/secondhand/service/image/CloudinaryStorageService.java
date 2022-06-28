@@ -1,4 +1,4 @@
-package com.finalproject.secondhand.service;
+package com.finalproject.secondhand.service.image;
 
 import com.finalproject.secondhand.result.DataResult;
 import org.springframework.stereotype.Component;

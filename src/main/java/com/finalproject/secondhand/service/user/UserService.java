@@ -1,13 +1,11 @@
-package com.finalproject.secondhand.service;
+package com.finalproject.secondhand.service.user;
 
 import com.finalproject.secondhand.dto.user.SignupDto;
-import com.finalproject.secondhand.dto.user.UserDto;
 import com.finalproject.secondhand.dto.user.UserUpdateDto;
 import com.finalproject.secondhand.entity.Users;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Optional;
 
 @Component
 public interface UserService {
@@ -16,20 +14,18 @@ public interface UserService {
     void save(SignupDto signupDto);
 
     //READ
-    List<UserDto> findAll();
-    Optional<UserDto> findById(Integer userId);
-    Optional<UserDto> findByUsername(String username);
-    Optional<UserDto> findByEmail(String email);
+    List<Users> findAll();
+    Users findById(Integer userId);
+    Users findByUsername(String username);
+    Users findByEmail(String email);
+
     boolean existsUsername(String username);
     boolean existsEmail(String email);
 
     //UPDATE
-    void update(UserUpdateDto update, String username);
+    Users update(Users body, String username);
 
     //DELETE
     String deleteById(Integer userId);
-    boolean deleteByUsername(String username);
-
-
 
 }

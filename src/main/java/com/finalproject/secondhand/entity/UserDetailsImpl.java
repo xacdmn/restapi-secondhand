@@ -9,6 +9,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Setter
@@ -17,34 +18,34 @@ import java.util.stream.Collectors;
 public class UserDetailsImpl implements UserDetails {
 
     private Integer userId;
-    private String fullname;
     private String username;
-    @JsonIgnore
     private String email;
+    @JsonIgnore
     private String password;
-    private String city;
-    private String address;
-    private String phone;
-    private String imageProfil;
     private Collection<? extends GrantedAuthority> authorities;
 
-    public UserDetailsImpl(Users users) {
-        this.userId = users.getUserId();
-        this.fullname = users.getFullname();
-        this.username = users.getUsername();
-        this.email = users.getEmail();
-        this.password = users.getPassword();
-        this.address = users.getAddress();
-        this.city = users.getCity();
-        this.address = users.getAddress();
-        this.phone = users.getPhone();
-        this.imageProfil = users.getImageProfil();
-        this.authorities = users
-                .getRoles()
-                .stream()
+    public UserDetailsImpl(Integer userId, String username, String email,
+                           String password, List<GrantedAuthority> authorities) {
+        this.userId = userId;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.authorities = authorities;
+    }
+
+    public static UserDetailsImpl builder(Users user) {
+        List<GrantedAuthority> authorities = user.getRoles().stream()
                 .map(role -> new SimpleGrantedAuthority(role.getRole().name()))
                 .collect(Collectors.toList());
+        return new UserDetailsImpl(
+                user.getUserId(),
+                user.getUsername(),
+                user.getEmail(),
+                user.getPassword(),
+                authorities
+        );
     }
+
 
     @Override
     public boolean isAccountNonExpired() {

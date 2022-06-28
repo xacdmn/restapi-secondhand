@@ -1,4 +1,4 @@
-package com.finalproject.secondhand.service;
+package com.finalproject.secondhand.service.product;
 
 import com.finalproject.secondhand.dto.product.ProductDto;
 import com.finalproject.secondhand.entity.Products;

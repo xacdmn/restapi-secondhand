@@ -1,9 +1,11 @@
-package com.finalproject.secondhand.service;
+package com.finalproject.secondhand.service.product;
 
 import com.finalproject.secondhand.dto.product.ProductDto;
 import com.finalproject.secondhand.entity.Products;
 import com.finalproject.secondhand.enums.ECategory;
 import com.finalproject.secondhand.repository.ProductRepository;
+import com.finalproject.secondhand.service.image.CloudinaryStorageService;
+import com.finalproject.secondhand.service.user.UserServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
