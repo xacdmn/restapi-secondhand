@@ -33,7 +33,7 @@ public class SecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
                 .antMatchers("/api/auth/**").permitAll()
-                .antMatchers(HttpMethod.POST, "/api/product/**").hasAuthority(ERole.SELLER.name())
+                .antMatchers(HttpMethod.POST, "/api/product/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/product/**").permitAll()
                 .antMatchers("/api/seller/**").hasAuthority(ERole.SELLER.name())
                 .antMatchers("/api/buyer/**").hasAuthority(ERole.BUYER.name())

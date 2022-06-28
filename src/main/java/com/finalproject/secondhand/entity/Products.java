@@ -4,6 +4,7 @@ import com.finalproject.secondhand.dto.product.ProductDto;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -20,8 +21,8 @@ public class Products {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer productId;
 
-    @ManyToOne
-    private Users usersId;
+//    @ManyToOne
+//    private Users usersId;
 
     private String productName;
 
@@ -44,18 +45,15 @@ public class Products {
     private Set<Categories> categories = new HashSet<>();
 
     public Products(ProductDto productDto) {
-        usersId = productDto.getUserId();
+//        usersId = productDto.getUserId();
         productName = productDto.getProductName();
         price = productDto.getPrice();
         description = productDto.getDescription();
         status = productDto.getStatus();
-        image1 = productDto.getImage1();
-        image2 = productDto.getImage2();
-        image3 = productDto.getImage3();
-        image4 = productDto.getImage4();
-//        seller= productDto.getSeller();
-//        city = productDto.getCity();
-//        productImage = productDto.getProductImage().toString();
+        image1 = productDto.getImage1().toString();
+        image2 = productDto.getImage2().toString();
+        image3 = productDto.getImage3().toString();
+        image4 = productDto.getImage4().toString();
     }
 
     public Products(){}

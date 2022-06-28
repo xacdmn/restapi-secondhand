@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -28,16 +29,17 @@ public class ProductController {
     private CloudinaryStorageService cloudinaryStorageService;
 
     @Operation(summary = "Add product")
-    @PostMapping("/api/product/add")
-    public ResponseEntity<?> addProduct(@RequestBody ProductDto productDto,
-                                        @ModelAttribute MultipartFile image){
-        Map<?, ?> uploadImage1 = (Map<?, ?>) cloudinaryStorageService.upload(image).getData();
-        Map<?, ?> uploadImage2 = (Map<?, ?>) cloudinaryStorageService.upload(image).getData();
-        Map<?, ?> uploadImage3 = (Map<?, ?>) cloudinaryStorageService.upload(image).getData();
-        Map<?, ?> uploadImage4 = (Map<?, ?>) cloudinaryStorageService.upload(image).getData();
+    @PostMapping(value = "/api/product/add",
+            consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<?> addProduct(@ModelAttribute ProductDto productDto){
+        Map<?, ?> uploadImage1 = (Map<?, ?>) cloudinaryStorageService.upload(productDto.getImage1()).getData();
+        Map<?, ?> uploadImage2 = (Map<?, ?>) cloudinaryStorageService.upload(productDto.getImage2()).getData();
+        Map<?, ?> uploadImage3 = (Map<?, ?>) cloudinaryStorageService.upload(productDto.getImage3()).getData();
+        Map<?, ?> uploadImage4 = (Map<?, ?>) cloudinaryStorageService.upload(productDto.getImage4()).getData();
         Products products = new Products();
         products.setProductName(productDto.getProductName());
-        products.setUsersId(productDto.getUserId());
+//        products.setUsersId(productDto.getUserId());
 //        products.setCategories(productDto.getCategories());
         products.setDescription(productDto.getDescription());
         products.setPrice(productDto.getPrice());
@@ -45,7 +47,8 @@ public class ProductController {
         products.setImage2(uploadImage2.get("url").toString());
         products.setImage3(uploadImage3.get("url").toString());
         products.setImage4(uploadImage4.get("url").toString());
-        return null;
+        productService.save(productDto);
+        return new ResponseEntity<>("Tambah produk berhasil", HttpStatus.CREATED);
     }
 
 //    @Operation(summary = "Edit product by id")

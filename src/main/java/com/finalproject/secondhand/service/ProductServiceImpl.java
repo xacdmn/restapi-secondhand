@@ -28,18 +28,18 @@ public class ProductServiceImpl implements ProductService {
 
     public void save(ProductDto productDto) {
         Products products = new Products(productDto);
-        if (productDto.getCategories().isEmpty()) {
-            products.getCategories().add(
-                    categorieService.findByCategory(CategoryEnum.RUMAH).orElseThrow(() ->
-                            new RuntimeException("Error: No category 'RUMAH' Found"))
-            );
-        } else {
-            logger.info(categorieService.findAll().toString());
-            productDto.getCategories().forEach(category -> products.getCategories().add(
-                    categorieService.findByCategory(getEnumIgnoreCase(CategoryEnum.class, category)).orElseThrow(() ->
-                            new RuntimeException("Error: No category '" + category + "' Found. Use `RUMAH` as default."))
-            ));
-        }
+//        if (productDto.getCategories().isEmpty()) {
+//            products.getCategories().add(
+//                    categorieService.findByCategory(CategoryEnum.RUMAH).orElseThrow(() ->
+//                            new RuntimeException("Error: No category 'RUMAH' Found"))
+//            );
+//        } else {
+//            logger.info(categorieService.findAll().toString());
+//            productDto.getCategories().forEach(category -> products.getCategories().add(
+//                    categorieService.findByCategory(getEnumIgnoreCase(CategoryEnum.class, category)).orElseThrow(() ->
+//                            new RuntimeException("Error: No category '" + category + "' Found. Use `RUMAH` as default."))
+//            ));
+//        }
         productRepository.save(products);
     }
 
@@ -69,10 +69,10 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public boolean update(ProductDto productDto) {
-        if (productRepository.findById(productDto.getId()).isPresent()) {
-            productRepository.save(new Products(productDto));
-            return true;
-        }
+//        if (productRepository.findById(productDto.getId()).isPresent()) {
+//            productRepository.save(new Products(productDto));
+//            return true;
+//        }
         return false;
     }
 }
