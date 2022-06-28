@@ -4,7 +4,7 @@ import com.finalproject.secondhand.config.JwtUtil;
 import com.finalproject.secondhand.dto.user.JwtTokenDto;
 import com.finalproject.secondhand.dto.user.SigninDto;
 import com.finalproject.secondhand.dto.user.SignupDto;
-import com.finalproject.secondhand.entity.Users;
+import com.finalproject.secondhand.dto.user.UserDto;
 import com.finalproject.secondhand.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -48,7 +47,7 @@ public class AuthenticationController {
     @Operation(summary = "Registers a new user")
     @PostMapping("/signup")
     public ResponseEntity<?> signUp(SignupDto signupDto) {
-        Map<String, String> response = new HashMap<>();
+        HashMap response = new HashMap<String, String>();
         if (userService.existsUsername(signupDto.getUsername())) {
             response.put(signupDto.getUsername(), "Error: Username already used");
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
@@ -75,13 +74,10 @@ public class AuthenticationController {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         logger.info("User " + userDetails.getUsername() + " logged in.");
         logger.info(token);
-        Optional<Users> user = userService.findByUsername(userDetails.getUsername());
-
+        Optional<UserDto> user = userService.findByUsername(userDetails.getUsername());
         if (!user.isPresent()) {
             return new ResponseEntity<>("User or password incorrect", HttpStatus.FORBIDDEN);
         }
         return ResponseEntity.ok(new JwtTokenDto(token, user.get()));
     }
-
-
 }

@@ -1,20 +1,14 @@
 package com.finalproject.secondhand.dto.user;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
 @Accessors(chain = true)
 public class UserUpdateDto {
 
@@ -26,5 +20,7 @@ public class UserUpdateDto {
     private String address;
     @NotBlank(message = "Nomor Hp harus diisi!")
     private String phone;
+    @NotBlank
+    private MultipartFile imageProfil;
 
 }

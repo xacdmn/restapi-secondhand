@@ -48,7 +48,7 @@ public class JwtUtil {
                 .stream()
                 .map(GrantedAuthority::getAuthority).collect(Collectors.toList())
                 .forEach(claim -> claims.put("roles", claim));
-        int jwtExpirationInMs = 18000000;
+        int jwtExpirationInMs = 18000000; // -> Refres 5 hours
         return Jwts.builder()
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
