@@ -1,16 +1,17 @@
 package com.finalproject.secondhand.dto.user;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 import javax.validation.constraints.NotBlank;
 
+
 @Getter
 @Setter
-@ToString
-@Accessors(chain = true)
+@AllArgsConstructor
+@NoArgsConstructor
 public class SigninDto {
 
     @NotBlank(message = "Username harus diisi!")

@@ -12,9 +12,6 @@ import java.util.List;
 @Transactional
 public interface ProductRepository extends JpaRepository<Products, Integer> {
     List<Products> findAllByOrderByProductIdAsc();
-
-    List<Products> findByCategories(ECategory ECategory);
-
     List<Products> findByProductName(String productName);
 }
 

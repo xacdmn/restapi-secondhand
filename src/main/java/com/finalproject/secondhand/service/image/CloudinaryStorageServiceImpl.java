@@ -1,10 +1,11 @@
-package com.finalproject.secondhand.service;
+package com.finalproject.secondhand.service.image;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.finalproject.secondhand.result.DataResult;
 import com.finalproject.secondhand.result.ErrorDataResult;
 import com.finalproject.secondhand.result.SuccessDataResult;
+import com.finalproject.secondhand.service.image.CloudinaryStorageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,7 +15,7 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-public class CloudinaryStorageServiceImpl implements CloudinaryStorageService{
+public class CloudinaryStorageServiceImpl implements CloudinaryStorageService {
 
     private final Cloudinary cloudinary;
 

@@ -1,20 +1,18 @@
 package com.finalproject.secondhand.entity;
 
 import com.finalproject.secondhand.dto.user.SignupDto;
-import com.finalproject.secondhand.dto.user.UserDto;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.experimental.Accessors;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
 @Setter
 @Getter
 @Entity(name = "users")
-@Accessors(chain = true)
-public class Users {
+public class Users implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,23 +41,15 @@ public class Users {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Roles> roles = new HashSet<>();
 
+    public Users(SignupDto signup) {
+        this.username = signup.getUsername();
+        this.email = signup.getEmail();
+        this.password = signup.getPassword();
+    }
+
     public Users() {
+
     }
 
-    public Users(SignupDto signupDto) {
-        email = signupDto.getEmail();
-        username = signupDto.getUsername();
-    }
-
-    public Users(UserDto userDto) {
-        userId = userDto.getUserId();
-        fullname = userDto.getFullname();
-        username = userDto.getUsername();
-        email = userDto.getEmail();
-        city = userDto.getCity();
-        address = userDto.getAddress();
-        phone = userDto.getPhone();
-        imageProfil = userDto.getImageProfil();
-    }
 }
 
