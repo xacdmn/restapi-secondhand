@@ -48,14 +48,7 @@ public class AuthenticationController {
 
     @Operation(summary = "Registers a new user")
     @PostMapping("/signup")
-    public ResponseEntity<?> signup(@Valid
-                                        @Schema(example = "{" +
-                                                "\"username\":\"username123\"," +
-                                                "\"email\":\"username@gmail.com\"," +
-                                                "\"password\":\"password123\"," +
-                                                "\"role\":[\"ALL\"]" +
-                                                "}")
-                                        @RequestBody SignupDto signup) {
+    public ResponseEntity<?> signup(@Valid @RequestBody SignupDto signup) {
         HashMap<String, String> response = new HashMap();
         if (userService.existsUsername(signup.getUsername())) {
             response.put(signup.getUsername(), "Error: Username already used");
@@ -72,12 +65,7 @@ public class AuthenticationController {
 
     @Operation(summary = "Login user")
     @PostMapping("/signin")
-    public ResponseEntity<?> signin(
-            @Schema (example = "{" +
-                    "\"username\":\"username123\"," +
-                    "\"password\":\"password123\"" +
-                    "}")
-            @RequestBody SigninDto signin) {
+    public ResponseEntity<?> signin(@RequestBody SigninDto signin) {
         LOGGER.info("logging in");
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(signin.getUsername(), signin.getPassword()));
         if (!authentication.isAuthenticated()) {

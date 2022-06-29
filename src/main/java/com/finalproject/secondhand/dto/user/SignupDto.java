@@ -24,6 +24,6 @@ public class SignupDto {
     @NotBlank(message = "Password harus diisi!")
     private String password;
 
-    private Set<String> roles = new HashSet<>();
+//    private Set<String> roles = new HashSet<>();
 
 }
