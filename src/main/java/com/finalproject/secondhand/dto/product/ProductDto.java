@@ -1,28 +1,28 @@
 package com.finalproject.secondhand.dto.product;
 
 import lombok.*;
-import lombok.experimental.Accessors;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotNull;
-import java.util.HashSet;
-import java.util.Set;
+import java.math.BigDecimal;
 
-@Setter
+
 @Getter
-@ToString
-@Accessors(chain = true)
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class ProductDto {
-    private Integer id;
     @NotNull
     private String productName;
     @NotNull
-    private Set<String> categories = new HashSet<>();
-    @NotNull
-    private String price;
+    private BigDecimal price;
     @NotNull
     private String description;
     @NotNull
-    private String seller;
+    private MultipartFile image1;
+    private MultipartFile image2;
+    private MultipartFile image3;
+    private MultipartFile image4;
     @NotNull
-    private String city;
+    private Boolean status;
 }

@@ -1,4 +1,4 @@
-package com.finalproject.secondhand.service;
+package com.finalproject.secondhand.service.product;
 
 import com.finalproject.secondhand.entity.Categories;
 import com.finalproject.secondhand.enums.ECategory;

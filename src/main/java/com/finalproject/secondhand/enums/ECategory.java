@@ -4,5 +4,5 @@ public enum ECategory {
     MOBIL,
     RUMAH,
     MOTOR,
-    ELEKTORNIK,
+    ELEKTORNIK
 }
