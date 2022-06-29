@@ -5,6 +5,7 @@ import com.cloudinary.utils.ObjectUtils;
 import com.finalproject.secondhand.result.DataResult;
 import com.finalproject.secondhand.result.ErrorDataResult;
 import com.finalproject.secondhand.result.SuccessDataResult;
+import com.finalproject.secondhand.service.image.CloudinaryStorageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
