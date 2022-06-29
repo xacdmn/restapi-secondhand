@@ -27,7 +27,7 @@ public class UserServiceImpl implements UserService {
         Set<Roles> roles = new HashSet<>();
 
         if(strRoles == null) {
-            Roles role = roleRepository.findByRole(ERole.SELLER)
+            Roles role = roleRepository.findByRole(ERole.ALL)
                     .orElseThrow(() -> new RuntimeException("Error: Role is not found"));
             roles.add(role);
         } else {

@@ -57,9 +57,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/api/auth/**").permitAll()
                 .antMatchers("/api/user/**").permitAll()
-                .antMatchers("/api/seller/**").hasAuthority(ERole.SELLER.name())
-                .antMatchers("/api/buyer/**").hasAuthority(ERole.BUYER.name())
-                .antMatchers(HttpMethod.POST, "/api/product/**").hasAuthority(ERole.SELLER.name())
+                .antMatchers("/api/seller/**").hasAuthority(ERole.ALL.name())
+                .antMatchers("/api/buyer/**").hasAuthority(ERole.ALL.name())
+                .antMatchers(HttpMethod.POST, "/api/product/**").hasAuthority(ERole.ALL.name())
                 .antMatchers(HttpMethod.GET, "/api/product/**").permitAll()
                 .anyRequest().authenticated();
 
