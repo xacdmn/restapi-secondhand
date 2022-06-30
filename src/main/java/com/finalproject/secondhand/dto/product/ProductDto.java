@@ -4,8 +4,6 @@ import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotNull;
-import java.math.BigDecimal;
-
 
 @Getter
 @Setter
@@ -15,7 +13,7 @@ public class ProductDto {
     @NotNull
     private String productName;
     @NotNull
-    private BigDecimal price;
+    private String price;
     @NotNull
     private String description;
     @NotNull

@@ -19,7 +19,7 @@ public class Products {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer productId;
     private String productName;
-    private BigDecimal price;
+    private String price;
     private String description;
     private Boolean status;
     @NotBlank
@@ -27,6 +27,8 @@ public class Products {
     private String image2;
     private String image3;
     private String image4;
+    @ManyToOne
+    private Users users;
 
 //    @JsonBackReference
 //    @ManyToOne(cascade = CascadeType.ALL)

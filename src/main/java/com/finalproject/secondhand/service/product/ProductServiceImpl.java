@@ -28,6 +28,7 @@ public class ProductServiceImpl implements ProductService {
         products.setImage2(body.getImage2());
         products.setImage3(body.getImage3());
         products.setImage4(body.getImage4());
+        products.setUsers(body.getUsers());
         productRepository.save(products);
     }
 
