@@ -7,8 +7,6 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
 
 @Setter
 @Getter
@@ -35,7 +33,6 @@ public class Users implements Serializable {
     private String phone;
     @Column(name = "image_profil")
     private String imageProfil;
-
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),

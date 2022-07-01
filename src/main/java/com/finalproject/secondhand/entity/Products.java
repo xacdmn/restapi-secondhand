@@ -1,14 +1,11 @@
 package com.finalproject.secondhand.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.finalproject.secondhand.enums.EStatusProduct;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import java.math.BigDecimal;
-import java.util.HashSet;
-import java.util.Set;
 
 @Setter
 @Getter
@@ -17,28 +14,30 @@ public class Products {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column
     private Integer productId;
+    @Column
     private String productName;
+    @Column
     private String price;
+    @Column
     private String description;
-    private Boolean status;
-    @NotBlank
+    @Column
     private String image1;
+    @Column
     private String image2;
+    @Column
     private String image3;
+    @Column
     private String image4;
-    @ManyToOne
+    @JsonBackReference
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
     private Users users;
-
-//    @JsonBackReference
-//    @ManyToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "user_id")
-//    private Users users;
-//
-//    @ManyToMany(fetch = FetchType.EAGER)
-//    @JoinTable(name = "product_category",
-//            joinColumns = @JoinColumn(name = "product_id"),
-//            inverseJoinColumns = @JoinColumn(name = "category_id"))
-//    private Set<Categories> categories = new HashSet<>();
+    @Column
+    private String category;
+    @Column
+    @Enumerated(EnumType.ORDINAL)
+    private EStatusProduct statusProduct= EStatusProduct.DIBUAT;
 
 }

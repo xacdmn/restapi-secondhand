@@ -3,7 +3,6 @@ package com.finalproject.secondhand.service.user;
 import com.finalproject.secondhand.dto.user.SignupDto;
 import com.finalproject.secondhand.entity.Roles;
 import com.finalproject.secondhand.entity.Users;
-import com.finalproject.secondhand.enums.ERole;
 import com.finalproject.secondhand.repository.RoleRepository;
 import com.finalproject.secondhand.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,8 +41,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Users findById(Integer userId) {
+    public Users findUsersByUserId(Integer userId) {
         return userRepository.findUsersByUserId(userId);
+    }
+
+    @Override
+    public Users findUsersByUsername(String username) {
+        return userRepository.findUsersByUsername(username);
     }
 
     @Override
@@ -52,8 +56,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Users findByEmail(String email) {
-        return userRepository.findByEmail(email);
+    public Users findUsersByEmail(String email) {
+        return userRepository.findUsersByEmail(email);
     }
 
     @Override
@@ -79,6 +83,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public String deleteById(Integer userId) {
         userRepository.deleteById(userId);
-        return "Success delete user";
+        return "Account Deleted";
     }
 }

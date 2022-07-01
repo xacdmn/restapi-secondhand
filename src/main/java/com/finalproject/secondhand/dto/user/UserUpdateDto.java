@@ -22,7 +22,7 @@ public class UserUpdateDto {
     @NotBlank(message = "Alamat harus diisi!")
     private String address;
     @NotBlank(message = "Nomor Hp harus diisi!")
-    private String phone;
+    private Long phone;
     @NotBlank
     private MultipartFile imageProfil;
 

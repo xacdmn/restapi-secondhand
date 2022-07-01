@@ -1,7 +1,6 @@
 package com.finalproject.secondhand.repository;
 
 import com.finalproject.secondhand.entity.Products;
-import com.finalproject.secondhand.enums.ECategory;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
