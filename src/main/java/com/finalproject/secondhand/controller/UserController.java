@@ -6,12 +6,15 @@ import com.finalproject.secondhand.service.image.CloudinaryStorageService;
 import com.finalproject.secondhand.service.user.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -22,6 +25,8 @@ import java.util.Map;
 @SecurityRequirement(name = "Authorization")
 @CrossOrigin(origins = {"*"}, maxAge = 3600)
 public class UserController {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProductController.class);
 
     @Autowired
     private UserService userService;
@@ -61,15 +66,19 @@ public class UserController {
     @PutMapping(value = "update",
             consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<Users> updateUsers(@Valid @ModelAttribute UserUpdateDto update, Authentication authentication) {
+    public ResponseEntity<Users> updateUsers(@Valid @ModelAttribute UserUpdateDto update, @RequestParam (required = false) MultipartFile imageProfil
+            , Authentication authentication) {
         String username = authentication.getName();
-        Map<?, ?> uploadImage = (Map<?, ?>) cloudinaryStorageService.upload(update.getImageProfil()).getData();
         Users users = new Users();
         users.setFullname(update.getFullname());
         users.setCity(update.getCity());
         users.setAddress(update.getAddress());
-        users.setPhone(update.getPhone().toString());
-        users.setImageProfil(uploadImage.get("url").toString());
+        users.setPhone(update.getPhone());
+        LOGGER.info(String.valueOf(imageProfil));
+        if (imageProfil != null) {
+            Map<?, ?> uploadImage = (Map<?, ?>) cloudinaryStorageService.upload(imageProfil).getData();
+            users.setImageProfil(uploadImage.get("url").toString());
+        }
         return new ResponseEntity<>(userService.update(users, username), HttpStatus.ACCEPTED);
     }
 

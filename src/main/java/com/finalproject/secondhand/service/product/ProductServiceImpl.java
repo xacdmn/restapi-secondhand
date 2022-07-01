@@ -17,6 +17,7 @@ public class ProductServiceImpl implements ProductService {
     public void save(Products body) {
         Products products = new Products();
         products.setProductName(body.getProductName());
+        products.setCategory(body.getCategory());
         products.setPrice(body.getPrice());
         products.setDescription(body.getDescription());
         products.setImage1(body.getImage1());
@@ -24,6 +25,7 @@ public class ProductServiceImpl implements ProductService {
         products.setImage3(body.getImage3());
         products.setImage4(body.getImage4());
         products.setUsers(body.getUsers());
+        products.setStatusProduct(products.getStatusProduct());
         productRepository.save(products);
     }
 

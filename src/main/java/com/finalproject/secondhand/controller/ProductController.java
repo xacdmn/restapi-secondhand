@@ -16,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,18 +49,18 @@ public class ProductController {
     @PostMapping(value = "add",
             consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<?> addProduct(@ModelAttribute ProductDto productDto, Authentication authentication) {
+    public ResponseEntity<?> addProduct(@ModelAttribute ProductDto productDto, @RequestParam (required = false) List<MultipartFile> imageProfil, Authentication authentication) {
         String username = authentication.getName();
         Users users = userService.findByUsername(username);
         Products products = new Products();
         List<String> urlImage = new ArrayList<>();
-        for (int i = 0; i < productDto.getImageProfil().size(); i++) {
-            Map<?, ?> uploadImage = (Map<?, ?>) cloudinaryStorageService.upload(productDto.getImageProfil().get(i)).getData();
-            urlImage.add(i, uploadImage.get("url").toString());
-            LOGGER.info(urlImage.get(i));
-            if (urlImage.get(i).isEmpty()) {
+        for (int i = 0; i < imageProfil.size(); i++) {
+            LOGGER.info(String.valueOf(imageProfil));
+            if (imageProfil.isEmpty()) {
                 LOGGER.info("skip upload...");
             } else {
+                Map<?, ?> uploadImage = (Map<?, ?>) cloudinaryStorageService.upload(imageProfil.get(i)).getData();
+                urlImage.add(i, uploadImage.get("url").toString());
                 if (products.getImage1() == null) {
                     products.setImage1(urlImage.get(i));
                 } else if (products.getImage2() == null) {
@@ -72,8 +73,9 @@ public class ProductController {
             }
         }
         products.setUsers(users);
+        products.setCategory(productDto.getCategory());
         products.setProductName(productDto.getProductName());
-        products.setPrice(productDto.getPrice().toString());
+        products.setPrice(productDto.getPrice());
         products.setDescription(productDto.getDescription());
         productService.save(products);
         return new ResponseEntity<>("Product added", HttpStatus.CREATED);

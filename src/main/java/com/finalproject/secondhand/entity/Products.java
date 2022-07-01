@@ -19,6 +19,8 @@ public class Products {
     @Column
     private String productName;
     @Column
+    private String category;
+    @Column
     private String price;
     @Column
     private String description;
@@ -34,8 +36,6 @@ public class Products {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private Users users;
-    @Column
-    private String category;
     @Column
     @Enumerated(EnumType.ORDINAL)
     private EStatusProduct statusProduct= EStatusProduct.DIBUAT;
