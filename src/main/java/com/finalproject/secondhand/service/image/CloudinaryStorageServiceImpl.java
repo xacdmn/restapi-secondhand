@@ -33,6 +33,14 @@ public class CloudinaryStorageServiceImpl implements CloudinaryStorageService {
 
     @Override
     public DataResult<?> delete(String publicIdOfImage) {
-        return null;
+
+        try {
+            Map<?, ?> deleteResult = cloudinary.uploader().destroy(publicIdOfImage, ObjectUtils.emptyMap());
+            return new SuccessDataResult<>(deleteResult);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new ErrorDataResult<>();
+        }
+
     }
 }

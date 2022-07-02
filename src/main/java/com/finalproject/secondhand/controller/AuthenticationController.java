@@ -2,9 +2,11 @@ package com.finalproject.secondhand.controller;
 
 import com.finalproject.secondhand.config.security.JwtUtil;
 import com.finalproject.secondhand.dto.auth.JwtTokenDto;
+import com.finalproject.secondhand.dto.user.ChangePasswordDto;
 import com.finalproject.secondhand.dto.user.SigninDto;
 import com.finalproject.secondhand.dto.user.SignupDto;
 import com.finalproject.secondhand.entity.UserDetailsImpl;
+import com.finalproject.secondhand.entity.Users;
 import com.finalproject.secondhand.service.user.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -95,4 +97,5 @@ public class AuthenticationController {
                 userDetails.getUserId(), userDetails.getUsername(), userDetails.getEmail(),
                 roles));
     }
+
 }

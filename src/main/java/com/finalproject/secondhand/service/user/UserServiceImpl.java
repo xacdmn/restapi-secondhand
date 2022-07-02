@@ -41,13 +41,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Users findUsersByUserId(Integer userId) {
-        return userRepository.findUsersByUserId(userId);
-    }
-
-    @Override
-    public Users findUsersByUsername(String username) {
-        return userRepository.findUsersByUsername(username);
+    public Users findByUserId(Integer userId) {
+        return userRepository.findByUserId(userId);
     }
 
     @Override
@@ -56,8 +51,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Users findUsersByEmail(String email) {
-        return userRepository.findUsersByEmail(email);
+    public Users findByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 
     @Override
@@ -72,12 +67,30 @@ public class UserServiceImpl implements UserService {
 
     public Users update(Users body, String username) {
         Users users = userRepository.findByUsername(username);
-        users.setFullname(body.getFullname());
-        users.setCity(body.getCity());
-        users.setAddress(body.getAddress());
-        users.setPhone(body.getPhone());
-        users.setImageProfil(body.getImageProfil());
+        if (body.getFullname() != null) {
+            users.setFullname(body.getFullname());
+        }
+        if (body.getCity() != null) {
+            users.setCity(body.getCity());
+        }
+        if (body.getAddress() != null) {
+            users.setAddress(body.getAddress());
+        }
+        if (body.getPhone() != null) {
+            users.setPhone(body.getPhone());
+        }
+        if (body.getImageProfil() != null) {
+            users.setImageProfil(body.getImageProfil());
+        }
         return userRepository.save(users);
+    }
+
+    @Override
+    public String changePassword(Users body, String username) {
+        Users users = userRepository.findByUsername(username);
+        users.setPassword(body.getPassword());
+        userRepository.save(users);
+        return "Password has been change";
     }
 
     @Override

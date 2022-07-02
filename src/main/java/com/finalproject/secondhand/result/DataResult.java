@@ -2,7 +2,7 @@ package com.finalproject.secondhand.result;
 
 public class DataResult<T> extends Result {
 
-    private T data;
+    private final T data;
 
     public DataResult(T data, boolean success) {
         super(success);

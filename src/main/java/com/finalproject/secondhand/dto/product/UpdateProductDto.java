@@ -1,21 +1,18 @@
 package com.finalproject.secondhand.dto.product;
 
-import lombok.*;
-
-import javax.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductDto {
-    @NotNull
+public class UpdateProductDto {
+
     private String productName;
-    @NotNull
-    private String category;
-    @NotNull
     private String price;
-    @NotNull
     private String description;
 
 }

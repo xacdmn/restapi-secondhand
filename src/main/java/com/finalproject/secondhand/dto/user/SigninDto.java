@@ -7,7 +7,6 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 
-
 @Getter
 @Setter
 @AllArgsConstructor
@@ -16,7 +15,6 @@ public class SigninDto {
 
     @NotBlank(message = "Username harus diisi!")
     private String username;
-
     @NotBlank(message = "Password harus diisi!")
     private String password;
 }
