@@ -29,31 +29,31 @@ public class UserController {
     @Autowired
     private CloudinaryStorageService cloudinaryStorageService;
 
-    @Operation(summary = "List user")
-    @GetMapping("users")
+    @Operation(summary = "List all user")
+    @GetMapping("find-all")
     public ResponseEntity<?> listUsers() {
         List<Users> users = userService.findAll();
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
-    @Operation(summary = "Find user by id")
-    @GetMapping("{userId}")
+//    @Operation(summary = "Find user by id")
+//    @GetMapping("{userId}")
     public ResponseEntity<?> findById(@PathVariable("userId") Integer userId) {
-        Users users = userService.findById(userId);
+        Users users = userService.findUsersByUserId(userId);
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
-    @Operation(summary = "Find user by username")
-    @GetMapping("{username}")
+//    @Operation(summary = "Find user by username")
+//    @GetMapping("{username}")
     public ResponseEntity<?> findByUsername(@PathVariable("username") String username) {
-        Users users = userService.findByUsername(username);
+        Users users = userService.findUsersByUsername(username);
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
-    @Operation(summary = "Find user by email")
-    @GetMapping("{email}")
+//    @Operation(summary = "Find user by email")
+//    @GetMapping("{email}")
     public ResponseEntity<?> findByEmail(@PathVariable("email") String email) {
-        Users users = userService.findByEmail(email);
+        Users users = userService.findUsersByEmail(email);
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
@@ -68,7 +68,7 @@ public class UserController {
         users.setFullname(update.getFullname());
         users.setCity(update.getCity());
         users.setAddress(update.getAddress());
-        users.setPhone(update.getPhone());
+        users.setPhone(update.getPhone().toString());
         users.setImageProfil(uploadImage.get("url").toString());
         return new ResponseEntity<>(userService.update(users, username), HttpStatus.ACCEPTED);
     }

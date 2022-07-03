@@ -15,9 +15,9 @@ public interface UserService {
 
     //READ
     List<Users> findAll();
-    Users findById(Integer userId);
-    Users findByUsername(String username);
-    Users findByEmail(String email);
+    Users findUsersByUserId(Integer userId);
+    Users findUsersByUsername(String username);
+    Users findUsersByEmail(String email);
 
     boolean existsUsername(String username);
     boolean existsEmail(String email);
@@ -27,5 +27,8 @@ public interface UserService {
 
     //DELETE
     String deleteById(Integer userId);
+
+    //AUTH
+    Users findByUsername(String username);
 
 }

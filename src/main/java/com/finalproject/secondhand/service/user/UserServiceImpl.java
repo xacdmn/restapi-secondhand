@@ -3,10 +3,8 @@ package com.finalproject.secondhand.service.user;
 import com.finalproject.secondhand.dto.user.SignupDto;
 import com.finalproject.secondhand.entity.Roles;
 import com.finalproject.secondhand.entity.Users;
-import com.finalproject.secondhand.enums.ERole;
 import com.finalproject.secondhand.repository.RoleRepository;
 import com.finalproject.secondhand.repository.UserRepository;
-import com.finalproject.secondhand.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,23 +21,18 @@ public class UserServiceImpl implements UserService {
 
     public void save(SignupDto signupDto) {
         Users users = new Users(signupDto);
-        Set<String> strRoles = signupDto.getRoles();
-        Set<Roles> roles = new HashSet<>();
-
-        if(strRoles == null) {
-            Roles role = roleRepository.findByRole(ERole.SELLER)
-                    .orElseThrow(() -> new RuntimeException("Error: Role is not found"));
-            roles.add(role);
-        } else {
-            strRoles.forEach(role -> {
-                Roles roles1 = roleRepository.findByRole(ERole.valueOf(role))
-                        .orElseThrow(() -> new RuntimeException("Error: Role " + role + " is not found"));
-                roles.add(roles1);
-            });
-        }
-        users.setRoles(roles);
+        addRoleToUsers(users, users.getRoles());
         users.setPassword(users.getPassword());
         userRepository.save(users);
+    }
+
+    private void addRoleToUsers(Users users, Collection<Roles> request) {
+        List<Roles> roles = new ArrayList<>();
+        if (request == null) {
+            List<Roles> allRoles = roleRepository.findAll();
+            roles.addAll(allRoles);
+        }
+        users.setRoles(roles);
     }
 
     @Override
@@ -48,8 +41,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Users findById(Integer userId) {
+    public Users findUsersByUserId(Integer userId) {
         return userRepository.findUsersByUserId(userId);
+    }
+
+    @Override
+    public Users findUsersByUsername(String username) {
+        return userRepository.findUsersByUsername(username);
     }
 
     @Override
@@ -58,8 +56,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Users findByEmail(String email) {
-        return userRepository.findByEmail(email);
+    public Users findUsersByEmail(String email) {
+        return userRepository.findUsersByEmail(email);
     }
 
     @Override
@@ -82,10 +80,9 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(users);
     }
 
-
     @Override
     public String deleteById(Integer userId) {
         userRepository.deleteById(userId);
-        return "Success delete user";
+        return "Account Deleted";
     }
 }
