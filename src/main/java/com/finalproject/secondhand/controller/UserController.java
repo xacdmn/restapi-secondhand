@@ -91,7 +91,7 @@ public class UserController {
     }
 
     @Operation(summary = "Change Password")
-    @GetMapping( "change-password")
+    @PutMapping( "change-password")
     public ResponseEntity<?> changePassword(
             @Schema(example = "{" +
                     "\"oldPassword\":\"ellda123\"," +
