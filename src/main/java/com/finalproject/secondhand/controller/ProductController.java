@@ -4,7 +4,6 @@ import com.finalproject.secondhand.dto.product.AddProductDto;
 import com.finalproject.secondhand.dto.product.UpdateProductDto;
 import com.finalproject.secondhand.entity.Products;
 import com.finalproject.secondhand.entity.Users;
-import com.finalproject.secondhand.repository.ProductRepository;
 import com.finalproject.secondhand.service.image.CloudinaryStorageService;
 import com.finalproject.secondhand.service.product.ProductService;
 import com.finalproject.secondhand.service.user.UserService;
@@ -14,10 +13,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.*;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -55,28 +51,31 @@ public class ProductController {
 
     @Operation(summary = "Add product")
     @PostMapping(value = "add",
-            consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},
-            produces = {MediaType.APPLICATION_JSON_VALUE})
+            consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<?> addProduct(@ModelAttribute AddProductDto add, @RequestParam (required = false) List<MultipartFile> imageProfil, Authentication authentication) {
         String username = authentication.getName();
         Users users = userService.findByUsername(username);
         Products products = new Products();
         List<String> urlImage = new ArrayList<>();
-        for (int i = 0; i < imageProfil.size(); i++) {
-            Map<?, ?> uploadImage = (Map<?, ?>) cloudinaryStorageService.upload(imageProfil.get(i)).getData();
-            urlImage.add(i, uploadImage.get("url").toString());
-            LOGGER.info(String.valueOf(imageProfil));
-            if (urlImage.get(i) == null) {
-                LOGGER.info("skip upload...");
-            } else {
-                if (products.getImage1() == null) {
-                    products.setImage1(urlImage.get(i));
-                } else if (products.getImage2() == null) {
-                    products.setImage2(urlImage.get(i));
-                } else if (products.getImage3() == null) {
-                    products.setImage3(urlImage.get(i));
-                } else if (products.getImage4() == null) {
-                    products.setImage4(urlImage.get(i));
+        if (imageProfil == null) {
+            LOGGER.info("skip upload...");
+        }else {
+            for (int i = 0; i < imageProfil.size(); i++) {
+                Map<?, ?> uploadImage = (Map<?, ?>) cloudinaryStorageService.upload(imageProfil.get(i)).getData();
+                urlImage.add(i, uploadImage.get("url").toString());
+                LOGGER.info(String.valueOf(imageProfil));
+                if (urlImage.get(i) == null) {
+                    LOGGER.info("skip upload...");
+                } else {
+                    if (products.getImage1() == null) {
+                        products.setImage1(urlImage.get(i));
+                    } else if (products.getImage2() == null) {
+                        products.setImage2(urlImage.get(i));
+                    } else if (products.getImage3() == null) {
+                        products.setImage3(urlImage.get(i));
+                    } else if (products.getImage4() == null) {
+                        products.setImage4(urlImage.get(i));
+                    }
                 }
             }
         }
