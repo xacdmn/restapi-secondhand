@@ -3,6 +3,7 @@ package com.finalproject.secondhand.controller;
 import com.finalproject.secondhand.entity.Products;
 import com.finalproject.secondhand.repository.ProductRepository;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@Tag(name = "Homepage", description = "API for access homepage")
 @RequestMapping("/api/homepage/")
 @SecurityRequirement(name = "Authorization")
 @CrossOrigin(origins = {"*"}, maxAge = 3600)

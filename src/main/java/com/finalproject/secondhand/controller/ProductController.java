@@ -10,6 +10,7 @@ import com.finalproject.secondhand.service.product.ProductService;
 import com.finalproject.secondhand.service.user.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,12 +25,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 @RestController
+@Tag(name = "Product", description = "API for processing CRUD Products")
 @RequestMapping("/api/product/")
 @SecurityRequirement(name = "Authorization")
 @CrossOrigin(origins = {"*"}, maxAge = 3600)
