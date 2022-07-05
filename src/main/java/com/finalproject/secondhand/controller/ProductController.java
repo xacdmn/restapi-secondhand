@@ -1,9 +1,10 @@
 package com.finalproject.secondhand.controller;
 
-import com.finalproject.secondhand.dto.product.AddProductDto;
-import com.finalproject.secondhand.dto.product.UpdateProductDto;
 import com.finalproject.secondhand.entity.Products;
 import com.finalproject.secondhand.entity.Users;
+import com.finalproject.secondhand.enums.EStatusResponse;
+import com.finalproject.secondhand.response.CustomResponse;
+import com.finalproject.secondhand.response.ProductResponse;
 import com.finalproject.secondhand.service.image.CloudinaryStorageService;
 import com.finalproject.secondhand.service.product.ProductService;
 import com.finalproject.secondhand.service.user.UserService;
@@ -43,19 +44,30 @@ public class ProductController {
     @Autowired
     private CloudinaryStorageService cloudinaryStorageService;
 
-    @Operation(summary = "List all product")
-    @GetMapping("find-all")
-    public ResponseEntity<List<Products>> findAll() {
-        return new ResponseEntity<>(productService.findAll(), HttpStatus.OK);
+    @Operation(summary = "Add product")
+    @PostMapping("{productId}")
+    public ResponseEntity<ProductResponse> findProductById(Integer productId) {
+        return new ResponseEntity<>(productService.findById(productId), HttpStatus.OK);
     }
 
     @Operation(summary = "Add product")
     @PostMapping(value = "add",
             consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<?> addProduct(@ModelAttribute AddProductDto add, @RequestParam (required = false) List<MultipartFile> imageProfil, Authentication authentication) {
+    public ResponseEntity<?> addProduct(@RequestParam (name = "productName") String productName,
+                                        @RequestParam (name = "category") String category,
+                                        @RequestParam (name = "price") String price,
+                                        @RequestParam (name = "description") String description,
+                                        @RequestParam (required = false) List<MultipartFile> imageProfil,
+                                        Authentication authentication) {
         String username = authentication.getName();
         Users users = userService.findByUsername(username);
         Products products = new Products();
+        LOGGER.info(productName);
+        products.setUsers(users);
+        products.setProductName(productName);
+        products.setCategory(category);
+        products.setPrice(price);
+        products.setDescription(description);
         List<String> urlImage = new ArrayList<>();
         if (imageProfil == null) {
             LOGGER.info("skip upload...");
@@ -79,11 +91,6 @@ public class ProductController {
                 }
             }
         }
-        products.setUsers(users);
-        products.setCategory(add.getCategory());
-        products.setProductName(add.getProductName());
-        products.setPrice(add.getPrice());
-        products.setDescription(add.getDescription());
         productService.save(products);
         return new ResponseEntity<>("Product added", HttpStatus.CREATED);
     }
@@ -92,9 +99,15 @@ public class ProductController {
     @PutMapping(value = "update/{productId}",
             consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<Products> updateProduct(@ModelAttribute UpdateProductDto update, @RequestParam (required = false) List<MultipartFile> imageProfil,
+    public ResponseEntity<Products> updateProduct(@RequestParam String productName,
+                                                  @RequestParam String price,
+                                                  @RequestParam String description,
+                                                  @RequestParam (required = false) List<MultipartFile> imageProfil,
                                                   @PathVariable Integer productId){
         Products products = new Products();
+        products.setProductName(productName);
+        products.setPrice(price);
+        products.setDescription(description);
         List<String> urlImage = new ArrayList<>();
         for (int i = 0; i < imageProfil.size(); i++) {
             Map<?, ?> uploadImage = (Map<?, ?>) cloudinaryStorageService.upload(imageProfil.get(i)).getData();
@@ -114,9 +127,6 @@ public class ProductController {
                 }
             }
         }
-        products.setProductName(update.getProductName());
-        products.setPrice(update.getPrice());
-        products.setDescription(update.getDescription());
         return new ResponseEntity<>(productService.update(products, productId), HttpStatus.ACCEPTED);
     }
 
@@ -143,9 +153,17 @@ public class ProductController {
 
     @Operation(summary = "Delete product by productId")
     @DeleteMapping("/delete/{productId}")
-    public ResponseEntity<?> deleteProduct(@PathVariable Integer productId) {
-        productService.deleteProduct(productId);
-        return new ResponseEntity<>("Product deleted", HttpStatus.OK);
+    public ResponseEntity<CustomResponse> deleteProduct(@PathVariable Integer productId) {
+
+        CustomResponse response = productService.deleteProduct(productId);
+
+        boolean isNotFound = response
+                .getStatus()
+                .equals(EStatusResponse.NOT_FOUND.getName());
+        if (isNotFound) {
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 }

@@ -1,6 +1,8 @@
 package com.finalproject.secondhand.service.product;
 
 import com.finalproject.secondhand.entity.Products;
+import com.finalproject.secondhand.response.CustomResponse;
+import com.finalproject.secondhand.response.ProductResponse;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -9,10 +11,10 @@ import java.util.List;
 public interface ProductService {
 
     List<Products> findAll();
-    List<Products> findByProductName(String productName);
+    ProductResponse findById(Integer productId);
     void save(Products body);
     Products update(Products body, Integer productId);
     Products deleteImage(Products body, Integer productId, Integer n);
-    void deleteProduct(Integer productId);
+    CustomResponse deleteProduct(Integer productId);
 
 }

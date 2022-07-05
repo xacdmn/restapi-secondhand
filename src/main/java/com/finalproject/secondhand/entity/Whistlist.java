@@ -13,7 +13,7 @@ public class Whistlist implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "whistlist_id")
+    @Column(name = "whistlist_id", nullable = false)
     private Integer whistlistId;
 
     @ManyToOne

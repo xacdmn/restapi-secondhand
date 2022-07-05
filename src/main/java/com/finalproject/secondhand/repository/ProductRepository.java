@@ -14,8 +14,6 @@ import java.util.List;
 @Transactional
 public interface ProductRepository extends JpaRepository<Products, Integer> {
     List<Products> findAllByOrderByProductIdAsc();
-    List<Products> findByProductName(String productName);
-
     Page<Products> findAll(Pageable pageable);
 
     Page<Products> findByProductNameContainingIgnoreCaseAndCategoryContainingAndPriceBetween(

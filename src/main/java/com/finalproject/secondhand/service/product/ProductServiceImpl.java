@@ -1,8 +1,13 @@
 package com.finalproject.secondhand.service.product;
 
 import com.finalproject.secondhand.entity.Products;
+import com.finalproject.secondhand.enums.EStatusResponse;
 import com.finalproject.secondhand.repository.ProductRepository;
+import com.finalproject.secondhand.response.CustomResponse;
+import com.finalproject.secondhand.response.ProductResponse;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,8 +24,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Products> findByProductName(String productName) {
-        return productRepository.findByProductName(productName);
+    public ProductResponse findById(Integer productId) {
+        Products products = productRepository.getById(productId);
+        return new ProductResponse(products);
     }
 
     @Override
@@ -79,9 +85,18 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void deleteProduct(Integer productId) {
+    public CustomResponse deleteProduct(Integer productId) {
         Products products = productRepository.getById(productId);
-        productRepository.delete(products);
+        if (products.getProductId() == null){
+            return new CustomResponse(
+                    "Product is not present",
+                    EStatusResponse.NOT_FOUND.getName());
+        } else {
+            productRepository.delete(products);
+            return new CustomResponse(
+                    "Product has been removed from store",
+                    EStatusResponse.SUCCESS.getName());
+        }
     }
 }
 

@@ -83,9 +83,10 @@ public class AuthenticationController {
                     "}")
             @RequestBody SigninDto signin) {
         LOGGER.info("logging in");
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(signin.getUsername(), signin.getPassword()));
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(signin.getUsername(),
+                signin.getPassword()));
         if (!authentication.isAuthenticated()) {
-            return new ResponseEntity<>("Username or password incorrect", HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("Username or password incorrect", HttpStatus.OK);
         }
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = jwtUtil.generateAccessToken(authentication);

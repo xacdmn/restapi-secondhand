@@ -47,31 +47,6 @@ public class UserController {
     @Autowired
     private CloudinaryStorageService cloudinaryStorageService;
 
-    @Operation(summary = "List all user")
-    @GetMapping("find-all")
-    public ResponseEntity<?> listUsers() {
-        List<Users> users = userService.findAll();
-        return new ResponseEntity<>(users, HttpStatus.OK);
-    }
-
-    @Operation(summary = "Find user by id")
-    @GetMapping("{userId}")
-    public ResponseEntity<?> findById(@PathVariable("userId") Integer userId) {
-        return new ResponseEntity<>(userService.findByUserId(userId), HttpStatus.OK);
-    }
-
-    @Operation(summary = "Find user by username")
-    @GetMapping("{username}")
-    public ResponseEntity<?> findByUsername(@PathVariable("username") String username) {
-        return new ResponseEntity<>(userService.findByUsername(username), HttpStatus.OK);
-    }
-
-    @Operation(summary = "Find user by email")
-    @GetMapping("{email}")
-    public ResponseEntity<?> findByEmail(@PathVariable("email") String email) {
-        return new ResponseEntity<>(userService.findByEmail(email), HttpStatus.OK);
-    }
-
     @Operation(summary = "Update user profil")
     @PutMapping(value = "update",
             consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},
