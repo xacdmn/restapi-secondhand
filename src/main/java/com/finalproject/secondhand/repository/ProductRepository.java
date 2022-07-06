@@ -8,12 +8,11 @@ import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
 import java.math.BigInteger;
-import java.util.List;
 
 @Repository
 @Transactional
 public interface ProductRepository extends JpaRepository<Products, Integer> {
-    List<Products> findAllByOrderByProductIdAsc();
+
     Page<Products> findAll(Pageable pageable);
 
     Page<Products> findByProductNameContainingIgnoreCaseAndCategoryContainingAndPriceBetween(

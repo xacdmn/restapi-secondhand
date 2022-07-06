@@ -1,7 +1,6 @@
 package com.finalproject.secondhand.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.finalproject.secondhand.enums.EStatusProduct;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -37,7 +36,8 @@ public class Products {
     @JoinColumn(name = "user_id")
     private Users users;
     @Column
-    @Enumerated(EnumType.ORDINAL)
-    private EStatusProduct statusProduct= EStatusProduct.DIBUAT;
+    private Boolean isPublished= false;
+    @Column
+    private Boolean isSold= false;
 
 }

@@ -1,6 +1,6 @@
 package com.finalproject.secondhand.repository;
 
-import com.finalproject.secondhand.entity.Whistlist;
+import com.finalproject.secondhand.entity.Offers;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -8,7 +8,7 @@ import javax.transaction.Transactional;
 
 @Repository
 @Transactional
-public interface WhistlistRepository extends JpaRepository<Whistlist, Integer> {
+public interface OfferRepository extends JpaRepository<Offers, Integer> {
 
-    Whistlist findByOrderByWhistlistIdAsc();
+    Offers findByOfferId(Integer offerId);
 }

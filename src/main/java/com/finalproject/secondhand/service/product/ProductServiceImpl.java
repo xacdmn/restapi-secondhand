@@ -5,12 +5,8 @@ import com.finalproject.secondhand.enums.EStatusResponse;
 import com.finalproject.secondhand.repository.ProductRepository;
 import com.finalproject.secondhand.response.CustomResponse;
 import com.finalproject.secondhand.response.ProductResponse;
-import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -18,13 +14,14 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private ProductRepository productRepository;
 
+
     @Override
-    public List<Products> findAll() {
-        return productRepository.findAllByOrderByProductIdAsc();
+    public Products findProductById(Integer productId) {
+        return productRepository.getById(productId);
     }
 
     @Override
-    public ProductResponse findById(Integer productId) {
+    public ProductResponse findByProductId(Integer productId) {
         Products products = productRepository.getById(productId);
         return new ProductResponse(products);
     }
@@ -41,12 +38,11 @@ public class ProductServiceImpl implements ProductService {
         products.setImage3(body.getImage3());
         products.setImage4(body.getImage4());
         products.setUsers(body.getUsers());
-        products.setStatusProduct(products.getStatusProduct());
         productRepository.save(products);
     }
 
     @Override
-    public Products update(Products body, Integer productId) {
+    public void update(Products body, Integer productId) {
         Products products = productRepository.getById(productId);
         if (body.getProductName() != null) {
             products.setProductName(body.getProductName());
@@ -61,7 +57,7 @@ public class ProductServiceImpl implements ProductService {
         products.setImage2(body.getImage2());
         products.setImage3(body.getImage3());
         products.setImage4(body.getImage4());
-        return productRepository.save(products);
+        productRepository.save(products);
     }
 
     @Override

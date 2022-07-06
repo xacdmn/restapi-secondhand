@@ -44,10 +44,10 @@ public class ProductController {
     @Autowired
     private CloudinaryStorageService cloudinaryStorageService;
 
-    @Operation(summary = "Add product")
-    @PostMapping("{productId}")
+    @Operation(summary = "Find product by productId")
+    @GetMapping("{productId}")
     public ResponseEntity<ProductResponse> findProductById(Integer productId) {
-        return new ResponseEntity<>(productService.findById(productId), HttpStatus.OK);
+        return new ResponseEntity<>(productService.findByProductId(productId), HttpStatus.OK);
     }
 
     @Operation(summary = "Add product")
@@ -57,7 +57,7 @@ public class ProductController {
                                         @RequestParam (name = "category") String category,
                                         @RequestParam (name = "price") String price,
                                         @RequestParam (name = "description") String description,
-                                        @RequestParam (required = false) List<MultipartFile> imageProfil,
+                                        @RequestParam (required = false, name = "imageProfil") List<MultipartFile> imageProfil,
                                         Authentication authentication) {
         String username = authentication.getName();
         Users users = userService.findByUsername(username);
@@ -99,9 +99,9 @@ public class ProductController {
     @PutMapping(value = "update/{productId}",
             consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<Products> updateProduct(@RequestParam String productName,
-                                                  @RequestParam String price,
-                                                  @RequestParam String description,
+    public ResponseEntity<?> updateProduct(@RequestParam (name = "productName") String productName,
+                                                  @RequestParam (name = "price") String price,
+                                                  @RequestParam (name = "description") String description,
                                                   @RequestParam (required = false) List<MultipartFile> imageProfil,
                                                   @PathVariable Integer productId){
         Products products = new Products();
@@ -127,7 +127,8 @@ public class ProductController {
                 }
             }
         }
-        return new ResponseEntity<>(productService.update(products, productId), HttpStatus.ACCEPTED);
+        productService.update(products, productId);
+        return new ResponseEntity<>("Product updated", HttpStatus.ACCEPTED);
     }
 
     @Operation(summary = "Delete image by productId by image ke - n")

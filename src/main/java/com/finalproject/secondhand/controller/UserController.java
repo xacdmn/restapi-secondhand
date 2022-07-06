@@ -82,7 +82,7 @@ public class UserController {
             return new ResponseEntity<>("Old password incorrect", HttpStatus.FORBIDDEN);
         }
         Users users = new Users();
-        if (change.getNewPassword().equals(change.getNewPassword())) {
+        if (change.getNewPassword().equals(change.getConfirmPassword())) {
             users.setPassword(passwordEncoder.encode(change.getNewPassword()));
             return new ResponseEntity<>(userService.changePassword(users, username), HttpStatus.ACCEPTED);
         }else {
