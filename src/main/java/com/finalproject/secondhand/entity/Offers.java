@@ -22,7 +22,7 @@ public class Offers {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "product_id")
-    private Products productId;
+    private Products product;
 
     @Column
     private String priceNegotiated;

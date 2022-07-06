@@ -2,7 +2,6 @@ package com.finalproject.secondhand.service.transaction;
 
 import com.finalproject.secondhand.entity.Offers;
 import com.finalproject.secondhand.entity.Users;
-import com.finalproject.secondhand.entity.Whistlist;
 import com.finalproject.secondhand.repository.OfferRepository;
 import com.finalproject.secondhand.response.WishlistResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +28,7 @@ public class OfferServiceImpl implements OfferService{
     public void saveOffer(Offers body) {
         Offers offers = new Offers();
         offers.setUsers(body.getUsers());
-        offers.setProductId(body.getProductId());
+        offers.setProduct(body.getProduct());
         offers.setPriceNegotiated(body.getPriceNegotiated());
         offers.setStatusProcess(body.getStatusProcess());
         offerRepository.save(offers);

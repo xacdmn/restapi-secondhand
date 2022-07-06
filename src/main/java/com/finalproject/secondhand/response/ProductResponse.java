@@ -33,6 +33,4 @@ public class ProductResponse {
         this.fullname=products.getUsers().getFullname();
         this.city=products.getUsers().getCity();
     }
-
-
 }

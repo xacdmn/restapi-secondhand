@@ -8,10 +8,14 @@ import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
 import java.math.BigInteger;
+import java.util.List;
 
 @Repository
 @Transactional
 public interface ProductRepository extends JpaRepository<Products, Integer> {
+
+    List<Products> findByCategory(String category);
+    List<Products> findByProductName(String productName);
 
     Page<Products> findAll(Pageable pageable);
 

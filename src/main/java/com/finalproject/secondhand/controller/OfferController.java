@@ -35,9 +35,9 @@ public class OfferController {
     @Autowired
     ProductService productService;
 
-    @Operation(summary = "Get offer by user")
-    @PostMapping("get")
-    public ResponseEntity<WishlistResponse> get(Authentication valid) {
+    @Operation(summary = "Show by user")
+    @PostMapping("show-offer")
+    public ResponseEntity<WishlistResponse> showOffer(Authentication valid) {
         String username = valid.getName();
         Users validUser = userService.findByUsername(username);
         return new ResponseEntity<>(offerService.findByUser(validUser), HttpStatus.OK);
@@ -54,7 +54,7 @@ public class OfferController {
         Offers offers = new Offers();
 
         offers.setUsers(users);
-        offers.setProductId(products);
+        offers.setProduct(products);
         offers.setPriceNegotiated(priceNegotiated);
         offers.setStatusProcess(offers.getStatusProcess());
         offerService.saveOffer(offers);

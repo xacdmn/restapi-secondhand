@@ -2,6 +2,8 @@ package com.finalproject.secondhand.controller;
 
 import com.finalproject.secondhand.entity.Products;
 import com.finalproject.secondhand.repository.ProductRepository;
+import com.finalproject.secondhand.response.ProductResponse;
+import com.finalproject.secondhand.service.product.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -9,11 +11,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @Tag(name = "Homepage", description = "API for access homepage")
@@ -25,8 +30,38 @@ public class HomepageController {
     @Autowired
     private ProductRepository productRepository;
 
-//    @Operation(summary = "Show all product")
-//    @GetMapping("")
+    @Autowired
+    private ProductService productService;
+
+    @Operation(summary = "Show all product")
+    @GetMapping("show-products")
+    public ResponseEntity<List<ProductResponse>> allProduct(){
+        List<Products> product = productService.showAllProduct();
+        List<ProductResponse> productResponse =
+                product.stream().map(ProductResponse::new).collect(
+                        Collectors.toList());
+        return new ResponseEntity<>(productResponse, HttpStatus.OK);
+    }
+
+    @Operation(summary = "Show product by category")
+    @GetMapping("show-products/{category}")
+    public ResponseEntity<List<ProductResponse>> showProductByCategory(@PathVariable (name = "category") String category){
+        List<Products> product = productService.showProductByCategory(category);
+        List<ProductResponse> productResponse =
+                product.stream().map(ProductResponse::new).collect(
+                        Collectors.toList());
+        return new ResponseEntity<>(productResponse, HttpStatus.OK);
+    }
+
+    @Operation(summary = "Show product by productName")
+    @GetMapping("show-products/{productName}")
+    public ResponseEntity<List<ProductResponse>> showProductByProductName(@PathVariable (name = "productName") String productName){
+        List<Products> product = productService.showProductByProductName(productName);
+        List<ProductResponse> productResponse =
+                product.stream().map(ProductResponse::new).collect(
+                        Collectors.toList());
+        return new ResponseEntity<>(productResponse, HttpStatus.OK);
+    }
 
     @GetMapping("/get-home-page")
     public Page<Products> pagePagination(

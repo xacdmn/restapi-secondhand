@@ -26,9 +26,9 @@ public class WishlistResponse {
         this.ImageProfil=offers.getUsers().getImageProfil();
         this.fullname=offers.getUsers().getFullname();
         this.city=offers.getUsers().getCity();
-        this.Image1=offers.getProductId().getImage1();
-        this.productName=offers.getProductId().getProductName();
-        this.price=offers.getProductId().getPrice();
+        this.Image1=offers.getProduct().getImage1();
+        this.productName=offers.getProduct().getProductName();
+        this.price=offers.getProduct().getPrice();
         this.priceNegotiated=offers.getPriceNegotiated();
     }
 
