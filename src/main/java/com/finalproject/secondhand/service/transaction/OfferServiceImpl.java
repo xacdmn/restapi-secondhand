@@ -1,7 +1,10 @@
 package com.finalproject.secondhand.service.transaction;
 
 import com.finalproject.secondhand.entity.Offers;
+import com.finalproject.secondhand.entity.Users;
+import com.finalproject.secondhand.entity.Whistlist;
 import com.finalproject.secondhand.repository.OfferRepository;
+import com.finalproject.secondhand.response.WishlistResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +13,12 @@ public class OfferServiceImpl implements OfferService{
 
     @Autowired
     OfferRepository offerRepository;
+
+    @Override
+    public WishlistResponse findByUser(Users body) {
+        Offers offers = offerRepository.findByUsers(body);
+        return new WishlistResponse(offers);
+    }
 
     @Override
     public Offers findByOfferId(Integer offerId) {
@@ -30,5 +39,6 @@ public class OfferServiceImpl implements OfferService{
     public void updateStatusOffer(Offers body, Integer offerId) {
         Offers offers = offerRepository.findByOfferId(offerId);
         offers.setStatusProcess(body.getStatusProcess());
+        offerRepository.save(offers);
     }
 }

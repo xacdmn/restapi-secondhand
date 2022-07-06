@@ -2,6 +2,7 @@ package com.finalproject.secondhand.controller;
 
 import com.finalproject.secondhand.entity.Products;
 import com.finalproject.secondhand.repository.ProductRepository;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,9 @@ public class HomepageController {
 
     @Autowired
     private ProductRepository productRepository;
+
+//    @Operation(summary = "Show all product")
+//    @GetMapping("")
 
     @GetMapping("/get-home-page")
     public Page<Products> pagePagination(

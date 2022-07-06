@@ -4,6 +4,7 @@ import com.finalproject.secondhand.entity.Offers;
 import com.finalproject.secondhand.entity.Products;
 import com.finalproject.secondhand.entity.Users;
 import com.finalproject.secondhand.enums.EStatusProcess;
+import com.finalproject.secondhand.response.WishlistResponse;
 import com.finalproject.secondhand.service.product.ProductService;
 import com.finalproject.secondhand.service.transaction.OfferService;
 import com.finalproject.secondhand.service.user.UserService;
@@ -34,6 +35,14 @@ public class OfferController {
     @Autowired
     ProductService productService;
 
+    @Operation(summary = "Get offer by user")
+    @PostMapping("get")
+    public ResponseEntity<WishlistResponse> get(Authentication valid) {
+        String username = valid.getName();
+        Users validUser = userService.findByUsername(username);
+        return new ResponseEntity<>(offerService.findByUser(validUser), HttpStatus.OK);
+    }
+
     @Operation(summary = "Add offers")
     @PostMapping("add/{productId}")
     public ResponseEntity<?> saveOffer(@RequestParam (name = "priceNegotiated") String priceNegotiated,
@@ -58,12 +67,12 @@ public class OfferController {
                                                   @PathVariable ("status") String status) {
         Offers offers = offerService.findByOfferId(offerId);
         if (Objects.equals(status, "accepted")) {
-            offerService.updateStatusOffer(offers,offerId);
             offers.setStatusProcess(EStatusProcess.ACCEPTED);
+            offerService.updateStatusOffer(offers,offerId);
             return new ResponseEntity<>("Status Accepted", HttpStatus.ACCEPTED);
         } else if (Objects.equals(status, "rejected")) {
-            offerService.updateStatusOffer(offers,offerId);
             offers.setStatusProcess(EStatusProcess.REJECTED);
+            offerService.updateStatusOffer(offers,offerId);
             return new ResponseEntity<>("Status Rejected", HttpStatus.ACCEPTED);
         } else {
             return new ResponseEntity<>("Status not updated", HttpStatus.FORBIDDEN);
