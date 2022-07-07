@@ -8,7 +8,6 @@ import javax.validation.constraints.NotBlank;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 public class SignupDto {
 
     @NotBlank(message = "Username harus diisi!")

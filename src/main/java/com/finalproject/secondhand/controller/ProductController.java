@@ -1,5 +1,8 @@
 package com.finalproject.secondhand.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.finalproject.secondhand.dto.product.AddProductDto;
+import com.finalproject.secondhand.dto.product.UpdateProductDto;
 import com.finalproject.secondhand.entity.Products;
 import com.finalproject.secondhand.entity.Users;
 import com.finalproject.secondhand.enums.EStatusResponse;
@@ -18,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -52,13 +56,11 @@ public class ProductController {
 
     @Operation(summary = "Preview product")
     @PostMapping(value = "add/{isPublished}",
-            consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},
+            consumes = {MediaType.APPLICATION_JSON_VALUE,MediaType.MULTIPART_FORM_DATA_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<ProductResponse> previewProduct(@RequestParam (name = "productName") String productName,
-                                        @RequestParam (name = "category") String category,
-                                        @RequestParam (name = "price") String price,
-                                        @RequestParam (name = "description") String description,
-                                        @RequestParam (required = false, name = "image") List<MultipartFile> image,
+    public ResponseEntity<ProductResponse> saveProduct(
+                                        @RequestPart String body,
+                                        @RequestPart MultipartFile[] image,
                                         @PathVariable String isPublished,
                                         Authentication authentication) {
         Products products = new Products();
@@ -67,22 +69,28 @@ public class ProductController {
         } else if (isPublished.equals("publish")) {
             products.setIsPublished(true);
         }
+        AddProductDto add = new AddProductDto();
+        try {
+            ObjectMapper om = new ObjectMapper();
+            add = om.readValue(body,AddProductDto.class);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
         String username = authentication.getName();
         Users users = userService.findByUsername(username);
         products.setUsers(users);
-        products.setProductName(productName);
-        products.setCategory(category);
-        products.setPrice(price);
-        products.setDescription(description);
+        products.setProductName(add.getProductName());
+        products.setCategory(add.getCategory());
+        products.setPrice(add.getPrice());
+        products.setDescription(add.getDescription());
         products.setIsSold(products.getIsSold());
         List<String> urlImage = new ArrayList<>();
         if (image == null) {
             LOGGER.info("skip upload...");
         }else {
-            for (int i = 0; i < image.size(); i++) {
-                Map<?, ?> uploadImage = (Map<?, ?>) cloudinaryStorageService.upload(image.get(i)).getData();
+            for (int i = 0; i < image.length; i++) {
+                Map<?, ?> uploadImage = (Map<?, ?>) cloudinaryStorageService.upload(image[i]).getData();
                 urlImage.add(i, uploadImage.get("url").toString());
-                LOGGER.info(String.valueOf(image));
                 if (urlImage.get(i) == null) {
                     LOGGER.info("skip upload...");
                 } else {
@@ -114,15 +122,20 @@ public class ProductController {
     @PutMapping(value = "update/{productId}",
             consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<?> updateProduct(@RequestParam (required = false, name = "productName") String productName,
-                                                  @RequestParam (required = false, name = "price") String price,
-                                                  @RequestParam (required = false, name = "description") String description,
-                                                  @RequestParam (required = false) List<MultipartFile> image,
-                                                  @PathVariable Integer productId){
+    public ResponseEntity<?> updateProduct(@RequestPart String body,
+                                           @RequestPart @Nullable List<MultipartFile> image,
+                                           @PathVariable Integer productId){
         Products products = new Products();
-        products.setProductName(productName);
-        products.setPrice(price);
-        products.setDescription(description);
+        UpdateProductDto update = new UpdateProductDto();
+        try {
+            ObjectMapper om = new ObjectMapper();
+            update = om.readValue(body,UpdateProductDto.class);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        products.setProductName(update.getProductName());
+        products.setPrice(update.getPrice());
+        products.setDescription(update.getDescription());
         List<String> urlImage = new ArrayList<>();
         if (image == null) {
             LOGGER.info("skip upload image");
