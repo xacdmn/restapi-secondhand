@@ -32,6 +32,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @Tag(name = "Authentication", description = "API for Login and Register")
+@SecurityRequirement(name = "Authorization")
 @RequestMapping("/api/auth")
 @CrossOrigin(origins = {"http://localhost:3000"}, maxAge = 3600)
 public class AuthenticationController {

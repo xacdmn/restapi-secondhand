@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @Tag(name = "Homepage", description = "API for access homepage")
+@SecurityRequirement(name = "Authorization")
 @RequestMapping("/api/homepage/")
 @CrossOrigin(origins = {"http://localhost:3000"}, maxAge = 3600)
 public class HomepageController {
