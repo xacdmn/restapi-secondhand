@@ -69,17 +69,13 @@ public class UserServiceImpl implements UserService {
         Users users = userRepository.findByUsername(username);
         if (body.getFullname() != null) {
             users.setFullname(body.getFullname());
-        }
-        if (body.getCity() != null) {
+        } else if (body.getCity() != null) {
             users.setCity(body.getCity());
-        }
-        if (body.getAddress() != null) {
+        } else if (body.getAddress() != null) {
             users.setAddress(body.getAddress());
-        }
-        if (body.getPhone() != null) {
+        } else if (body.getPhone() != null) {
             users.setPhone(body.getPhone());
-        }
-        if (body.getImageProfil() != null) {
+        } else if (body.getImageProfil() != null) {
             users.setImageProfil(body.getImageProfil());
         }
         return userRepository.save(users);

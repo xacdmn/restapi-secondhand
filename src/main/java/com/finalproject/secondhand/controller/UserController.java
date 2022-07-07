@@ -23,14 +23,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
-import java.util.List;
 import java.util.Map;
 
 @RestController
 @Tag(name = "User", description = "API for processing CRUD Users")
 @RequestMapping("/api/user/")
 @SecurityRequirement(name = "Authorization")
-@CrossOrigin(origins = {"*"}, maxAge = 3600)
+@CrossOrigin(origins = {"http://localhost:3000"}, maxAge = 3600)
 public class UserController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ProductController.class);

@@ -17,7 +17,8 @@ public interface ProductService {
     Products findProductById(Integer productId);
     ProductResponse findByProductId(Integer productId);
 
-    void save(Products body);
+    ProductResponse save(Products body);
+    void publish(Products body, Integer productId);
     void update(Products body, Integer productId);
     Products deleteImage(Products body, Integer productId, Integer n);
     CustomResponse deleteProduct(Integer productId);

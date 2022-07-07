@@ -17,6 +17,8 @@ public class ProductResponse {
     String description;
     String fullname;
     String city;
+    boolean isPublished;
+    boolean isSold;
 
     public ProductResponse() {}
 
@@ -32,5 +34,7 @@ public class ProductResponse {
         this.description=products.getDescription();
         this.fullname=products.getUsers().getFullname();
         this.city=products.getUsers().getCity();
+        this.isPublished=products.getIsPublished();
+        this.isSold=products.getIsSold();
     }
 }

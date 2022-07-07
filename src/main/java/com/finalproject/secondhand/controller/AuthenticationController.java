@@ -33,8 +33,7 @@ import java.util.stream.Collectors;
 @RestController
 @Tag(name = "Authentication", description = "API for Login and Register")
 @RequestMapping("/api/auth")
-@SecurityRequirement(name = "Authorization")
-@CrossOrigin(origins = {"*"}, maxAge = 3600)
+@CrossOrigin(origins = {"http://localhost:3000"}, maxAge = 3600)
 public class AuthenticationController {
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticationController.class);
 

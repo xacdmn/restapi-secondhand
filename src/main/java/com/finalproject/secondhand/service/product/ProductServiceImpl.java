@@ -44,7 +44,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void save(Products body) {
+    public ProductResponse save(Products body) {
         Products products = new Products();
         products.setProductName(body.getProductName());
         products.setCategory(body.getCategory());
@@ -55,7 +55,16 @@ public class ProductServiceImpl implements ProductService {
         products.setImage3(body.getImage3());
         products.setImage4(body.getImage4());
         products.setUsers(body.getUsers());
+        products.setIsPublished(body.getIsPublished());
+        products.setIsSold(body.getIsSold());
         productRepository.save(products);
+        return new ProductResponse(products);
+    }
+
+    @Override
+    public void publish(Products body, Integer productId) {
+        Products products = productRepository.getById(productId);
+        products.setIsPublished(body.getIsPublished());
     }
 
     @Override

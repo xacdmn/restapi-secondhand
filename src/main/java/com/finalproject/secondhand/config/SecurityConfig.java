@@ -56,12 +56,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
                 .antMatchers("/api/auth/**").permitAll()
-                .antMatchers("/api/homepage/**").anonymous()
+                .antMatchers("/api/homepage/**").permitAll()
                 .antMatchers("/api/seller/**").hasAuthority(ERole.SELLER.name())
                 .antMatchers("/api/buyer/**").hasAuthority(ERole.BUYER.name())
                 .antMatchers("/api/user/**").hasAnyAuthority(ERole.SELLER.name(),ERole.BUYER.name())
-                .antMatchers(HttpMethod.POST, "/api/product/**").hasAnyAuthority(ERole.SELLER.name(),ERole.BUYER.name())
-                .antMatchers(HttpMethod.GET, "/api/product/**").permitAll()
+                .antMatchers("/api/product/**").hasAnyAuthority(ERole.SELLER.name(),ERole.BUYER.name())
                 .anyRequest().authenticated();
 
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
