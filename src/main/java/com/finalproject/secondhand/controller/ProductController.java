@@ -52,7 +52,8 @@ public class ProductController {
 
     @Operation(summary = "Preview product")
     @PostMapping(value = "add/{isPublished}",
-            consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+            consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},
+            produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<ProductResponse> previewProduct(@RequestParam (name = "productName") String productName,
                                         @RequestParam (name = "category") String category,
                                         @RequestParam (name = "price") String price,
