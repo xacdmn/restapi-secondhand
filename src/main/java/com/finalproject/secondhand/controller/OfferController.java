@@ -53,7 +53,6 @@ public class OfferController {
         Users users = userService.findByUsername(username);
         Products products = productService.findProductById(productId);
         Offers offers = new Offers();
-
         offers.setUsers(users);
         offers.setProduct(products);
         offers.setPriceNegotiated(priceNegotiated);

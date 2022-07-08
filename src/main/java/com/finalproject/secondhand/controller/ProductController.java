@@ -63,13 +63,10 @@ public class ProductController {
     @Operation(summary = "Preview product")
     @PostMapping(value = "add/{isPublished}",
             consumes = {MediaType.APPLICATION_JSON_VALUE,
-                    MediaType.MULTIPART_FORM_DATA_VALUE},
-            produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<ProductResponse> saveProduct(
-            @RequestPart String addJson,
-            @RequestPart MultipartFile[] image,
-            @PathVariable String isPublished,
-            Authentication authentication) {
+                    MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<?> saveProduct( @RequestPart (required = false) String addJson,
+                                          @RequestPart (required = false) MultipartFile[] image,
+                                          @PathVariable String isPublished, Authentication authentication) {
         Products products = new Products();
         if (isPublished.equals("preview")) {
             products.setIsPublished(products.getIsPublished());

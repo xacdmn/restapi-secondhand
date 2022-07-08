@@ -6,7 +6,9 @@ import com.finalproject.secondhand.enums.EStatusResponse;
 import com.finalproject.secondhand.repository.ProductRepository;
 import com.finalproject.secondhand.repository.UserRepository;
 import com.finalproject.secondhand.response.CustomResponse;
+import com.finalproject.secondhand.response.HistoryProductResponse;
 import com.finalproject.secondhand.response.ProductResponse;
+import com.finalproject.secondhand.response.WishlistResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -58,12 +60,12 @@ public class ProductServiceImpl implements ProductService {
             if (validasi.getCity().length() > 0) {
                 if (validasi.getAddress().length() > 0) {
                     if (validasi.getPhone().length() > 0) {
-                        return "User proil is complete";
+                        return "User profil is complete";
                     }
                 }
             }
         }
-        return "User Profil not complete";
+        return "User profil not complete";
     }
 
 
@@ -78,8 +80,23 @@ public class ProductServiceImpl implements ProductService {
         return new ProductResponse(products);
     }
 
+//    @Override
+//    public List<HistoryProductResponse> findProductByUser(Users body) {
+//        Products products = productRepository.
+//    }
+
     @Override
-    public ProductResponse save(Products body) {
+    public List<WishlistResponse> findProductByWishlist() {
+        return null;
+    }
+
+    @Override
+    public List<HistoryProductResponse> findProductByIsSold() {
+        return null;
+    }
+
+    @Override
+    public CustomResponse save(Products body) {
         Products products = new Products();
         products.setProductName(body.getProductName());
         products.setCategory(body.getCategory());
@@ -92,8 +109,17 @@ public class ProductServiceImpl implements ProductService {
         products.setUsers(body.getUsers());
         products.setIsPublished(body.getIsPublished());
         products.setIsSold(body.getIsSold());
-        productRepository.save(products);
-        return new ProductResponse(products);
+        if (products.getIsPublished().equals(true)){
+            productRepository.save(products);
+            return new CustomResponse(
+                    "Product published successfully",
+                    EStatusResponse.SUCCESS.getName());
+        } else {
+            productRepository.save(products);
+            return new CustomResponse(
+                    "Product not published",
+                    EStatusResponse.SUCCESS.getName());
+        }
     }
 
     @Override

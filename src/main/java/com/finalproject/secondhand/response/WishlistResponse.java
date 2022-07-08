@@ -32,5 +32,4 @@ public class WishlistResponse {
         this.priceNegotiated=offers.getPriceNegotiated();
     }
 
-
 }
