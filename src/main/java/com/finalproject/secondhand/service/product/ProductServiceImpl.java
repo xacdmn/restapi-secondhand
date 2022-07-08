@@ -43,13 +43,13 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Page<Products> getAllProductPageByProductNameAndProductCategory(String productName, String category, Pageable pageable) {
         if (productName == null && category == null){
-            return productRepository.findAllByIsPublishedContainingAndIsSoldContaining(true, false, pageable);
+            return productRepository.findAll(pageable);
         } else if (productName == null) {
-            return productRepository.findByProductNameContainingAndIsPublishedContainingAndIsSoldContaining(category, pageable, true, false);
+            return productRepository.findByCategory(category, pageable);
         } else if (category == null) {
-            return productRepository.findByCategoryContainingAndIsPublishedContainingAndIsSoldContaining(productName, pageable, true, false);
+            return productRepository.findByProductName(productName, pageable);
         } else {
-            return productRepository.findByProductNameContainingAndCategoryContainingAndIsPublishedContainingAndIsSoldContaining(productName, category, pageable, true, false);
+            return productRepository.findByProductNameContainingIgnoreCaseAndCategoryId(productName, category, pageable);
         }
     }
 
