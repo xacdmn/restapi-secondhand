@@ -166,27 +166,6 @@ public class ProductController {
         return new ResponseEntity<>("Product is updated", HttpStatus.ACCEPTED);
     }
 
-//    @Operation(summary = "Delete image by productId by image ke - n")
-//    @PutMapping("delete/{productId}/{n}")
-//    public ResponseEntity<Products> deleteImage(@PathVariable Integer productId, @PathVariable Integer n) {
-//        Products products = new Products();
-//        switch (n) {
-//            case 1: {
-//                cloudinaryStorageService.delete(products.getImage1());
-//            }
-//            case 2: {
-//                cloudinaryStorageService.delete(products.getImage2());
-//            }
-//            case 3: {
-//                cloudinaryStorageService.delete(products.getImage3());
-//            }
-//            case 4: {
-//                cloudinaryStorageService.delete(products.getImage4());
-//            }
-//        }
-//        return new ResponseEntity<>(productService.deleteImage(products, productId, n), HttpStatus.ACCEPTED);
-//    }
-
     @Operation(summary = "Delete product by productId")
     @DeleteMapping("/delete/{productId}")
     public ResponseEntity<?> deleteProduct(@PathVariable Integer productId) {

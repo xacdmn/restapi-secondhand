@@ -15,8 +15,6 @@ public interface ProductService {
 
     //Homepage
     List<Products> showAllProduct();
-    List<Products> showProductByCategory(String category);
-    List<Products> showProductByProductName(String productName);
     Page<Products> getAllProductPageByProductNameAndProductCategory(String productName, String productCategory, Pageable pageable);
 
     //Validasi klik tombol jual
@@ -35,7 +33,7 @@ public interface ProductService {
     ProductResponse save(Products body);
     void publish(Products body, Integer productId);
     void update(Products body, Integer productId);
-    Products deleteImage(Products body, Integer productId, Integer n);
+//    Products deleteImage(Products body, Integer productId, Integer n);
     String deleteProduct(Integer productId);
 
 }

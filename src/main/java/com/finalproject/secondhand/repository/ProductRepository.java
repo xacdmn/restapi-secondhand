@@ -18,15 +18,8 @@ public interface ProductRepository extends JpaRepository<Products, Integer> {
 
     List<Products> findByCategory(String category);
     List<Products> findByProductName(String productName);
-    List<Products> findByUsers(Users users);
     List<Products> findByUsersAndIsSold(Users users, Boolean isSold);
-
-    void deleteProductsByProductId(Integer productId);
     Products findProductsByProductId(Integer productId);
-
-    @Query("select p from products p " +
-            "where p.productId = ?1")
-    Products findByProductId(Integer productId);
 
     @NonNull
     @Query("select p from products p " +

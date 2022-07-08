@@ -34,16 +34,6 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Products> showProductByCategory(String category) {
-        return productRepository.findByCategory(category);
-    }
-
-    @Override
-    public List<Products> showProductByProductName(String productName) {
-        return productRepository.findByProductName(productName);
-    }
-
-    @Override
     public Page<Products> getAllProductPageByProductNameAndProductCategory(String productName, String category, Pageable pageable) {
         if (productName == null && category == null){
             return productRepository.findAll(pageable);
@@ -172,29 +162,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Products deleteImage(Products body, Integer productId, Integer n) {
-        Products products = productRepository.getById(productId);
-        switch (n){
-            case 1: {
-                products.setImage1(body.getImage1());
-            }
-            case 2: {
-                products.setImage2(body.getImage2());
-            }
-            case 3: {
-                products.setImage3(body.getImage3());
-            }
-            case 4: {
-                products.setImage4(body.getImage4());
-            }
-        }
-        return productRepository.save(products);
-    }
-
-    @Override
     public String deleteProduct(Integer productId) {
-        Products products = productRepository.findProductsByProductId(productId);
-        productRepository.delete(products);
+        productRepository.deleteById(productId);
         return "Product deleted";
     }
 }
