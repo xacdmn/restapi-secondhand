@@ -44,5 +44,5 @@ public interface ProductRepository extends JpaRepository<Products, Integer> {
             "and p.category = ?2 " +
             "and p.isPublished = true " +
             "and p.isSold = false")
-    Page<Products> findByProductNameContainingIgnoreCaseAndCategoryId(String productName, String category, Pageable pageable);
+    Page<Products> findByProductNameContainingIgnoreCaseAndCategory(String productName, String category, Pageable pageable);
 }
