@@ -19,9 +19,9 @@ public interface ProductRepository extends JpaRepository<Products, Integer> {
     List<Products> findByUsers(Users users);
     List<Products> findByUsersAndIsSold(Users users, Boolean isSold);
 
-    Page<Products> findAllByIsPublishedAndIsSold(Boolean isPublished, Boolean isSold, Pageable pageable);
-    Page<Products> findByProductNameContainingAndIsPublishedAndIsSold(String productName, Pageable pageable, Boolean isPublished, Boolean isSold);
-    Page<Products> findByCategoryContainingAndIsPublishedAndIsSold(String category, Pageable pageable, Boolean isPublished, Boolean isSold);
+    Page<Products> findAllByIsPublishedContainingAndIsSoldContaining(Boolean isPublished, Boolean isSold, Pageable pageable);
+    Page<Products> findByProductNameContainingAndIsPublishedContainingAndIsSoldContaining(String productName, Pageable pageable, Boolean isPublished, Boolean isSold);
+    Page<Products> findByCategoryContainingAndIsPublishedContainingAndIsSoldContaining(String category, Pageable pageable, Boolean isPublished, Boolean isSold);
 //    Page<Products> findByProductNameAndCategory(String productName, String category, Pageable pageable);
-    Page<Products> findByProductNameContainingAndCategoryContainingAndIsPublishedAndIsSold(String productName, String category, Pageable pageable, Boolean isPublished, Boolean isSold);
+    Page<Products> findByProductNameContainingAndCategoryContainingAndIsPublishedContainingAndIsSoldContaining(String productName, String category, Pageable pageable, Boolean isPublished, Boolean isSold);
 }

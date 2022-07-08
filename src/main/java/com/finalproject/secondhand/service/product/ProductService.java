@@ -35,7 +35,7 @@ public interface ProductService {
     List<HistoryProductResponse> findProductByIsSold();
 
     // C R U D
-    CustomResponse save(Products body);
+    ProductResponse save(Products body);
     void publish(Products body, Integer productId);
     void update(Products body, Integer productId);
     Products deleteImage(Products body, Integer productId, Integer n);

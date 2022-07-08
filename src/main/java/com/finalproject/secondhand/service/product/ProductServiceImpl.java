@@ -43,13 +43,13 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Page<Products> getAllProductPageByProductNameAndProductCategory(String productName, String category, Pageable pageable) {
         if (productName == null && category == null){
-            return productRepository.findAllByIsPublishedAndIsSold(true, false, pageable);
+            return productRepository.findAllByIsPublishedContainingAndIsSoldContaining(true, false, pageable);
         } else if (productName == null) {
-            return productRepository.findByProductNameContainingAndIsPublishedAndIsSold(category, pageable, true, false);
+            return productRepository.findByProductNameContainingAndIsPublishedContainingAndIsSoldContaining(category, pageable, true, false);
         } else if (category == null) {
-            return productRepository.findByCategoryContainingAndIsPublishedAndIsSold(productName, pageable, true, false);
+            return productRepository.findByCategoryContainingAndIsPublishedContainingAndIsSoldContaining(productName, pageable, true, false);
         } else {
-            return productRepository.findByProductNameContainingAndCategoryContainingAndIsPublishedAndIsSold(productName, category, pageable, true, false);
+            return productRepository.findByProductNameContainingAndCategoryContainingAndIsPublishedContainingAndIsSoldContaining(productName, category, pageable, true, false);
         }
     }
 
@@ -104,7 +104,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public CustomResponse save(Products body) {
+    public ProductResponse save(Products body) {
         Products products = new Products();
         products.setProductName(body.getProductName());
         products.setCategory(body.getCategory());
@@ -117,17 +117,8 @@ public class ProductServiceImpl implements ProductService {
         products.setUsers(body.getUsers());
         products.setIsPublished(body.getIsPublished());
         products.setIsSold(body.getIsSold());
-        if (products.getIsPublished().equals(true)){
-            productRepository.save(products);
-            return new CustomResponse(
-                    "Product published successfully",
-                    EStatusResponse.SUCCESS.getName());
-        } else {
-            productRepository.save(products);
-            return new CustomResponse(
-                    "Product not published",
-                    EStatusResponse.SUCCESS.getName());
-        }
+        productRepository.save(products);
+        return new ProductResponse(products);
     }
 
     @Override
