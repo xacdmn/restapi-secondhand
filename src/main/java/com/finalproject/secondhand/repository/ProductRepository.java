@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
-import java.math.BigInteger;
 import java.util.List;
 
 @Repository
@@ -15,13 +14,13 @@ import java.util.List;
 public interface ProductRepository extends JpaRepository<Products, Integer> {
 
     List<Products> findByCategory(String category);
+
     List<Products> findByProductName(String productName);
 
-    Page<Products> findAll(Pageable pageable);
+    Page<Products> findByProductNameContaining(String productName, Pageable pageable);
 
-    Page<Products> findByProductNameContainingIgnoreCaseAndCategoryContainingAndPriceBetween(
-            String productName, String category, BigInteger priceMin,
-            BigInteger priceMax, Pageable pageable);
+    Page<Products> findByCategoryContaining(String category, Pageable pageable);
 
+    //    Page<Products> findByProductNameAndCategory(String productName, String category, Pageable pageable);
+    Page<Products> findByProductNameContainingAndCategoryContaining(String productName, String category, Pageable pageable);
 }
-

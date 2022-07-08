@@ -21,7 +21,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.lang.Nullable;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -48,6 +47,13 @@ public class ProductController {
     @Autowired
     private CloudinaryStorageService cloudinaryStorageService;
 
+    @Operation(summary = "Validasi profil")
+    @GetMapping("/sell")
+    public ResponseEntity<?> validasiProfil(Authentication valid) {
+        String username = valid.getName();
+        return new ResponseEntity<>(productService.validasiProfil(username), HttpStatus.OK);
+    }
+
     @Operation(summary = "Find product by productId")
     @GetMapping("{productId}")
     public ResponseEntity<ProductResponse> findProductById(Integer productId) {
@@ -56,15 +62,16 @@ public class ProductController {
 
     @Operation(summary = "Preview product")
     @PostMapping(value = "add/{isPublished}",
-            consumes = {MediaType.APPLICATION_JSON_VALUE,MediaType.MULTIPART_FORM_DATA_VALUE},
+            consumes = {MediaType.APPLICATION_JSON_VALUE,
+                    MediaType.MULTIPART_FORM_DATA_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<ProductResponse> saveProduct(
-                                        @RequestPart String body,
-                                        @RequestPart MultipartFile[] image,
-                                        @PathVariable String isPublished,
-                                        Authentication authentication) {
+            @RequestPart String addJson,
+            @RequestPart MultipartFile[] image,
+            @PathVariable String isPublished,
+            Authentication authentication) {
         Products products = new Products();
-        if (isPublished.equals("preview")){
+        if (isPublished.equals("preview")) {
             products.setIsPublished(products.getIsPublished());
         } else if (isPublished.equals("publish")) {
             products.setIsPublished(true);
@@ -72,8 +79,8 @@ public class ProductController {
         AddProductDto add = new AddProductDto();
         try {
             ObjectMapper om = new ObjectMapper();
-            add = om.readValue(body,AddProductDto.class);
-        }catch (Exception e) {
+            add = om.readValue(addJson, AddProductDto.class);
+        } catch (Exception e) {
             e.printStackTrace();
         }
         String username = authentication.getName();
@@ -87,7 +94,7 @@ public class ProductController {
         List<String> urlImage = new ArrayList<>();
         if (image == null) {
             LOGGER.info("skip upload...");
-        }else {
+        } else {
             for (int i = 0; i < image.length; i++) {
                 Map<?, ?> uploadImage = (Map<?, ?>) cloudinaryStorageService.upload(image[i]).getData();
                 urlImage.add(i, uploadImage.get("url").toString());
@@ -111,7 +118,7 @@ public class ProductController {
 
     @Operation(summary = "Publish product")
     @PutMapping("update/publish/{productId})")
-    public ResponseEntity<?> publishProduct(@PathVariable Integer productId){
+    public ResponseEntity<?> publishProduct(@PathVariable Integer productId) {
         Products products = new Products();
         products.setIsPublished(true);
         productService.publish(products, productId);
@@ -120,17 +127,17 @@ public class ProductController {
 
     @Operation(summary = "Edit product by productId")
     @PutMapping(value = "update/{productId}",
-            consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},
-            produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<?> updateProduct(@RequestPart String body,
-                                           @RequestPart @Nullable List<MultipartFile> image,
-                                           @PathVariable Integer productId){
+            consumes = {MediaType.APPLICATION_JSON_VALUE,
+                    MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<?> updateProduct(@RequestPart(required = false) String updateJson,
+                                           @RequestPart(required = false) List<MultipartFile> image,
+                                           @PathVariable Integer productId) {
         Products products = new Products();
         UpdateProductDto update = new UpdateProductDto();
         try {
             ObjectMapper om = new ObjectMapper();
-            update = om.readValue(body,UpdateProductDto.class);
-        }catch (Exception e) {
+            update = om.readValue(updateJson, UpdateProductDto.class);
+        } catch (Exception e) {
             e.printStackTrace();
         }
         products.setProductName(update.getProductName());
@@ -165,9 +172,9 @@ public class ProductController {
 
     @Operation(summary = "Delete image by productId by image ke - n")
     @PutMapping("delete/{productId}/{n}")
-    public ResponseEntity<Products> deleteImage(@PathVariable Integer productId, @PathVariable Integer n){
+    public ResponseEntity<Products> deleteImage(@PathVariable Integer productId, @PathVariable Integer n) {
         Products products = new Products();
-        switch (n){
+        switch (n) {
             case 1: {
                 cloudinaryStorageService.delete(products.getImage1());
             }
@@ -198,5 +205,4 @@ public class ProductController {
         }
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-
 }

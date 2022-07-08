@@ -6,7 +6,6 @@ import com.finalproject.secondhand.service.user.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -61,6 +60,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/buyer/**").hasAuthority(ERole.BUYER.name())
                 .antMatchers("/api/user/**").hasAnyAuthority(ERole.SELLER.name(),ERole.BUYER.name())
                 .antMatchers("/api/product/**").hasAnyAuthority(ERole.SELLER.name(),ERole.BUYER.name())
+                .antMatchers("/api/offer/**").hasAnyAuthority(ERole.SELLER.name(),ERole.BUYER.name())
                 .anyRequest().authenticated();
 
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);

@@ -1,5 +1,6 @@
 package com.finalproject.secondhand.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.finalproject.secondhand.dto.user.ChangePasswordDto;
 import com.finalproject.secondhand.dto.user.UserUpdateDto;
 import com.finalproject.secondhand.entity.Users;
@@ -22,7 +23,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.Valid;
 import java.util.Map;
 
 @RestController
@@ -32,7 +32,7 @@ import java.util.Map;
 @CrossOrigin(origins = {"http://localhost:3000"}, maxAge = 3600)
 public class UserController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ProductController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
     @Autowired
     private UserService userService;
@@ -48,25 +48,36 @@ public class UserController {
 
     @Operation(summary = "Update user profil")
     @PutMapping(value = "update",
-            consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},
+            consumes = {MediaType.APPLICATION_JSON_VALUE,
+                        MediaType.MULTIPART_FORM_DATA_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<Users> updateUsers(@Valid @ModelAttribute UserUpdateDto update, @RequestParam (required = false) MultipartFile imageProfil
-            , Authentication authentication) {
+    public ResponseEntity<Users> updateUsers(@RequestPart (required = false) String updateJson,
+                                             @RequestPart (required = false) MultipartFile imageProfil,
+                                             Authentication authentication) {
         String username = authentication.getName();
         Users users = new Users();
+        UserUpdateDto update = new UserUpdateDto();
+        try {
+            ObjectMapper om = new ObjectMapper();
+            update = om.readValue(updateJson, UserUpdateDto.class);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         users.setFullname(update.getFullname());
         users.setCity(update.getCity());
         users.setAddress(update.getAddress());
         users.setPhone(update.getPhone());
-        LOGGER.info(String.valueOf(imageProfil));
-        if (imageProfil != null) {
-            Map<?, ?> uploadImage = (Map<?, ?>) cloudinaryStorageService.upload(imageProfil).getData();
-            users.setImageProfil(uploadImage.get("url").toString());
+        LOGGER.info(update.getFullname());
+        if (imageProfil == null) {
+            LOGGER.info(String.valueOf(imageProfil));
+        } else {
+                Map<?, ?> uploadImage = (Map<?, ?>) cloudinaryStorageService.upload(imageProfil).getData();
+                users.setImageProfil(uploadImage.get("url").toString());
         }
         return new ResponseEntity<>(userService.update(users, username), HttpStatus.ACCEPTED);
     }
 
-    @Operation(summary = "Change Password")
+    @Operation(summary = "Change Password masih bug")
     @PutMapping( "change-password")
     public ResponseEntity<?> changePassword(
             @Schema(example = "{" +

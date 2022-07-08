@@ -3,6 +3,8 @@ package com.finalproject.secondhand.service.product;
 import com.finalproject.secondhand.entity.Products;
 import com.finalproject.secondhand.response.CustomResponse;
 import com.finalproject.secondhand.response.ProductResponse;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -11,8 +13,9 @@ import java.util.List;
 public interface ProductService {
 
     List<Products> showAllProduct();
-    List<Products> showProductByCategory(String category);
-    List<Products> showProductByProductName(String productName);
+    Page<Products> getAllProductPageByProductNameAndProductCategory(String productName, String productCategory, Pageable pageable);
+
+    String validasiProfil(String username);
 
     Products findProductById(Integer productId);
     ProductResponse findByProductId(Integer productId);

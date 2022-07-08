@@ -1,11 +1,15 @@
 package com.finalproject.secondhand.service.product;
 
 import com.finalproject.secondhand.entity.Products;
+import com.finalproject.secondhand.entity.Users;
 import com.finalproject.secondhand.enums.EStatusResponse;
 import com.finalproject.secondhand.repository.ProductRepository;
+import com.finalproject.secondhand.repository.UserRepository;
 import com.finalproject.secondhand.response.CustomResponse;
 import com.finalproject.secondhand.response.ProductResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,6 +19,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private ProductRepository productRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
     public List<Products> showAllProduct() {
@@ -29,6 +36,34 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Products> showProductByProductName(String productName) {
         return productRepository.findByProductName(productName);
+    }
+
+    @Override
+    public Page<Products> getAllProductPageByProductNameAndProductCategory(String productName, String category, Pageable pageable) {
+        if (productName == null && category == null){
+            return productRepository.findAll(pageable);
+        } else if (productName == null) {
+            return productRepository.findByCategoryContaining(category, pageable);
+        } else if (category == null) {
+            return productRepository.findByProductNameContaining(productName, pageable);
+        } else {
+            return productRepository.findByProductNameContainingAndCategoryContaining(productName, category, pageable);
+        }
+    }
+
+    @Override
+    public String validasiProfil(String username) {
+        Users validasi = userRepository.findByUsername(username);
+        if (validasi.getFullname().length() > 0) {
+            if (validasi.getCity().length() > 0) {
+                if (validasi.getAddress().length() > 0) {
+                    if (validasi.getPhone().length() > 0) {
+                        return "User proil is complete";
+                    }
+                }
+            }
+        }
+        return "User Profil not complete";
     }
 
 
@@ -65,24 +100,43 @@ public class ProductServiceImpl implements ProductService {
     public void publish(Products body, Integer productId) {
         Products products = productRepository.getById(productId);
         products.setIsPublished(body.getIsPublished());
+        productRepository.save(products);
     }
 
     @Override
     public void update(Products body, Integer productId) {
         Products products = productRepository.getById(productId);
         if (body.getProductName() != null) {
-            products.setProductName(body.getProductName());
+            if (body.getProductName().length() > 0) {
+                products.setProductName(body.getProductName());
+            }
         }
         if (body.getPrice() != null) {
+            if (body.getPrice().length() > 0) {
+                products.setPrice(body.getPrice());
+            }
             products.setPrice(body.getPrice());
         }
         if (body.getDescription() != null) {
-            products.setDescription(body.getDescription());
+            if (body.getDescription().length() > 0) {
+                products.setDescription(body.getDescription());
+            }
         }
-        products.setImage1(body.getImage1());
-        products.setImage2(body.getImage2());
-        products.setImage3(body.getImage3());
-        products.setImage4(body.getImage4());
+        if (products.getImage1() != null) {
+            products.setImage1(body.getImage1());
+
+        }
+        if (products.getImage2() != null) {
+            products.setImage2(body.getImage2());
+
+        }
+        if (products.getImage3() != null) {
+            products.setImage3(body.getImage3());
+
+        }
+        if (products.getImage4() != null) {
+            products.setImage4(body.getImage4());
+        }
         productRepository.save(products);
     }
 

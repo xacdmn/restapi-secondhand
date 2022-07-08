@@ -79,20 +79,22 @@ public class OfferController {
         }
     }
 
-//    @Operation(summary = "Update status offers")
-//    @PutMapping("update/{offerId}/{status}")
-//    public ResponseEntity<?> updateStatusSold(@PathVariable ("offerId") Integer offerId,
-//                                              @PathVariable ("status") String status) {
-//        Offers offers = offerService.findByOfferId(offerId);
-//        Products products = productService.findProductById(offers.getProduct().getProductId());
-//        if (Objects.equals(status, "notSold")) {
-//            products.setIsSold(false);
-//            offerService.updateStatusOffer(offers,offerId);
-//            return new ResponseEntity<>("Status Accepted", HttpStatus.ACCEPTED);
-//        } else if (Objects.equals(status, "sold")) {
-//            products.setIsSold(true);
-//            offerService.updateStatusOffer(offers,offerId);
-//            return new ResponseEntity<>("Status Rejected", HttpStatus.ACCEPTED);
-//        }
-//    }
+    @Operation(summary = "Update status offers")
+    @PutMapping("update/isSold/{offerId}/{status}")
+    public ResponseEntity<?> updateStatusSold(@PathVariable ("offerId") Integer offerId,
+                                              @PathVariable ("status") String status) {
+        Offers offers = offerService.findByOfferId(offerId);
+        Products products = productService.findProductById(offers.getProduct().getProductId());
+        if (Objects.equals(status, "notSold")) {
+            products.setIsSold(false);
+            offerService.updateStatusOffer(offers,offerId);
+            return new ResponseEntity<>("Product status updated successfully", HttpStatus.ACCEPTED);
+        } else if (Objects.equals(status, "sold")) {
+            products.setIsSold(true);
+            offerService.updateStatusOffer(offers,offerId);
+            return new ResponseEntity<>("Product status updated successfully", HttpStatus.ACCEPTED);
+        } else {
+            return new ResponseEntity<>("Product status not updated", HttpStatus.FORBIDDEN);
+        }
+    }
 }
