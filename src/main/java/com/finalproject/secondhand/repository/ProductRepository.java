@@ -41,7 +41,7 @@ public interface ProductRepository extends JpaRepository<Products, Integer> {
 
     @Query("select p from products p " +
             "where upper(p.productName) like upper(concat('%', ?1, '%')) " +
-            "and p.category = ?2 " +
+            "and upper(p.category)  like upper(concat('%', ?2, '%'))" +
             "and p.isPublished = true " +
             "and p.isSold = false")
     Page<Products> findByProductNameContainingIgnoreCaseAndCategory(String productName, String category, Pageable pageable);
