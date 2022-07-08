@@ -39,6 +39,6 @@ public interface ProductService {
     void publish(Products body, Integer productId);
     void update(Products body, Integer productId);
     Products deleteImage(Products body, Integer productId, Integer n);
-    CustomResponse deleteProduct(Integer productId);
+    String deleteProduct(Integer productId);
 
 }

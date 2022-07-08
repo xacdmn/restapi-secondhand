@@ -5,8 +5,6 @@ import com.finalproject.secondhand.dto.product.AddProductDto;
 import com.finalproject.secondhand.dto.product.UpdateProductDto;
 import com.finalproject.secondhand.entity.Products;
 import com.finalproject.secondhand.entity.Users;
-import com.finalproject.secondhand.enums.EStatusResponse;
-import com.finalproject.secondhand.response.CustomResponse;
 import com.finalproject.secondhand.response.ProductResponse;
 import com.finalproject.secondhand.service.image.CloudinaryStorageService;
 import com.finalproject.secondhand.service.product.ProductService;
@@ -191,16 +189,7 @@ public class ProductController {
 
     @Operation(summary = "Delete product by productId")
     @DeleteMapping("/delete/{productId}")
-    public ResponseEntity<CustomResponse> deleteProduct(@PathVariable Integer productId) {
-
-        CustomResponse response = productService.deleteProduct(productId);
-
-        boolean isNotFound = response
-                .getStatus()
-                .equals(EStatusResponse.NOT_FOUND.getName());
-        if (isNotFound) {
-            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(response, HttpStatus.OK);
+    public ResponseEntity<?> deleteProduct(@PathVariable Integer productId) {
+        return new ResponseEntity<>(productService.deleteProduct(productId), HttpStatus.OK);
     }
 }

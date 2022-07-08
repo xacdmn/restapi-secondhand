@@ -2,10 +2,8 @@ package com.finalproject.secondhand.service.product;
 
 import com.finalproject.secondhand.entity.Products;
 import com.finalproject.secondhand.entity.Users;
-import com.finalproject.secondhand.enums.EStatusResponse;
 import com.finalproject.secondhand.repository.ProductRepository;
 import com.finalproject.secondhand.repository.UserRepository;
-import com.finalproject.secondhand.response.CustomResponse;
 import com.finalproject.secondhand.response.HistoryProductResponse;
 import com.finalproject.secondhand.response.ProductResponse;
 import com.finalproject.secondhand.response.WishlistResponse;
@@ -186,18 +184,10 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public CustomResponse deleteProduct(Integer productId) {
-        Products products = productRepository.findByProductId(productId);
-        if (products.getProductId() == null){
-            return new CustomResponse(
-                    "Product is not present",
-                    EStatusResponse.NOT_FOUND.getName());
-        } else {
-            productRepository.delete(products);
-            return new CustomResponse(
-                    "Product has been removed from store",
-                    EStatusResponse.SUCCESS.getName());
-        }
+    public String deleteProduct(Integer productId) {
+        Products products = productRepository.findProductsByProductId(productId);
+        productRepository.delete(products);
+        return "Product deleted";
     }
 }
 
