@@ -8,6 +8,7 @@ import com.finalproject.secondhand.response.ProductResponse;
 import com.finalproject.secondhand.response.WishlistResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -28,7 +29,8 @@ public interface ProductService {
     ProductResponse findByProductId(Integer productId);
 
     //History
-    Products findProductByUser(String username);
+    List<Products> findProductByUser(String username);
+    List<Products> findProductByUserByIsSold(String username);
     List<WishlistResponse> findProductByWishlist();
     List<HistoryProductResponse> findProductByIsSold();
 

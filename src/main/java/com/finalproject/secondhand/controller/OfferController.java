@@ -36,12 +36,12 @@ public class OfferController {
     @Autowired
     ProductService productService;
 
-    @Operation(summary = "Show by user")
-    @PostMapping("show-offer")
-    public ResponseEntity<WishlistResponse> showOffer(Authentication valid) {
-        String username = valid.getName();
-        Users validUser = userService.findByUsername(username);
-        return new ResponseEntity<>(offerService.findByUser(validUser), HttpStatus.OK);
+    @Operation(summary = "Show offer by user")
+    @GetMapping("show-offer/{offerId}")
+    public ResponseEntity<WishlistResponse> showOffer(@PathVariable Integer offerId) {
+        Offers offers = offerService.findByOfferId(offerId);
+        WishlistResponse response = new WishlistResponse(offers);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @Operation(summary = "Add offers")

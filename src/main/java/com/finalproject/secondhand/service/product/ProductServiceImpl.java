@@ -81,9 +81,16 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Products findProductByUser(String username) {
+    public List<Products> findProductByUser(String username) {
         Users users = userRepository.findByUsername(username);
         return productRepository.findByUsers(users);
+    }
+
+    @Override
+    public List<Products> findProductByUserByIsSold(String username) {
+        Users users = userRepository.findByUsername(username);
+        Boolean isSold = true;
+        return productRepository.findByUsersAndIsSold(users, isSold);
     }
 
     @Override

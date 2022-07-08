@@ -18,6 +18,7 @@ public class WishlistResponse {
     String productName;
     String price;
     String priceNegotiated;
+    String statusProcess;
 
     public WishlistResponse() {}
 
@@ -30,6 +31,7 @@ public class WishlistResponse {
         this.productName=offers.getProduct().getProductName();
         this.price=offers.getProduct().getPrice();
         this.priceNegotiated=offers.getPriceNegotiated();
+        this.statusProcess=offers.getStatusProcess().name();
     }
 
 }

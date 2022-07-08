@@ -3,9 +3,11 @@ package com.finalproject.secondhand.service.transaction;
 import com.finalproject.secondhand.entity.Offers;
 import com.finalproject.secondhand.entity.Users;
 import com.finalproject.secondhand.repository.OfferRepository;
-import com.finalproject.secondhand.response.WishlistResponse;
+import com.finalproject.secondhand.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class OfferServiceImpl implements OfferService{
@@ -13,10 +15,13 @@ public class OfferServiceImpl implements OfferService{
     @Autowired
     OfferRepository offerRepository;
 
+    @Autowired
+    UserRepository userRepository;
+
     @Override
-    public WishlistResponse findByUser(Users body) {
-        Offers offers = offerRepository.findByUsers(body);
-        return new WishlistResponse(offers);
+    public List<Offers> findByUser(String username) {
+        Users users = userRepository.findByUsername(username);
+        return offerRepository.findByUsers(users);
     }
 
     @Override
