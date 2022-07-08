@@ -40,7 +40,7 @@ public class HomepageController {
         return new ResponseEntity<>(productResponse, HttpStatus.OK);
     }
 
-    @Operation(summary = "Show all products sort and filter")
+    @Operation(summary = "Show homepage all products sort and filter")
     @GetMapping("/get-product-page")
     public ResponseEntity<Map<String, Object>> getAllProductPage(
             @RequestParam(required = false) String productName,
