@@ -49,7 +49,7 @@ public class ProductServiceImpl implements ProductService {
         } else if (category == null) {
             return productRepository.findByProductNameContaining(productName, pageable);
         } else {
-            return productRepository.findByProductNameContainingAndCategoryContaining(productName, category, pageable);
+            return productRepository.findByProductNameContainingAndCategoryContainingAndIsPublished(productName, category, pageable, true);
         }
     }
 
