@@ -1,6 +1,7 @@
 package com.finalproject.secondhand.repository;
 
 import com.finalproject.secondhand.entity.Products;
+import com.finalproject.secondhand.entity.Users;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,13 +15,11 @@ import java.util.List;
 public interface ProductRepository extends JpaRepository<Products, Integer> {
 
     List<Products> findByCategory(String category);
-
     List<Products> findByProductName(String productName);
+    Products findByUsers(Users users);
 
     Page<Products> findByProductNameContaining(String productName, Pageable pageable);
-
     Page<Products> findByCategoryContaining(String category, Pageable pageable);
-
     //    Page<Products> findByProductNameAndCategory(String productName, String category, Pageable pageable);
     Page<Products> findByProductNameContainingAndCategoryContaining(String productName, String category, Pageable pageable);
 }

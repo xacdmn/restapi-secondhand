@@ -1,6 +1,8 @@
 package com.finalproject.secondhand.controller;
 
+import com.finalproject.secondhand.entity.Products;
 import com.finalproject.secondhand.entity.Users;
+import com.finalproject.secondhand.response.HistoryProductResponse;
 import com.finalproject.secondhand.response.ProductResponse;
 import com.finalproject.secondhand.service.product.ProductService;
 import com.finalproject.secondhand.service.user.UserService;
@@ -33,10 +35,10 @@ public class HistoryController {
 
 //    @Operation(summary = "Find History All Product by User")
 //    @GetMapping("/product")
-//    public ResponseEntity<List<ProductResponse>> findProductByUser(Authentication valid) {
+//    public ResponseEntity<List<HistoryProductResponse>> findProductByUser(Authentication valid) {
 //        String username = valid.getName();
-//        Users users = userService.findByUsername(username);
-//        productService.findProductByUser(users);
-//        return new ResponseEntity<>(, HttpStatus.OK);
+//        Products products = productService.findProductByUser(username);
+//        List<HistoryProductResponse> historyProductResponses = n
+//        return new ResponseEntity<>()
 //    }
 }

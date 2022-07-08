@@ -1,6 +1,7 @@
 package com.finalproject.secondhand.service.product;
 
 import com.finalproject.secondhand.entity.Products;
+import com.finalproject.secondhand.entity.Users;
 import com.finalproject.secondhand.response.CustomResponse;
 import com.finalproject.secondhand.response.HistoryProductResponse;
 import com.finalproject.secondhand.response.ProductResponse;
@@ -27,7 +28,7 @@ public interface ProductService {
     ProductResponse findByProductId(Integer productId);
 
     //History
-//    List<HistoryProductResponse> findProductByUser(Users users);
+    Products findProductByUser(String username);
     List<WishlistResponse> findProductByWishlist();
     List<HistoryProductResponse> findProductByIsSold();
 

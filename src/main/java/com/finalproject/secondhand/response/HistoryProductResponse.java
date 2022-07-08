@@ -1,7 +1,9 @@
 package com.finalproject.secondhand.response;
 
 import com.finalproject.secondhand.entity.Products;
+import lombok.Data;
 
+@Data
 public class HistoryProductResponse {
 
     Integer productId;

@@ -44,14 +44,14 @@ public class HomepageController {
     @GetMapping("/get-product-page")
     public ResponseEntity<Map<String, Object>> getAllProductPage(
             @RequestParam(required = false) String productName,
-            @RequestParam(required = false) String productCategory,
+            @RequestParam(required = false) String category,
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "12") int size
     ) {
         try {
             Pageable paging = PageRequest.of(page - 1, size, Sort.by("price"));
 
-            Page<Products> productPage = productService.getAllProductPageByProductNameAndProductCategory(productName, productCategory, paging);
+            Page<Products> productPage = productService.getAllProductPageByProductNameAndProductCategory(productName, category, paging);
             List<Products> products = productPage.getContent();
             Map<String, Object> response = new HashMap<>();
             List<ProductResponse> productResponse =

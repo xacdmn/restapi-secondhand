@@ -80,10 +80,11 @@ public class ProductServiceImpl implements ProductService {
         return new ProductResponse(products);
     }
 
-//    @Override
-//    public List<HistoryProductResponse> findProductByUser(Users body) {
-//        Products products = productRepository.
-//    }
+    @Override
+    public Products findProductByUser(String username) {
+        Users users = userRepository.findByUsername(username);
+        return productRepository.findByUsers(users);
+    }
 
     @Override
     public List<WishlistResponse> findProductByWishlist() {
