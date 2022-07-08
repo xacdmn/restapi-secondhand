@@ -49,7 +49,7 @@ public class HistoryController {
     @GetMapping("/product-wishlist")
     public ResponseEntity<List<WishlistResponse>> findProductByUserByWishlist(Authentication valid) {
         String username = valid.getName();
-        List<Offers> offers = offerService.findByUser(username);
+        List<Offers> offers = productService.findProductByWishlist(username);
         List<WishlistResponse> wishlistResponses = offers.stream()
                 .map(WishlistResponse::new)
                 .collect(Collectors.toList());

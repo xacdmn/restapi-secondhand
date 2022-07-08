@@ -2,6 +2,7 @@ package com.finalproject.secondhand.repository;
 
 import com.finalproject.secondhand.entity.Offers;
 import com.finalproject.secondhand.entity.Users;
+import com.finalproject.secondhand.enums.EStatusProcess;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -14,5 +15,6 @@ public interface OfferRepository extends JpaRepository<Offers, Integer> {
 
     Offers findByOfferId(Integer offerId);
     List<Offers> findByUsers(Users users);
+    List<Offers> findByUsersAndStatusProcess(Users users, EStatusProcess status);
 
 }
