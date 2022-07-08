@@ -49,7 +49,7 @@ public class ProductServiceImpl implements ProductService {
         } else if (category == null) {
             return productRepository.findByProductName(productName, pageable);
         } else {
-            return productRepository.findByProductNameContainingIgnoreCaseAndCategory(productName, category, pageable);
+            return productRepository.findByProductNameContainingIgnoreCaseAndCategoryIgnoreCase(productName, category, pageable);
         }
     }
 
@@ -187,7 +187,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public CustomResponse deleteProduct(Integer productId) {
-        Products products = productRepository.getById(productId);
+        Products products = productRepository.findByProductId(productId);
         if (products.getProductId() == null){
             return new CustomResponse(
                     "Product is not present",

@@ -21,6 +21,8 @@ public interface ProductRepository extends JpaRepository<Products, Integer> {
     List<Products> findByUsers(Users users);
     List<Products> findByUsersAndIsSold(Users users, Boolean isSold);
 
+    Products findByProductId(Integer productId);
+
     @NonNull
     @Query("select p from products p " +
             "where p.isPublished = true " +
@@ -44,5 +46,5 @@ public interface ProductRepository extends JpaRepository<Products, Integer> {
             "and upper(p.category)  like upper(concat('%', ?2, '%'))" +
             "and p.isPublished = true " +
             "and p.isSold = false")
-    Page<Products> findByProductNameContainingIgnoreCaseAndCategory(String productName, String category, Pageable pageable);
+    Page<Products> findByProductNameContainingIgnoreCaseAndCategoryIgnoreCase(String productName, String category, Pageable pageable);
 }
