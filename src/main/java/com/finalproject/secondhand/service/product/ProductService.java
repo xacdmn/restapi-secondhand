@@ -13,6 +13,8 @@ import java.util.List;
 public interface ProductService {
 
     List<Products> showAllProduct();
+    List<Products> showProductByCategory(String category);
+    List<Products> showProductByProductName(String productName);
     Page<Products> getAllProductPageByProductNameAndProductCategory(String productName, String productCategory, Pageable pageable);
 
     String validasiProfil(String username);
