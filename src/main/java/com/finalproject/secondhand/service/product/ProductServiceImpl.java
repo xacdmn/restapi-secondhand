@@ -7,7 +7,6 @@ import com.finalproject.secondhand.enums.EStatusProcess;
 import com.finalproject.secondhand.repository.OfferRepository;
 import com.finalproject.secondhand.repository.ProductRepository;
 import com.finalproject.secondhand.repository.UserRepository;
-import com.finalproject.secondhand.response.HistoryProductResponse;
 import com.finalproject.secondhand.response.ProductResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -95,11 +94,6 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<HistoryProductResponse> findProductByIsSold() {
-        return null;
-    }
-
-    @Override
     public ProductResponse save(Products body) {
         Products products = new Products();
         products.setProductName(body.getProductName());
@@ -163,7 +157,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public String deleteProduct(Integer productId) {
-        productRepository.deleteProduct(productId);
+        productRepository.deleteProductsByProductId(productId);
         return "Product deleted";
     }
 }

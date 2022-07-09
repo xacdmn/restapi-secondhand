@@ -16,14 +16,9 @@ import java.util.List;
 @Transactional
 public interface ProductRepository extends JpaRepository<Products, Integer> {
 
-    List<Products> findByCategory(String category);
-    List<Products> findByProductName(String productName);
     List<Products> findByUsersAndIsSold(Users users, Boolean isSold);
-    Products findProductsByProductId(Integer productId);
 
-    @Query("delete from products p " +
-            "where p.productId = ?1 ")
-    void deleteProduct(Integer productId);
+    void deleteProductsByProductId(Integer productId);
 
     @NonNull
     @Query("select p from products p " +

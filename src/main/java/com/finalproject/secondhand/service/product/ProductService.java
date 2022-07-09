@@ -27,13 +27,11 @@ public interface ProductService {
     List<Products> findProductByUser(String username);
     List<Products> findProductByUserByIsSold(String username);
     List<Offers> findProductByWishlist(String username);
-    List<HistoryProductResponse> findProductByIsSold();
 
     // C R U D
     ProductResponse save(Products body);
     void publish(Products body, Integer productId);
     void update(Products body, Integer productId);
-//    Products deleteImage(Products body, Integer productId, Integer n);
     String deleteProduct(Integer productId);
 
 }
