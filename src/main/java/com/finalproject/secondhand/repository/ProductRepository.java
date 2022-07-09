@@ -22,24 +22,24 @@ public interface ProductRepository extends JpaRepository<Products, Integer> {
     Products findProductsByProductId(Integer productId);
 
     @NonNull
-    @Query("select p from products p " +
+    @Query("select p from Products p " +
             "where p.isPublished = true " +
             "and p.isSold = false")
     Page<Products> findAll(@NonNull Pageable pageable);
 
-    @Query("select p from products p " +
+    @Query("select p from Products p " +
             "where upper (p.productName) like upper (concat('%', ?1, '%'))" +
             "and p.isPublished = true " +
             "and p.isSold = false")
     Page<Products> findByProductName(String productName, Pageable pageable);
 
-    @Query("select  p from products p " +
+    @Query("select  p from Products p " +
             "where p.category =:category " +
             "and p.isPublished = true " +
             "and p.isSold = false ")
     Page<Products> findByCategory(String category, Pageable pageable);
 
-    @Query("select p from products p " +
+    @Query("select p from Products p " +
             "where upper(p.productName) like upper(concat('%', ?1, '%')) " +
             "and upper(p.category)  like upper(concat('%', ?2, '%'))" +
             "and p.isPublished = true " +
