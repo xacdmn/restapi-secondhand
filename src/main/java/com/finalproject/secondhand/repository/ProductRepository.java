@@ -21,6 +21,10 @@ public interface ProductRepository extends JpaRepository<Products, Integer> {
     List<Products> findByUsersAndIsSold(Users users, Boolean isSold);
     Products findProductsByProductId(Integer productId);
 
+    @Query("delete from Products p " +
+            "where p.productId = ?1 ")
+    void deleteProduct(Integer productId);
+
     @NonNull
     @Query("select p from Products p " +
             "where p.isPublished = true " +

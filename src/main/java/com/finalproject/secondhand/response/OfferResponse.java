@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class WishlistResponse {
+public class OfferResponse {
 
     Integer offerId;
     String ImageProfil;
@@ -20,9 +20,9 @@ public class WishlistResponse {
     String priceNegotiated;
     String statusProcess;
 
-    public WishlistResponse() {}
+    public OfferResponse() {}
 
-    public WishlistResponse(Offers offers){
+    public OfferResponse(Offers offers){
         this.offerId=offers.getOfferId();
         this.ImageProfil=offers.getUsers().getImageProfil();
         this.fullname=offers.getUsers().getFullname();

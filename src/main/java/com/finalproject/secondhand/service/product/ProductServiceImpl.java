@@ -163,7 +163,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public String deleteProduct(Integer productId) {
-        productRepository.deleteById(productId);
+        productRepository.deleteProduct(productId);
         return "Product deleted";
     }
 }

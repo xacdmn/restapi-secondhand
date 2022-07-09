@@ -4,7 +4,7 @@ import com.finalproject.secondhand.entity.Offers;
 import com.finalproject.secondhand.entity.Products;
 import com.finalproject.secondhand.entity.Users;
 import com.finalproject.secondhand.enums.EStatusProcess;
-import com.finalproject.secondhand.response.WishlistResponse;
+import com.finalproject.secondhand.response.OfferResponse;
 import com.finalproject.secondhand.service.product.ProductService;
 import com.finalproject.secondhand.service.transaction.OfferService;
 import com.finalproject.secondhand.service.user.UserService;
@@ -44,9 +44,9 @@ public class OfferController {
 
     @Operation(summary = "Show offer by user")
     @GetMapping("show-offer/{offerId}")
-    public ResponseEntity<WishlistResponse> showOffer(@PathVariable Integer offerId) {
+    public ResponseEntity<OfferResponse> showOffer(@PathVariable Integer offerId) {
         Offers offers = offerService.findByOfferId(offerId);
-        WishlistResponse response = new WishlistResponse(offers);
+        OfferResponse response = new OfferResponse(offers);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

@@ -3,9 +3,8 @@ package com.finalproject.secondhand.controller;
 import com.finalproject.secondhand.entity.Offers;
 import com.finalproject.secondhand.entity.Products;
 import com.finalproject.secondhand.response.HistoryProductResponse;
-import com.finalproject.secondhand.response.WishlistResponse;
+import com.finalproject.secondhand.response.OfferResponse;
 import com.finalproject.secondhand.service.product.ProductService;
-import com.finalproject.secondhand.service.transaction.OfferService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -31,9 +30,6 @@ public class HistoryController {
     @Autowired
     private ProductService productService;
 
-    @Autowired
-    private OfferService offerService;
-
     @Operation(summary = "Find History All Product by User")
     @GetMapping("/product-user")
     public ResponseEntity<List<HistoryProductResponse>> findProductByUser(Authentication valid) {
@@ -47,13 +43,13 @@ public class HistoryController {
 
     @Operation(summary = "Find History All Product by User - wishlist")
     @GetMapping("/product-wishlist")
-    public ResponseEntity<List<WishlistResponse>> findProductByUserByWishlist(Authentication valid) {
+    public ResponseEntity<List<OfferResponse>> findProductByUserByWishlist(Authentication valid) {
         String username = valid.getName();
         List<Offers> offers = productService.findProductByWishlist(username);
-        List<WishlistResponse> wishlistResponses = offers.stream()
-                .map(WishlistResponse::new)
+        List<OfferResponse> offerRespons = offers.stream()
+                .map(OfferResponse::new)
                 .collect(Collectors.toList());
-        return new ResponseEntity<>(wishlistResponses, HttpStatus.OK);
+        return new ResponseEntity<>(offerRespons, HttpStatus.OK);
     }
 
     @Operation(summary = "Find History All Product by User - sold")

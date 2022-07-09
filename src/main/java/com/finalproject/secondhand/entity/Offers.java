@@ -9,15 +9,15 @@ import javax.persistence.*;
 @Setter
 @Getter
 @Entity(name = "offers")
-public class Offers {
+public class Offers extends BaseDate {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "offer_id", nullable = false)
+    @Column(name = "offer_id")
     private Integer offerId;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id")
     private Users users;
 
     @ManyToOne(fetch = FetchType.EAGER)

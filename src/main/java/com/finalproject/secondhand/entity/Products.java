@@ -1,42 +1,43 @@
 package com.finalproject.secondhand.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 @Setter
 @Getter
 @Entity
-@Table(name = "products")
-public class Products implements Serializable {
+@EntityListeners(AuditingEntityListener.class)
+public class Products extends BaseDate {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "product_id", nullable = false)
+    @Column(name = "product_id")
     private Integer productId;
-    @Column
+    @Column(name = "product_name")
     private String productName;
-    @Column
+    @Column(name = "category")
     private String category;
-    @Column
+    @Column(name = "price")
     private String price;
-    @Column
+    @Column(name = "description", columnDefinition = "TEXT")
     private String description;
-    @Column
+    @Column(name = "image1")
     private String image1;
-    @Column
+    @Column(name = "image2")
     private String image2;
-    @Column
+    @Column(name = "image3")
     private String image3;
-    @Column
+    @Column(name = "image4")
     private String image4;
-    @JsonBackReference
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private Users users;
+    @JsonIgnore
+//    private List<Notifications> notifications;
     @Column
     private Boolean isPublished= false;
     @Column
