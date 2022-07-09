@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Setter
 @Getter
 @Entity(name = "offers")
-public class Offers extends BaseDate {
+public class Offers {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

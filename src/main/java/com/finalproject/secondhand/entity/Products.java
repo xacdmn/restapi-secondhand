@@ -3,15 +3,13 @@ package com.finalproject.secondhand.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 
 @Setter
 @Getter
-@Entity
-@EntityListeners(AuditingEntityListener.class)
-public class Products extends BaseDate {
+@Entity (name = "products")
+public class Products {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

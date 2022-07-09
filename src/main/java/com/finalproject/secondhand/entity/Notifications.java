@@ -2,15 +2,13 @@ package com.finalproject.secondhand.entity;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
 @Setter
-@EntityListeners(AuditingEntityListener.class)
-public class Notifications extends BaseDate {
+public class Notifications {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

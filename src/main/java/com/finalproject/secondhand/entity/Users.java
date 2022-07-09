@@ -10,7 +10,7 @@ import java.util.Collection;
 @Setter
 @Getter
 @Entity
-public class Users extends BaseDate {
+public class Users {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
