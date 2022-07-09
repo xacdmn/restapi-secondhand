@@ -11,6 +11,7 @@ public interface OfferService {
 
     List<Offers> findByUser(String username);
     Offers findByOfferId(Integer offerId);
+    String whatsappSender(Integer offerId);
     void saveOffer(Offers offers);
     void updateStatusOffer(Offers body, Integer offerId);
 

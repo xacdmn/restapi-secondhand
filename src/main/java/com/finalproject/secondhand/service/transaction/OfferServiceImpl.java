@@ -30,6 +30,14 @@ public class OfferServiceImpl implements OfferService{
     }
 
     @Override
+    public String whatsappSender(Integer offerId) {
+        Offers offers = offerRepository.findByOfferId(offerId);
+        String numberPhone = offers.getUsers().getPhone();
+        String apiWhatsapp = "https://api.whatsapp.com/send?phone=";
+        return apiWhatsapp+numberPhone;
+    }
+
+    @Override
     public void saveOffer(Offers body) {
         Offers offers = new Offers();
         offers.setUsers(body.getUsers());

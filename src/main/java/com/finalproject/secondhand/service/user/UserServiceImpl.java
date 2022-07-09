@@ -26,6 +26,7 @@ public class UserServiceImpl implements UserService {
         userRepository.save(users);
     }
 
+
     private void addRoleToUsers(Users users, Collection<Roles> request) {
         List<Roles> roles = new ArrayList<>();
         if (request == null) {
@@ -36,23 +37,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<Users> findAll() {
-        return userRepository.findAll();
-    }
-
-    @Override
-    public Users findByUserId(Integer userId) {
-        return userRepository.findByUserId(userId);
-    }
-
-    @Override
     public Users findByUsername(String username) {
         return userRepository.findByUsername(username);
-    }
-
-    @Override
-    public Users findByEmail(String email) {
-        return userRepository.findByEmail(email);
     }
 
     @Override

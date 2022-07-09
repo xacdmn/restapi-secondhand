@@ -36,6 +36,12 @@ public class OfferController {
     @Autowired
     ProductService productService;
 
+    @Operation(summary = "Api whatsapp")
+    @GetMapping("show-offer/whastapp/{offerId}")
+    public ResponseEntity<?> apiWhatsapp(@PathVariable Integer offerId) {
+        return new ResponseEntity<>(offerService.whatsappSender(offerId), HttpStatus.OK);
+    }
+
     @Operation(summary = "Show offer by user")
     @GetMapping("show-offer/{offerId}")
     public ResponseEntity<WishlistResponse> showOffer(@PathVariable Integer offerId) {

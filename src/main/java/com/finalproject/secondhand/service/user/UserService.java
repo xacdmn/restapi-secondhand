@@ -13,9 +13,7 @@ public interface UserService {
     void save(SignupDto signupDto);
 
     //READ
-    List<Users> findAll();
-    Users findByUserId(Integer userId);
-    Users findByEmail(String email);
+
 
     boolean existsUsername(String username);
     boolean existsEmail(String email);
