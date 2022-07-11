@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @Entity(name = "products")
@@ -34,11 +35,13 @@ public class Products extends BaseEntity{
     @ManyToOne
     @JoinColumn(name = "user_id")
     private Users users;
-    @JsonIgnore
+//    @JsonIgnore
 //    private List<Notifications> notifications;
     @Column
     private Boolean isPublished= false;
     @Column
     private Boolean isSold= false;
+    @Column
+    private Boolean isWishlist= false;
 
 }

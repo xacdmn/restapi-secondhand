@@ -57,16 +57,21 @@ public class OfferController {
     public ResponseEntity<?> saveOffer(@RequestBody String priceNegotiated,
                                        @PathVariable (name = "productId") Integer productId,
                                        Authentication valid) {
+        Products products = productService.findProductById(productId);
         String username = valid.getName();
         Users users = userService.findByUsername(username);
-        Products products = productService.findProductById(productId);
-        Offers offers = new Offers();
-        offers.setUsers(users);
-        offers.setProduct(products);
-        offers.setPriceNegotiated(priceNegotiated);
-        offers.setStatusProcess(offers.getStatusProcess());
-        offerService.saveOffer(offers);
-        return new ResponseEntity<>("Offers Added", HttpStatus.OK);
+        if (products.getIsWishlist().equals(false)){
+            products.setIsWishlist(true);
+            Offers offers = new Offers();
+            offers.setUsers(users);
+            offers.setProduct(products);
+            offers.setPriceNegotiated(priceNegotiated);
+            offers.setStatusProcess(offers.getStatusProcess());
+            offerService.saveOffer(offers);
+            return new ResponseEntity<>("Offer Added", HttpStatus.OK);
+        }else {
+            return new ResponseEntity<>("product has been offer", HttpStatus.OK);
+        }
     }
 
     @Operation(summary = "Update status offers")
