@@ -52,7 +52,7 @@ public class HomepageController {
     }
 
     @Operation(summary = "Show homepage all products sort and filter")
-    @GetMapping("get-product-page")
+    @GetMapping("")
     public ResponseEntity<Map<String, Object>> getAllProductPage(
             @RequestParam(required = false) String productName,
             @RequestParam(required = false) Integer category,
