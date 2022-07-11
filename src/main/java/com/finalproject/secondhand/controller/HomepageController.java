@@ -35,7 +35,7 @@ public class HomepageController {
     @Autowired
     private CategoriesService categoriesService;
 
-    @Operation(summary = "Show all product")
+    @Operation(summary = "Show all product untuk pribadi")
     @GetMapping("show-products")
     public ResponseEntity<List<ProductResponse>> allProduct(){
         List<Products> product = productService.showAllProduct();
