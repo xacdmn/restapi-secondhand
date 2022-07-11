@@ -19,6 +19,7 @@ public class ProductResponse {
     String city;
     boolean isPublished;
     boolean isSold;
+    boolean isWishlist;
 
     public ProductResponse() {}
 
@@ -36,5 +37,6 @@ public class ProductResponse {
         this.city=products.getUsers().getCity();
         this.isPublished=products.getIsPublished();
         this.isSold=products.getIsSold();
+        this.isWishlist=products.getIsWishlist();
     }
 }
