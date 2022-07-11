@@ -43,7 +43,7 @@ public class HistoryController {
 
     @Operation(summary = "Find History All Product by User - wishlist")
     @GetMapping("/product-wishlist")
-    public ResponseEntity<List<OfferResponse>> findProductByUserByWishlist(Authentication valid) {
+    public ResponseEntity<List<OfferResponse>> findProductByWishlist(Authentication valid) {
         String username = valid.getName();
         List<Offers> offers = productService.findProductByWishlist(username);
         List<OfferResponse> offerRespons = offers.stream()

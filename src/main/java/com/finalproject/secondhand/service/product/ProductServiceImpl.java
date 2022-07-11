@@ -90,7 +90,8 @@ public class ProductServiceImpl implements ProductService {
     public List<Offers> findProductByWishlist(String username) {
         Users users = userRepository.findByUsername(username);
         EStatusProcess status = EStatusProcess.WAITING;
-        return offerRepository.findByUsersAndStatusProcess(users, status);
+        Products products = productRepository.findProductsByUsers(users);
+        return offerRepository.findByProductAndStatusProcess(products, status);
     }
 
     @Override
