@@ -55,7 +55,7 @@ public class OfferController {
 
     @Operation(summary = "Add offers")
     @PostMapping("add/{productId}")
-    public ResponseEntity<?> saveOffer(@RequestPart String priceNegotiated,
+    public ResponseEntity<?> saveOffer(@RequestParam String priceNegotiated,
                                        @PathVariable (name = "productId") Integer productId,
                                        Authentication valid) {
         Products products = productService.findProductById(productId);
@@ -82,18 +82,22 @@ public class OfferController {
                                                   @PathVariable ("status") String status) {
         Offers offers = offerService.findByOfferId(offerId);
         Products products = productService.findProductById(offers.getProduct().getProductId());
-        if (Objects.equals(status, "accepted")) {
-            offers.setStatusProcess(EStatusProcess.ACCEPTED);
-            products.setIsWishlist(true);
-            offerService.updateStatusOffer(products, offers, offerId);
-            return new ResponseEntity<>("Status Accepted", HttpStatus.ACCEPTED);
-        } else if (Objects.equals(status, "rejected")) {
-            offers.setStatusProcess(EStatusProcess.REJECTED);
-            products.setIsWishlist(false);
-            offerService.updateStatusOffer(products, offers, offerId);
-            return new ResponseEntity<>("Status Rejected", HttpStatus.ACCEPTED);
-        } else {
-            return new ResponseEntity<>("Status not updated", HttpStatus.FORBIDDEN);
+        if (offers.getStatusProcess().equals(EStatusProcess.WAITING)) {
+            if (Objects.equals(status, "accepted")) {
+                offers.setStatusProcess(EStatusProcess.ACCEPTED);
+                products.setIsWishlist(true);
+                offerService.updateStatusOffer(products, offers, offerId);
+                return new ResponseEntity<>("Status Accepted", HttpStatus.ACCEPTED);
+            } else if (Objects.equals(status, "rejected")) {
+                offers.setStatusProcess(EStatusProcess.REJECTED);
+                products.setIsWishlist(false);
+                offerService.updateStatusOffer(products, offers, offerId);
+                return new ResponseEntity<>("Status Rejected", HttpStatus.ACCEPTED);
+            } else {
+                return new ResponseEntity<>("Status not updated", HttpStatus.FORBIDDEN);
+            }
+        } else  {
+            return new ResponseEntity<>("Product not yet bid", HttpStatus.FORBIDDEN);
         }
     }
 
@@ -103,16 +107,20 @@ public class OfferController {
                                               @PathVariable ("status") String status) {
         Offers offers = offerService.findByOfferId(offerId);
         Products products = productService.findProductById(offers.getProduct().getProductId());
-        if (Objects.equals(status, "notSold")) {
-            products.setIsSold(false);
-            offerService.updateStatusOffer(products, offers, offerId);
-            return new ResponseEntity<>("Product status updated successfully", HttpStatus.ACCEPTED);
-        } else if (Objects.equals(status, "sold")) {
-            products.setIsSold(true);
-            offerService.updateStatusOffer(products, offers, offerId);
-            return new ResponseEntity<>("Product status updated successfully", HttpStatus.ACCEPTED);
+        if (offers.getStatusProcess().equals(EStatusProcess.ACCEPTED)) {
+            if (Objects.equals(status, "notSold")) {
+                products.setIsSold(false);
+                offerService.updateStatusOffer(products, offers, offerId);
+                return new ResponseEntity<>("Product status updated successfully", HttpStatus.ACCEPTED);
+            } else if (Objects.equals(status, "sold")) {
+                products.setIsSold(true);
+                offerService.updateStatusOffer(products, offers, offerId);
+                return new ResponseEntity<>("Product status updated successfully", HttpStatus.ACCEPTED);
+            } else {
+                return new ResponseEntity<>("Product status not updated", HttpStatus.FORBIDDEN);
+            }
         } else {
-            return new ResponseEntity<>("Product status not updated", HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("Product not accepted", HttpStatus.FORBIDDEN);
         }
     }
 }
