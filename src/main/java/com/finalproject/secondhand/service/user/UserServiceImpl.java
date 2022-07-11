@@ -5,6 +5,7 @@ import com.finalproject.secondhand.entity.Roles;
 import com.finalproject.secondhand.entity.Users;
 import com.finalproject.secondhand.repository.RoleRepository;
 import com.finalproject.secondhand.repository.UserRepository;
+import com.finalproject.secondhand.response.UserDetailResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +27,16 @@ public class UserServiceImpl implements UserService {
         userRepository.save(users);
     }
 
+    @Override
+    public Users findUserByEmail(String email) {
+        return userRepository.findUsersByEmail(email);
+    }
+
+    @Override
+    public UserDetailResponse curentUserDetail(String username) {
+        Users users = userRepository.findByUsername(username);
+        return new UserDetailResponse(users);
+    }
 
     private void addRoleToUsers(Users users, Collection<Roles> request) {
         List<Roles> roles = new ArrayList<>();

@@ -2,8 +2,8 @@ package com.finalproject.secondhand.controller;
 
 import com.finalproject.secondhand.config.security.JwtUtil;
 import com.finalproject.secondhand.dto.auth.JwtTokenDto;
-import com.finalproject.secondhand.dto.user.ChangePasswordDto;
-import com.finalproject.secondhand.dto.user.SigninDto;
+import com.finalproject.secondhand.dto.user.SigninUsernameDto;
+import com.finalproject.secondhand.dto.user.SigninEmailDto;
 import com.finalproject.secondhand.dto.user.SignupDto;
 import com.finalproject.secondhand.entity.UserDetailsImpl;
 import com.finalproject.secondhand.entity.Users;
@@ -81,12 +81,41 @@ public class AuthenticationController {
                     "\"username\":\"ellda\"," +
                     "\"password\":\"ellda123\"" +
                     "}")
-            @RequestBody SigninDto signin) {
+            @RequestBody SigninUsernameDto signin) {
         LOGGER.info("logging in");
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(signin.getUsername(),
                 signin.getPassword()));
         if (!authentication.isAuthenticated()) {
             return new ResponseEntity<>("Username or password incorrect", HttpStatus.OK);
+        }
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String token = jwtUtil.generateAccessToken(authentication);
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        LOGGER.info("User " + userDetails.getUsername() + " logged in.");
+        LOGGER.info(token);
+        List<String> roles = userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(new JwtTokenDto(token,
+                userDetails.getUserId(), userDetails.getUsername(), userDetails.getEmail(),
+                roles));
+    }
+
+    @Operation(summary = "Login user")
+    @PostMapping("/signin/email")
+    public ResponseEntity<?> signinEmail(
+            @Schema(example = "{" +
+                    "\"email\":\"ellda@gmail.com\"," +
+                    "\"password\":\"ellda123\"" +
+                    "}")
+            @RequestBody SigninEmailDto signin) {
+
+        Users users = userService.findUserByEmail(signin.getEmail());
+        LOGGER.info("logging in");
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(users.getUsername(),
+                signin.getPassword()));
+        if (!authentication.isAuthenticated()) {
+            return new ResponseEntity<>("Email or password incorrect", HttpStatus.OK);
         }
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = jwtUtil.generateAccessToken(authentication);

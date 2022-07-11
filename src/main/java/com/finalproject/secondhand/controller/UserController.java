@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.finalproject.secondhand.dto.user.ChangePasswordDto;
 import com.finalproject.secondhand.dto.user.UserUpdateDto;
 import com.finalproject.secondhand.entity.Users;
+import com.finalproject.secondhand.response.UserDetailResponse;
 import com.finalproject.secondhand.service.image.CloudinaryStorageService;
 import com.finalproject.secondhand.service.user.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -45,6 +46,19 @@ public class UserController {
 
     @Autowired
     private CloudinaryStorageService cloudinaryStorageService;
+
+    @Operation(summary = "current user")
+    @GetMapping("/current")
+    public String currentUser(Authentication authentication) {
+        return authentication.getName();
+    }
+
+    @Operation(summary = "current user details")
+    @GetMapping("/current-detail")
+    public ResponseEntity<UserDetailResponse> currentUserDetails(Authentication authentication) {
+        String username = authentication.getName();
+        return new ResponseEntity<>(userService.curentUserDetail(username), HttpStatus.OK);
+    }
 
     @Operation(summary = "Update user profil")
     @PutMapping(value = "update",
