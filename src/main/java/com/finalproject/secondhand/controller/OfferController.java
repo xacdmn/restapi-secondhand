@@ -9,7 +9,6 @@ import com.finalproject.secondhand.service.product.ProductService;
 import com.finalproject.secondhand.service.transaction.OfferService;
 import com.finalproject.secondhand.service.user.UserService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +53,7 @@ public class OfferController {
     @Operation(summary = "Add offers")
     @PostMapping(value = "add/{productId}",
             consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<?> saveOffer(@RequestBody String priceNegotiated,
+    public ResponseEntity<?> saveOffer(@ModelAttribute String priceNegotiated,
                                        @PathVariable (name = "productId") Integer productId,
                                        Authentication valid) {
         Products products = productService.findProductById(productId);
