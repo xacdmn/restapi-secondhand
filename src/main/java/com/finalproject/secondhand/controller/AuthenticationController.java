@@ -68,10 +68,10 @@ public class AuthenticationController {
             @RequestBody SignupDto signup) {
         HashMap<String, String> response = new HashMap();
         if (userService.existsUsername(signup.getUsername())) {
-            response.put(signup.getUsername(), "Error: Username already used");
+            response.put(signup.getUsername(), "Username already used");
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         } else if (userService.existsEmail(signup.getEmail())) {
-            response.put(signup.getUsername(), "Error: Email already used");
+            response.put(signup.getUsername(), "Email already used");
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
         LOGGER.info(signup.toString());
@@ -89,10 +89,15 @@ public class AuthenticationController {
                     "}")
             @RequestBody SigninUsernameDto signin) {
         LOGGER.info("logging in");
+        HashMap<String, String> response = new HashMap();
+        if (!userService.existsUsername(signin.getUsername())){
+            response.put("error", "Username or password incorrect");
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(signin.getUsername(),
                 signin.getPassword()));
         if (!authentication.isAuthenticated()) {
-            return new ResponseEntity<>("Username or password incorrect", HttpStatus.OK);
+            return new ResponseEntity<>("Username or password incorrect", HttpStatus.FORBIDDEN);
         }
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = jwtUtil.generateAccessToken(authentication);
@@ -115,9 +120,13 @@ public class AuthenticationController {
                     "\"password\":\"ellda123\"" +
                     "}")
             @RequestBody SigninEmailDto signin) {
-
-        Users users = userService.findUserByEmail(signin.getEmail());
         LOGGER.info("logging in");
+        Users users = userService.findUserByEmail(signin.getEmail());
+        HashMap<String, String> response = new HashMap();
+        if (!userService.existsUsername(signin.getEmail())){
+            response.put("error", "Email or password incorrect");
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(users.getUsername(),
                 signin.getPassword()));
         if (!authentication.isAuthenticated()) {

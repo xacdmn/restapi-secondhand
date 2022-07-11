@@ -1,4 +1,4 @@
-package com.finalproject.secondhand.config;
+package com.finalproject.secondhand.config.utils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,6 +1,6 @@
 package com.finalproject.secondhand.service.product;
 
-import com.finalproject.secondhand.config.HasLogger;
+import com.finalproject.secondhand.config.utils.HasLogger;
 import com.finalproject.secondhand.entity.Categories;
 import org.springframework.stereotype.Component;
 
