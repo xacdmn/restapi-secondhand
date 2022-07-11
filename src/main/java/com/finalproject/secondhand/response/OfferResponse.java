@@ -24,7 +24,7 @@ public class OfferResponse {
 
     public OfferResponse(Offers offers){
         this.offerId=offers.getOfferId();
-        this.ImageProfil=offers.getUsers().getImageProfil();
+        this.ImageProfil=offers.getProduct().getUsers().getImageProfil();
         this.fullname=offers.getProduct().getUsers().getFullname();
         this.city=offers.getProduct().getUsers().getCity();
         this.Image1=offers.getProduct().getImage1();
