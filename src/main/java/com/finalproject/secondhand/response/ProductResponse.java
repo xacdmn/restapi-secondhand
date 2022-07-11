@@ -34,7 +34,7 @@ public class ProductResponse {
         this.image3=products.getImage3();
         this.image4=products.getImage4();
         this.productName=products.getProductName();
-        this.category=products.getCategory();
+        this.category=products.getCategories().getName().name();
         this.price=products.getPrice();
         this.description=products.getDescription();
         this.fullname=products.getUsers().getFullname();

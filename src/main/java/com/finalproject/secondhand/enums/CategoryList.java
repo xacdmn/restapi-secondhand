@@ -1,6 +1,7 @@
 package com.finalproject.secondhand.enums;
 
-public enum ECategory {
+public enum CategoryList {
+
     Hobi("Hobi"),
     Kendaraan("Kendaraan"),
     Baju("Baju"),
@@ -9,12 +10,13 @@ public enum ECategory {
 
     private final String name;
 
-    ECategory(String name) {
+    CategoryList(String name) {
         this.name = name;
     }
 
     public String getName() {
         return name;
     }
-
 }
+
+

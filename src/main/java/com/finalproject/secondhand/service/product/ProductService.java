@@ -15,7 +15,7 @@ public interface ProductService {
 
     //Homepage
     List<Products> showAllProduct();
-    Page<Products> getAllProductPageByProductNameAndProductCategory(String productName, String productCategory, Pageable pageable);
+    Page<Products> getAllProductPageByProductNameAndProductCategory(String productName, Integer categoryId, Pageable pageable);
 
     //Validasi klik tombol jual
     String validasiProfil(String username);

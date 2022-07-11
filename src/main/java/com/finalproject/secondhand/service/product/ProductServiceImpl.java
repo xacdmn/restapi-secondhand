@@ -33,7 +33,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<Products> getAllProductPageByProductNameAndProductCategory(String productName, String category, Pageable pageable) {
+    public Page<Products> getAllProductPageByProductNameAndProductCategory(String productName, Integer category, Pageable pageable) {
         if (productName == null && category == null){
             return productRepository.findAll(pageable);
         } else if (productName == null) {
@@ -98,7 +98,7 @@ public class ProductServiceImpl implements ProductService {
     public ProductResponse save(Products body) {
         Products products = new Products();
         products.setProductName(body.getProductName());
-        products.setCategory(body.getCategory());
+        products.setCategories(body.getCategories());
         products.setPrice(body.getPrice());
         products.setDescription(body.getDescription());
         products.setImage1(body.getImage1());

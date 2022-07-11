@@ -1,7 +1,9 @@
 package com.finalproject.secondhand.controller;
 
+import com.finalproject.secondhand.entity.Categories;
 import com.finalproject.secondhand.entity.Products;
 import com.finalproject.secondhand.response.ProductResponse;
+import com.finalproject.secondhand.service.product.CategoriesService;
 import com.finalproject.secondhand.service.product.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -30,6 +32,9 @@ public class HomepageController {
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    private CategoriesService categoriesService;
+
     @Operation(summary = "Show all product")
     @GetMapping("show-products")
     public ResponseEntity<List<ProductResponse>> allProduct(){
@@ -40,11 +45,17 @@ public class HomepageController {
         return new ResponseEntity<>(productResponse, HttpStatus.OK);
     }
 
+    @Operation(summary = "List Categories")
+    @GetMapping("list-category")
+    public ResponseEntity<List<Categories>> listCategory() {
+        return new ResponseEntity<>(categoriesService.findAllCategories(), HttpStatus.OK);
+    }
+
     @Operation(summary = "Show homepage all products sort and filter")
-    @GetMapping("/get-product-page")
+    @GetMapping("get-product-page")
     public ResponseEntity<Map<String, Object>> getAllProductPage(
             @RequestParam(required = false) String productName,
-            @RequestParam(required = false) String category,
+            @RequestParam(required = false) Integer category,
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "12") int size
     ) {

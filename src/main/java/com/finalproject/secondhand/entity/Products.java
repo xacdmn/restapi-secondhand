@@ -20,7 +20,7 @@ public class Products extends BaseEntity{
     private String productName;
     @ManyToOne
     @JoinColumn(name = "category_id")
-    private Category category;
+    private Categories categories;
     @Column(name = "price")
     private String price;
     @Column(name = "description", columnDefinition = "TEXT")

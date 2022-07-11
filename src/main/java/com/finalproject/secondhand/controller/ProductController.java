@@ -3,12 +3,12 @@ package com.finalproject.secondhand.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.finalproject.secondhand.dto.product.AddProductDto;
 import com.finalproject.secondhand.dto.product.UpdateProductDto;
-import com.finalproject.secondhand.entity.Category;
+import com.finalproject.secondhand.entity.Categories;
 import com.finalproject.secondhand.entity.Products;
 import com.finalproject.secondhand.entity.Users;
 import com.finalproject.secondhand.response.ProductResponse;
 import com.finalproject.secondhand.service.image.CloudinaryStorageService;
-import com.finalproject.secondhand.service.product.CategoryService;
+import com.finalproject.secondhand.service.product.CategoriesService;
 import com.finalproject.secondhand.service.product.ProductService;
 import com.finalproject.secondhand.service.user.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -42,7 +42,7 @@ public class ProductController {
     private ProductService productService;
 
     @Autowired
-    private CategoryService categoryService;
+    private CategoriesService categoriesService;
 
     @Autowired
     private UserService userService;
@@ -61,12 +61,6 @@ public class ProductController {
     @GetMapping("{productId}")
     public ResponseEntity<ProductResponse> findProductById(Integer productId) {
         return new ResponseEntity<>(productService.findByProductId(productId), HttpStatus.OK);
-    }
-
-    @Operation(summary = "List Category")
-    @GetMapping("add")
-    public ResponseEntity<List<Category>> listCategory() {
-        return new ResponseEntity<>(categoryService.findAllCategory(), HttpStatus.OK);
     }
 
     @Operation(summary = "Preview product")
@@ -90,12 +84,12 @@ public class ProductController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        Category category = categoryService.loadCategoryById(add.getCategory());
+        Categories categories = categoriesService.loadCategoryByCategoryId(add.getCategoryId());
         String username = authentication.getName();
         Users users = userService.findByUsername(username);
         products.setUsers(users);
         products.setProductName(add.getProductName());
-        products.setCategory(category);
+        products.setCategories(categories);
         products.setPrice(add.getPrice());
         products.setDescription(add.getDescription());
         products.setIsSold(products.getIsSold());

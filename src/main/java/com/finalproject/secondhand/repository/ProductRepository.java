@@ -36,17 +36,17 @@ public interface ProductRepository extends JpaRepository<Products, Integer> {
     Page<Products> findByProductName(String productName, Pageable pageable);
 
     @Query("select  p from products p " +
-            "where p.category =:category " +
+            "where p.categories =:categoryId " +
             "and p.isPublished = true " +
             "and p.isWishlist = false " +
             "and p.isSold = false ")
-    Page<Products> findByCategory(String category, Pageable pageable);
+    Page<Products> findByCategory(Integer categoryId, Pageable pageable);
 
     @Query("select p from products p " +
             "where upper(p.productName) like upper(concat('%', ?1, '%')) " +
-            "and upper(p.category)  like upper(concat('%', ?2, '%'))" +
+            "and upper(p.categories)  like upper(concat('%', ?2, '%'))" +
             "and p.isPublished = true " +
             "and p.isWishlist = false " +
             "and p.isSold = false")
-    Page<Products> findByProductNameContainingIgnoreCaseAndCategoryIgnoreCase(String productName, String category, Pageable pageable);
+    Page<Products> findByProductNameContainingIgnoreCaseAndCategoryIgnoreCase(String productName, Integer categoryId, Pageable pageable);
 }
