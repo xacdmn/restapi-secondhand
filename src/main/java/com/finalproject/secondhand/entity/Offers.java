@@ -1,15 +1,15 @@
 package com.finalproject.secondhand.entity;
 
 import com.finalproject.secondhand.enums.EStatusProcess;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 
-@Setter
-@Getter
+@Data
 @Entity(name = "offers")
-public class Offers {
+@EqualsAndHashCode(callSuper = true)
+public class Offers extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

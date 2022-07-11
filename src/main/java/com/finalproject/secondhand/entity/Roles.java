@@ -5,10 +5,10 @@ import lombok.*;
 
 import javax.persistence.*;
 
-@Setter
-@Getter
+@Data
 @Entity(name = "roles")
-public class Roles {
+@EqualsAndHashCode(callSuper = true)
+public class Roles extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "role_id", nullable = false)

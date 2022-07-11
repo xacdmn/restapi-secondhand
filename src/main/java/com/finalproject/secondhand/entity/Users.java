@@ -1,16 +1,16 @@
 package com.finalproject.secondhand.entity;
 
 import com.finalproject.secondhand.dto.user.SignupDto;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 import java.util.Collection;
 
-@Setter
-@Getter
-@Entity
-public class Users {
+@Data
+@Entity(name = "users")
+@EqualsAndHashCode(callSuper = true)
+public class Users extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

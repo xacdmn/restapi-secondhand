@@ -1,15 +1,15 @@
 package com.finalproject.secondhand.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 
-@Setter
-@Getter
-@Entity (name = "products")
-public class Products {
+@Data
+@Entity(name = "products")
+@EqualsAndHashCode(callSuper = true)
+public class Products extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
