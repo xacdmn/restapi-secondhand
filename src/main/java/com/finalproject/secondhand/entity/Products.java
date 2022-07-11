@@ -35,8 +35,13 @@ public class Products extends BaseEntity{
     @ManyToOne
     @JoinColumn(name = "user_id")
     private Users users;
-//    @JsonIgnore
-//    private List<Notifications> notifications;
+    @OneToMany(
+            mappedBy = "productId",
+            cascade = CascadeType.MERGE,
+            orphanRemoval = true
+    )
+    @JsonIgnore
+    private List<Notification> notifications;
     @Column
     private Boolean isPublished= false;
     @Column

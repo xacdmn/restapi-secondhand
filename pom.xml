@@ -87,6 +87,15 @@
 			<version>1.29.0</version>
 		</dependency>
 
+		<!-- FIREBASE -->
+		<dependency>
+			<groupId>com.google.firebase</groupId>
+			<artifactId>firebase-admin</artifactId>
+			<version>8.1.0</version>
+			<scope>runtime</scope>
+		</dependency>
+
+
 	</dependencies>
 
 	<build>

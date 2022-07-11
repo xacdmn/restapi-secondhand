@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
 import java.util.Objects;
 
 @RestController
@@ -27,8 +28,6 @@ import java.util.Objects;
 @SecurityRequirement(name = "Authorization")
 @CrossOrigin(origins = {"http://localhost:3000"}, maxAge = 3600)
 public class OfferController {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(OfferController.class);
 
     @Autowired
     OfferService offerService;
@@ -55,19 +54,18 @@ public class OfferController {
 
     @Operation(summary = "Add offers")
     @PostMapping("add/{productId}")
-    public ResponseEntity<?> saveOffer(@RequestParam String priceNegotiated,
+    public ResponseEntity<?> saveOffer(@RequestBody Map<String, Object> priceNegotiated,
                                        @PathVariable (name = "productId") Integer productId,
                                        Authentication valid) {
         Products products = productService.findProductById(productId);
         String username = valid.getName();
-        LOGGER.info(priceNegotiated);
         Users users = userService.findByUsername(username);
         if (products.getIsWishlist().equals(false)){
             products.setIsWishlist(true);
             Offers offers = new Offers();
             offers.setUsers(users);
             offers.setProduct(products);
-            offers.setPriceNegotiated(priceNegotiated);
+            offers.setPriceNegotiated(priceNegotiated.get("price").toString());
             offers.setStatusProcess(offers.getStatusProcess());
             offerService.saveOffer(offers);
             return new ResponseEntity<>("Offer Added", HttpStatus.OK);
