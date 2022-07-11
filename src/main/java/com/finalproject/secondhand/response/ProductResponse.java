@@ -3,6 +3,8 @@ package com.finalproject.secondhand.response;
 import com.finalproject.secondhand.entity.Products;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Data
 public class ProductResponse {
 
@@ -20,6 +22,8 @@ public class ProductResponse {
     boolean isPublished;
     boolean isSold;
     boolean isWishlist;
+    LocalDateTime createdAt;
+    LocalDateTime updatedAt;
 
     public ProductResponse() {}
 
@@ -38,5 +42,7 @@ public class ProductResponse {
         this.isPublished=products.getIsPublished();
         this.isSold=products.getIsSold();
         this.isWishlist=products.getIsWishlist();
+        this.createdAt=products.getCreatedAt();
+        this.updatedAt=products.getUpdatedAt();
     }
 }

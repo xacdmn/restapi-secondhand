@@ -12,7 +12,7 @@ import lombok.Setter;
 public class AddProductDto {
 
     private String productName;
-    private String category;
+    private Integer category;
     private String price;
     private String description;
 

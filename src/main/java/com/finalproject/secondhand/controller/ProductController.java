@@ -3,10 +3,12 @@ package com.finalproject.secondhand.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.finalproject.secondhand.dto.product.AddProductDto;
 import com.finalproject.secondhand.dto.product.UpdateProductDto;
+import com.finalproject.secondhand.entity.Category;
 import com.finalproject.secondhand.entity.Products;
 import com.finalproject.secondhand.entity.Users;
 import com.finalproject.secondhand.response.ProductResponse;
 import com.finalproject.secondhand.service.image.CloudinaryStorageService;
+import com.finalproject.secondhand.service.product.CategoryService;
 import com.finalproject.secondhand.service.product.ProductService;
 import com.finalproject.secondhand.service.user.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -40,6 +42,9 @@ public class ProductController {
     private ProductService productService;
 
     @Autowired
+    private CategoryService categoryService;
+
+    @Autowired
     private UserService userService;
 
     @Autowired
@@ -56,6 +61,12 @@ public class ProductController {
     @GetMapping("{productId}")
     public ResponseEntity<ProductResponse> findProductById(Integer productId) {
         return new ResponseEntity<>(productService.findByProductId(productId), HttpStatus.OK);
+    }
+
+    @Operation(summary = "List Category")
+    @GetMapping("add")
+    public ResponseEntity<List<Category>> listCategory() {
+        return new ResponseEntity<>(categoryService.findAllCategory(), HttpStatus.OK);
     }
 
     @Operation(summary = "Preview product")
@@ -79,11 +90,12 @@ public class ProductController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        Category category = categoryService.loadCategoryById(add.getCategory());
         String username = authentication.getName();
         Users users = userService.findByUsername(username);
         products.setUsers(users);
         products.setProductName(add.getProductName());
-        products.setCategory(add.getCategory());
+        products.setCategory(category);
         products.setPrice(add.getPrice());
         products.setDescription(add.getDescription());
         products.setIsSold(products.getIsSold());

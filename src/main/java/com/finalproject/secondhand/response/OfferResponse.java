@@ -4,6 +4,8 @@ import com.finalproject.secondhand.entity.Offers;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Data
 @AllArgsConstructor
 public class OfferResponse {
@@ -17,6 +19,8 @@ public class OfferResponse {
     String price;
     String priceNegotiated;
     String statusProcess;
+    LocalDateTime createdAt;
+    LocalDateTime updatedAt;
 
     public OfferResponse() {}
 
@@ -30,6 +34,8 @@ public class OfferResponse {
         this.price=offers.getProduct().getPrice();
         this.priceNegotiated=offers.getPriceNegotiated();
         this.statusProcess=offers.getStatusProcess().name();
+        this.createdAt=offers.getCreatedAt();
+        this.updatedAt=offers.getUpdatedAt();
     }
 
 }

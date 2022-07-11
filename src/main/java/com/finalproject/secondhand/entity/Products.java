@@ -18,8 +18,9 @@ public class Products extends BaseEntity{
     private Integer productId;
     @Column(name = "product_name")
     private String productName;
-    @Column(name = "category")
-    private String category;
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
     @Column(name = "price")
     private String price;
     @Column(name = "description", columnDefinition = "TEXT")
