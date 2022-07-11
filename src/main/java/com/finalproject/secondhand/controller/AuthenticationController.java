@@ -74,7 +74,7 @@ public class AuthenticationController {
         return new ResponseEntity<>("User Registered", HttpStatus.CREATED);
     }
 
-    @Operation(summary = "Login user")
+    @Operation(summary = "Login user with username")
     @PostMapping("/signin")
     public ResponseEntity<?> signin(
             @Schema(example = "{" +
@@ -101,7 +101,7 @@ public class AuthenticationController {
                 roles));
     }
 
-    @Operation(summary = "Login user")
+    @Operation(summary = "Login user with email")
     @PostMapping("/signin/email")
     public ResponseEntity<?> signinEmail(
             @Schema(example = "{" +
