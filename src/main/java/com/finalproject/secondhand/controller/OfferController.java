@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -51,7 +52,8 @@ public class OfferController {
     }
 
     @Operation(summary = "Add offers")
-    @PostMapping("add/{productId}")
+    @PostMapping(value = "add/{productId}",
+            consumes = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<?> saveOffer(@RequestBody String priceNegotiated,
                                        @PathVariable (name = "productId") Integer productId,
                                        Authentication valid) {
