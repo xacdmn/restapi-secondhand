@@ -11,9 +11,10 @@ import com.finalproject.secondhand.service.user.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +27,8 @@ import java.util.Objects;
 @SecurityRequirement(name = "Authorization")
 @CrossOrigin(origins = {"http://localhost:3000"}, maxAge = 3600)
 public class OfferController {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(OfferController.class);
 
     @Autowired
     OfferService offerService;
@@ -51,13 +54,13 @@ public class OfferController {
     }
 
     @Operation(summary = "Add offers")
-    @PostMapping(value = "add/{productId}",
-            consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<?> saveOffer(@ModelAttribute String priceNegotiated,
+    @PostMapping("add/{productId}")
+    public ResponseEntity<?> saveOffer(@RequestPart String priceNegotiated,
                                        @PathVariable (name = "productId") Integer productId,
                                        Authentication valid) {
         Products products = productService.findProductById(productId);
         String username = valid.getName();
+        LOGGER.info(priceNegotiated);
         Users users = userService.findByUsername(username);
         if (products.getIsWishlist().equals(false)){
             products.setIsWishlist(true);
@@ -78,13 +81,16 @@ public class OfferController {
     public ResponseEntity<?> updateStatusProcess(@PathVariable ("offerId") Integer offerId,
                                                   @PathVariable ("status") String status) {
         Offers offers = offerService.findByOfferId(offerId);
+        Products products = productService.findProductById(offers.getProduct().getProductId());
         if (Objects.equals(status, "accepted")) {
             offers.setStatusProcess(EStatusProcess.ACCEPTED);
-            offerService.updateStatusOffer(offers,offerId);
+            products.setIsWishlist(true);
+            offerService.updateStatusOffer(products, offers, offerId);
             return new ResponseEntity<>("Status Accepted", HttpStatus.ACCEPTED);
         } else if (Objects.equals(status, "rejected")) {
             offers.setStatusProcess(EStatusProcess.REJECTED);
-            offerService.updateStatusOffer(offers,offerId);
+            products.setIsWishlist(false);
+            offerService.updateStatusOffer(products, offers, offerId);
             return new ResponseEntity<>("Status Rejected", HttpStatus.ACCEPTED);
         } else {
             return new ResponseEntity<>("Status not updated", HttpStatus.FORBIDDEN);
@@ -99,11 +105,11 @@ public class OfferController {
         Products products = productService.findProductById(offers.getProduct().getProductId());
         if (Objects.equals(status, "notSold")) {
             products.setIsSold(false);
-            offerService.updateStatusOffer(offers,offerId);
+            offerService.updateStatusOffer(products, offers, offerId);
             return new ResponseEntity<>("Product status updated successfully", HttpStatus.ACCEPTED);
         } else if (Objects.equals(status, "sold")) {
             products.setIsSold(true);
-            offerService.updateStatusOffer(offers,offerId);
+            offerService.updateStatusOffer(products, offers, offerId);
             return new ResponseEntity<>("Product status updated successfully", HttpStatus.ACCEPTED);
         } else {
             return new ResponseEntity<>("Product status not updated", HttpStatus.FORBIDDEN);

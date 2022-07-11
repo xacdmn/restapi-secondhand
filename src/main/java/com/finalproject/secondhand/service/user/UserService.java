@@ -5,6 +5,8 @@ import com.finalproject.secondhand.entity.Users;
 import com.finalproject.secondhand.response.UserDetailResponse;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public interface UserService {
 
@@ -12,6 +14,7 @@ public interface UserService {
     void save(SignupDto signupDto);
 
     //READ
+    List<Users> findAll();
     Users findUserByEmail(String email);
     UserDetailResponse curentUserDetail(String username);
 

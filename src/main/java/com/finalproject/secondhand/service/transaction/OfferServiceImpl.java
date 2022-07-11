@@ -1,9 +1,11 @@
 package com.finalproject.secondhand.service.transaction;
 
 import com.finalproject.secondhand.entity.Offers;
+import com.finalproject.secondhand.entity.Products;
 import com.finalproject.secondhand.entity.Users;
 import com.finalproject.secondhand.enums.EStatusProcess;
 import com.finalproject.secondhand.repository.OfferRepository;
+import com.finalproject.secondhand.repository.ProductRepository;
 import com.finalproject.secondhand.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,9 @@ public class OfferServiceImpl implements OfferService{
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    ProductRepository productRepository;
 
     @Override
     public List<Offers> findByUser(String username) {
@@ -53,9 +58,8 @@ public class OfferServiceImpl implements OfferService{
     }
 
     @Override
-    public void updateStatusOffer(Offers body, Integer offerId) {
-        Offers offers = offerRepository.findByOfferId(offerId);
-        offers.setStatusProcess(body.getStatusProcess());
-        offerRepository.save(offers);
+    public void updateStatusOffer(Products body1, Offers body2, Integer offerId) {
+        productRepository.save(body1);
+        offerRepository.save(body2);
     }
 }

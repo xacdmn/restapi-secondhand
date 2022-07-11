@@ -50,6 +50,12 @@ public class AuthenticationController {
     @Autowired
     private JwtUtil jwtUtil;
 
+    @Operation(summary = "Hanya untuk pribadi cek user")
+    @GetMapping("/list-user")
+    public List<Users> listAll() {
+        return userService.findAll();
+    }
+
     @Operation(summary = "Registers a new user")
     @PostMapping("/signup")
     public ResponseEntity<?> signup(

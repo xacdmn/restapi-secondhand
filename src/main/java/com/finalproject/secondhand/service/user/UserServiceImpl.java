@@ -28,6 +28,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<Users> findAll() {
+        return userRepository.findAll();
+    }
+
+    @Override
     public Users findUserByEmail(String email) {
         return userRepository.findUsersByEmail(email);
     }
