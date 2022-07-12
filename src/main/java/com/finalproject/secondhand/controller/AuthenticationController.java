@@ -18,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -92,11 +91,12 @@ public class AuthenticationController {
         LOGGER.info("logging in");
         HashMap<String, String> response = new HashMap();
         if (!userService.existsUsername(signin.getUsername())){
-            response.put("error", "Username or password incorrect");
+            response.put("error", "user not found");
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
         if (!passwordEncoder.matches(signin.getPassword(), userService.findByUsername(signin.getUsername()).getPassword())) {
-            throw new BadCredentialsException("Password incorrect");
+            response.put("error", "Password incorrect");
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(signin.getUsername(),
                 signin.getPassword()));
@@ -128,11 +128,12 @@ public class AuthenticationController {
         Users users = userService.findUserByEmail(signin.getEmail());
         HashMap<String, String> response = new HashMap();
         if (!userService.existsEmail(signin.getEmail())){
-            response.put("error", "Email or password incorrect");
+            response.put("error", "User not found");
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
         if (!passwordEncoder.matches(signin.getPassword(), userService.findByUsername(users.getUsername()).getPassword())) {
-            throw new BadCredentialsException("Password incorrect");
+            response.put("error", "Password incorrect");
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(users.getUsername(),
                 signin.getPassword()));
