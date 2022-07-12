@@ -69,7 +69,7 @@ public class ProductController {
                     MediaType.MULTIPART_FORM_DATA_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<?> saveProduct( @RequestPart (required = false) String addJson,
-                                          @RequestPart (required = false) MultipartFile[] image,
+                                          @RequestPart (name = "image", required = false) MultipartFile[] image,
                                           @PathVariable String isPublished, Authentication authentication) {
         Products products = new Products();
         if (isPublished.equals("preview")) {
@@ -132,7 +132,7 @@ public class ProductController {
             consumes = {MediaType.APPLICATION_JSON_VALUE,
                     MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<?> updateProduct(@RequestPart(required = false) String updateJson,
-                                           @RequestPart(required = false) List<MultipartFile> image,
+                                           @RequestPart(name = "image", required = false) List<MultipartFile> image,
                                            @PathVariable Integer productId) {
         Products products = new Products();
         UpdateProductDto update = new UpdateProductDto();

@@ -59,7 +59,7 @@ public class UserController {
                         MediaType.MULTIPART_FORM_DATA_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Users> updateUsers(@RequestPart (required = false) String updateJson,
-                                             @RequestPart (required = false) MultipartFile imageProfil,
+                                             @RequestPart (name = "imageProfil", required = false) MultipartFile imageProfil,
                                              Authentication authentication) {
         String username = authentication.getName();
         Users users = new Users();

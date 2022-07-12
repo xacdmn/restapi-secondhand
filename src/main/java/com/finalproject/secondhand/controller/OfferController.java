@@ -53,10 +53,10 @@ public class OfferController {
 
     @Operation(summary = "Add offers")
     @PostMapping("add/{productId}")
-    public ResponseEntity<?> saveOffer(@Schema (example = "{\n" + "  \"price\": \"250000\"\n" + "}")
-                                           @RequestBody Map<String, Object> priceNegotiated,
-                                       @PathVariable (name = "productId") Integer productId,
-                                       Authentication valid) {
+    public ResponseEntity<?> saveOffer(
+            @Schema (example = "{\n" + "  \"price\": \"250000\"\n" + "}")
+            @RequestBody Map<String, Object> priceNegotiated,
+            @PathVariable (name = "productId") Integer productId, Authentication valid) {
         Products products = productService.findProductById(productId);
         String username = valid.getName();
         Users users = userService.findByUsername(username);
