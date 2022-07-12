@@ -10,11 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 public interface UserRepository extends JpaRepository<Users, Integer> {
 
     Users findUsersByEmail(String email);
-    Users findUsersByUserId(Integer id);
     Users findByUsername(String username);
     Boolean existsByEmail(String email);
     Boolean existsByUsername(String username);
-
 
 }
 
