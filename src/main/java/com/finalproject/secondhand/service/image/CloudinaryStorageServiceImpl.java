@@ -5,7 +5,6 @@ import com.cloudinary.utils.ObjectUtils;
 import com.finalproject.secondhand.result.DataResult;
 import com.finalproject.secondhand.result.ErrorDataResult;
 import com.finalproject.secondhand.result.SuccessDataResult;
-import com.finalproject.secondhand.service.image.CloudinaryStorageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -34,6 +33,14 @@ public class CloudinaryStorageServiceImpl implements CloudinaryStorageService {
 
     @Override
     public DataResult<?> delete(String publicIdOfImage) {
-        return null;
+
+        try {
+            Map<?, ?> deleteResult = cloudinary.uploader().destroy(publicIdOfImage, ObjectUtils.emptyMap());
+            return new SuccessDataResult<>(deleteResult);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new ErrorDataResult<>();
+        }
+
     }
 }

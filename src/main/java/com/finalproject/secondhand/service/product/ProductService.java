@@ -1,7 +1,11 @@
 package com.finalproject.secondhand.service.product;
 
-import com.finalproject.secondhand.dto.product.ProductDto;
+import com.finalproject.secondhand.entity.Offers;
 import com.finalproject.secondhand.entity.Products;
+import com.finalproject.secondhand.response.HistoryProductResponse;
+import com.finalproject.secondhand.response.ProductResponse;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -9,13 +13,25 @@ import java.util.List;
 @Component
 public interface ProductService {
 
-    void save(Products products);
+    //Homepage
+    List<Products> showAllProduct();
+    Page<Products> getAllProductPageByProductNameAndProductCategory(String productName, Integer categoryId, Pageable pageable);
 
-    List<Products> findAll();
-    List<Products> findByProductName(String productName);
+    //Validasi klik tombol jual
+    String validasiProfil(String username);
 
-    boolean update(ProductDto productDto);
-    boolean delete(Integer productId);
+    Products findProductById(Integer productId);
+    ProductResponse findByProductId(Integer productId);
+
+    //History
+    List<Products> findProductByUser(String username);
+    List<Products> findProductByUserByIsSold(String username);
+    List<Offers> findProductByWishlist(String username);
+
+    // C R U D
+    ProductResponse save(Products body);
+    void publish(Products body, Integer productId);
+    void update(Products body, Integer productId);
+    String deleteProduct(Integer productId);
 
 }
-

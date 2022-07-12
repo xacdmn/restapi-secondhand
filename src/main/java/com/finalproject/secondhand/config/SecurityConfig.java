@@ -6,7 +6,6 @@ import com.finalproject.secondhand.service.user.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -32,7 +31,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private AuthEntryPointJwt unauthorizedHandler;
 
     @Override
-    public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
+    public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception{
         authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
 
@@ -56,11 +55,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
                 .antMatchers("/api/auth/**").permitAll()
-                .antMatchers("/api/user/**").permitAll()
+                .antMatchers("/api/homepage/**").permitAll()
                 .antMatchers("/api/seller/**").hasAuthority(ERole.SELLER.name())
                 .antMatchers("/api/buyer/**").hasAuthority(ERole.BUYER.name())
-                .antMatchers(HttpMethod.POST, "/api/product/**").hasAnyAuthority(ERole.SELLER.name(),ERole.BUYER.name())
-                .antMatchers(HttpMethod.GET, "/api/product/**").permitAll()
+                .antMatchers("/api/user/**").hasAnyAuthority(ERole.SELLER.name(),ERole.BUYER.name())
+                .antMatchers("/api/product/**").hasAnyAuthority(ERole.SELLER.name(),ERole.BUYER.name())
+                .antMatchers("/api/offer/**").hasAnyAuthority(ERole.SELLER.name(),ERole.BUYER.name())
                 .anyRequest().authenticated();
 
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
@@ -82,5 +82,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 }

@@ -1,17 +1,16 @@
 package com.finalproject.secondhand.entity;
 
 import com.finalproject.secondhand.dto.user.SignupDto;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Collection;
 
-@Setter
-@Getter
+@Data
 @Entity(name = "users")
-public class Users implements Serializable {
+@EqualsAndHashCode(callSuper = true)
+public class Users extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,11 +18,11 @@ public class Users implements Serializable {
     private Integer userId;
     @Column(name = "fullname")
     private String fullname;
-    @Column(name = "username")
+    @Column(name = "username", nullable = false)
     private String username;
-    @Column(name = "email")
+    @Column(name = "email", nullable = false)
     private String email;
-    @Column(name = "password")
+    @Column(name = "password", nullable = false)
     private String password;
     @Column(name = "city")
     private String city;

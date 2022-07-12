@@ -1,43 +1,53 @@
 package com.finalproject.secondhand.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.finalproject.secondhand.enums.EStatusProduct;
-import lombok.Getter;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
+import java.util.List;
 
-@Setter
-@Getter
+@Data
 @Entity(name = "products")
-public class Products {
+@EqualsAndHashCode(callSuper = true)
+public class Products extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
+    @Column(name = "product_id")
     private Integer productId;
-    @Column
+    @Column(name = "product_name")
     private String productName;
-    @Column
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Categories categories;
+    @Column(name = "price")
     private String price;
-    @Column
+    @Column(name = "description", columnDefinition = "TEXT")
     private String description;
-    @Column
+    @Column(name = "image1")
     private String image1;
-    @Column
+    @Column(name = "image2")
     private String image2;
-    @Column
+    @Column(name = "image3")
     private String image3;
-    @Column
+    @Column(name = "image4")
     private String image4;
-    @JsonBackReference
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private Users users;
+    @OneToMany(
+            mappedBy = "productId",
+            cascade = CascadeType.MERGE,
+            orphanRemoval = true
+    )
+    @JsonIgnore
+    private List<Notification> notifications;
     @Column
-    private String category;
+    private Boolean isPublished= false;
     @Column
-    @Enumerated(EnumType.ORDINAL)
-    private EStatusProduct statusProduct= EStatusProduct.DIBUAT;
+    private Boolean isSold= false;
+    @Column
+    private Boolean isWishlist= false;
 
 }

@@ -1,26 +1,29 @@
 package com.finalproject.secondhand.controller;
 
-import com.finalproject.secondhand.dto.product.ProductDto;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.finalproject.secondhand.dto.product.AddProductDto;
+import com.finalproject.secondhand.dto.product.UpdateProductDto;
+import com.finalproject.secondhand.entity.Categories;
 import com.finalproject.secondhand.entity.Products;
 import com.finalproject.secondhand.entity.Users;
-import com.finalproject.secondhand.repository.ProductRepository;
+import com.finalproject.secondhand.response.ProductResponse;
 import com.finalproject.secondhand.service.image.CloudinaryStorageService;
+import com.finalproject.secondhand.service.product.CategoriesService;
 import com.finalproject.secondhand.service.product.ProductService;
 import com.finalproject.secondhand.service.user.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.*;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -28,15 +31,19 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
+@Tag(name = "Product", description = "API for processing CRUD Products")
 @RequestMapping("/api/product/")
 @SecurityRequirement(name = "Authorization")
-@CrossOrigin(origins = {"*"}, maxAge = 3600)
+@CrossOrigin(origins = {"http://localhost:3000"}, maxAge = 3600)
 public class ProductController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ProductController.class);
 
     @Autowired
     private ProductService productService;
+
+    @Autowired
+    private CategoriesService categoriesService;
 
     @Autowired
     private UserService userService;
@@ -47,86 +54,131 @@ public class ProductController {
     @Autowired
     private CloudinaryStorageService cloudinaryStorageService;
 
-    @Operation(summary = "List all product")
-    @GetMapping("find-all")
-    public ResponseEntity<List<Products>> findAll() {
-        return new ResponseEntity<>(productService.findAll(), HttpStatus.OK);
+    @Operation(summary = "Validasi profil")
+    @GetMapping("/sell")
+    public ResponseEntity<?> validasiProfil(Authentication valid) {
+        String username = valid.getName();
+        return new ResponseEntity<>(productService.validasiProfil(username), HttpStatus.OK);
     }
 
-    @Operation(summary = "Add product")
-    @PostMapping(value = "add",
-            consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},
+    @Operation(summary = "Find product by productId")
+    @GetMapping("{productId}")
+    public ResponseEntity<ProductResponse> findProductById(Integer productId) {
+        return new ResponseEntity<>(productService.findByProductId(productId), HttpStatus.OK);
+    }
+
+    @Operation(summary = "Preview product")
+    @PostMapping(value = "add/{isPublished}",
+            consumes = {MediaType.APPLICATION_JSON_VALUE,
+                    MediaType.MULTIPART_FORM_DATA_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<?> addProduct(@ModelAttribute ProductDto productDto, Authentication authentication) {
+    public ResponseEntity<?> saveProduct( @RequestPart (required = false) String addJson,
+                                          @RequestPart (required = false) MultipartFile[] image,
+                                          @PathVariable String isPublished, Authentication authentication) {
+        Products products = new Products();
+        if (isPublished.equals("preview")) {
+            products.setIsPublished(products.getIsPublished());
+        } else if (isPublished.equals("publish")) {
+            products.setIsPublished(true);
+        }
+        AddProductDto add = new AddProductDto();
+        try {
+            ObjectMapper om = new ObjectMapper();
+            add = om.readValue(addJson, AddProductDto.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Categories categories = categoriesService.loadCategoryByCategoryId(add.getCategoryId());
         String username = authentication.getName();
         Users users = userService.findByUsername(username);
-        Products products = new Products();
+        products.setUsers(users);
+        products.setProductName(add.getProductName());
+        products.setCategories(categories);
+        products.setPrice(add.getPrice());
+        products.setDescription(add.getDescription());
+        products.setIsSold(products.getIsSold());
         List<String> urlImage = new ArrayList<>();
-        for (int i = 0; i < productDto.getImageProfil().size(); i++) {
-            Map<?, ?> uploadImage = (Map<?, ?>) cloudinaryStorageService.upload(productDto.getImageProfil().get(i)).getData();
-            urlImage.add(i, uploadImage.get("url").toString());
-            LOGGER.info(urlImage.get(i));
-            if (urlImage.get(i).isEmpty()) {
-                LOGGER.info("skip upload...");
-            } else {
-                if (products.getImage1() == null) {
-                    products.setImage1(urlImage.get(i));
-                } else if (products.getImage2() == null) {
-                    products.setImage2(urlImage.get(i));
-                } else if (products.getImage3() == null) {
-                    products.setImage3(urlImage.get(i));
-                } else if (products.getImage4() == null) {
-                    products.setImage4(urlImage.get(i));
+        if (image == null) {
+            LOGGER.info("skip upload...");
+        } else {
+            for (int i = 0; i < image.length; i++) {
+                Map<?, ?> uploadImage = (Map<?, ?>) cloudinaryStorageService.upload(image[i]).getData();
+                urlImage.add(i, uploadImage.get("url").toString());
+                if (urlImage.get(i) == null) {
+                    LOGGER.info("skip upload...");
+                } else {
+                    if (products.getImage1() == null) {
+                        products.setImage1(urlImage.get(i));
+                    } else if (products.getImage2() == null) {
+                        products.setImage2(urlImage.get(i));
+                    } else if (products.getImage3() == null) {
+                        products.setImage3(urlImage.get(i));
+                    } else if (products.getImage4() == null) {
+                        products.setImage4(urlImage.get(i));
+                    }
                 }
             }
         }
-        products.setUsers(users);
-        products.setProductName(productDto.getProductName());
-        products.setPrice(productDto.getPrice().toString());
-        products.setDescription(productDto.getDescription());
-        productService.save(products);
-        return new ResponseEntity<>("Product added", HttpStatus.CREATED);
+        return new ResponseEntity<>(productService.save(products), HttpStatus.CREATED);
     }
 
-    @GetMapping("/get-home-page")
-    public Page<Products> pagePagination(
-            @RequestParam("page") int page,
-            @RequestParam("size") int size) {
-        return productRepository.findAll(PageRequest.of(page, size));
+    @Operation(summary = "Publish product")
+    @PutMapping("update/publish/{productId})")
+    public ResponseEntity<?> publishProduct(@PathVariable Integer productId) {
+        Products products = new Products();
+        products.setIsPublished(true);
+        productService.publish(products, productId);
+        return new ResponseEntity<>("Product published successfully", HttpStatus.ACCEPTED);
     }
 
-    @GetMapping("/find-product")
-    public Page<Products> findProduct(
-            @RequestParam(defaultValue = "", required = false) String productName,
-            @RequestParam(defaultValue = "", required = false) String category,
-            @RequestParam(defaultValue = "0", required = false) BigInteger priceMin,
-            @RequestParam(defaultValue = "9999999999", required = false) BigInteger priceMax,
-            @RequestParam(defaultValue = "productName,asc", required = false) String[] sort,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "5") int size) {
-        List<Order> orders = new ArrayList<>();
-        if (sort[0].contains(",")) {
-            for (String sortOrder : sort) {
-                String[] _sort = sortOrder.split(",");
-                orders.add(new Order(Direction.fromString(_sort[1]), _sort[0]));
-            }
-        } else {
-            orders.add(new Order(Direction.fromString(sort[1]), sort[0]));
+    @Operation(summary = "Edit product by productId")
+    @PutMapping(value = "update/{productId}",
+            consumes = {MediaType.APPLICATION_JSON_VALUE,
+                    MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<?> updateProduct(@RequestPart(required = false) String updateJson,
+                                           @RequestPart(required = false) List<MultipartFile> image,
+                                           @PathVariable Integer productId) {
+        Products products = new Products();
+        UpdateProductDto update = new UpdateProductDto();
+        try {
+            ObjectMapper om = new ObjectMapper();
+            update = om.readValue(updateJson, UpdateProductDto.class);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return productRepository.findByProductNameContainingIgnoreCaseAndCategoryContainingAndPriceBetween(
-                productName, category, priceMax, priceMin, PageRequest.of(page, size, Sort.by(orders)));
+        products.setProductName(update.getProductName());
+        products.setPrice(update.getPrice());
+        products.setDescription(update.getDescription());
+        List<String> urlImage = new ArrayList<>();
+        if (image == null) {
+            LOGGER.info("skip upload image");
+        } else {
+            for (int i = 0; i < image.size(); i++) {
+                Map<?, ?> uploadImage = (Map<?, ?>) cloudinaryStorageService.upload(image.get(i)).getData();
+                urlImage.add(i, uploadImage.get("url").toString());
+                LOGGER.info(String.valueOf(image));
+                if (urlImage.get(i) == null) {
+                    LOGGER.info("skip upload...");
+                } else {
+                    if (products.getImage1() == null) {
+                        products.setImage1(urlImage.get(i));
+                    } else if (products.getImage2() == null) {
+                        products.setImage2(urlImage.get(i));
+                    } else if (products.getImage3() == null) {
+                        products.setImage3(urlImage.get(i));
+                    } else if (products.getImage4() == null) {
+                        products.setImage4(urlImage.get(i));
+                    }
+                }
+            }
+        }
+        productService.update(products, productId);
+        return new ResponseEntity<>("Product is updated", HttpStatus.ACCEPTED);
+    }
+
+    @Operation(summary = "Delete product by productId")
+    @DeleteMapping("/delete/{productId}")
+    public ResponseEntity<?> deleteProduct(@PathVariable Integer productId) {
+        return new ResponseEntity<>(productService.deleteProduct(productId), HttpStatus.OK);
     }
 }
-
-//    @Operation(summary = "Edit product by id")
-//    @PutMapping("/api/product/update/{id}")
-//    public ResponseEntity<Products> updateProduct(@RequestBody ProductDto update, @PathVariable Integer id){
-//        Products products = modelMapper.map(update, Products.class);
-//        return new ResponseEntity<>(productService.updateProduct(products, id), HttpStatus.ACCEPTED);
-//    }
-
-//    @Operation(summary = "Delete product by id")
-//    @DeleteMapping("/api/product/delete/{id}")
-//    public ResponseEntity<String> deleteProduct(@PathVariable Integer id){
-//        return new ResponseEntity<>(productService.deleteById(id), HttpStatus.ACCEPTED);
-//    }

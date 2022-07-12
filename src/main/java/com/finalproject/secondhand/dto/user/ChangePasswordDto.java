@@ -5,15 +5,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.constraints.NotNull;
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserUpdateDto {
+public class ChangePasswordDto {
 
-    private String fullname;
-    private String city;
-    private String address;
-    private String phone;
+    private String oldPassword;
+    private String newPassword;
+    private String confirmPassword;
 
 }
