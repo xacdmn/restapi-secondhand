@@ -9,10 +9,9 @@ import com.finalproject.secondhand.service.product.ProductService;
 import com.finalproject.secondhand.service.transaction.OfferService;
 import com.finalproject.secondhand.service.user.UserService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -54,7 +53,8 @@ public class OfferController {
 
     @Operation(summary = "Add offers")
     @PostMapping("add/{productId}")
-    public ResponseEntity<?> saveOffer(@RequestBody Map<String, Object> priceNegotiated,
+    public ResponseEntity<?> saveOffer(@Schema (example = "{\n" + "  \"price\": \"250000\"\n" + "}")
+                                           @RequestBody Map<String, Object> priceNegotiated,
                                        @PathVariable (name = "productId") Integer productId,
                                        Authentication valid) {
         Products products = productService.findProductById(productId);
