@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
 @Tag(name = "Authentication", description = "API for Login and Register")
 @SecurityRequirement(name = "Authorization")
 @RequestMapping("/api/auth")
-@CrossOrigin(origins = {"http://localhost:3000"}, maxAge = 3600)
+@CrossOrigin(origins = {"http://localhost:3000", "https://final-project-21wa2388k-icem87.vercel.app/"}, maxAge = 3600)
 public class AuthenticationController {
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticationController.class);
 

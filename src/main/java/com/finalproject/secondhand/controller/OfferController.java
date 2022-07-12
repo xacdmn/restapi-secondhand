@@ -25,7 +25,7 @@ import java.util.Objects;
 @Tag(name = "Offer", description = "API for processing Transaction")
 @RequestMapping("/api/offer/")
 @SecurityRequirement(name = "Authorization")
-@CrossOrigin(origins = {"http://localhost:3000"}, maxAge = 3600)
+@CrossOrigin(origins = {"http://localhost:3000", "https://final-project-21wa2388k-icem87.vercel.app/"}, maxAge = 3600)
 public class OfferController {
 
     @Autowired

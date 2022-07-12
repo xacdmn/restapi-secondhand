@@ -61,6 +61,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/user/**").hasAnyAuthority(ERole.SELLER.name(),ERole.BUYER.name())
                 .antMatchers("/api/product/**").hasAnyAuthority(ERole.SELLER.name(),ERole.BUYER.name())
                 .antMatchers("/api/offer/**").hasAnyAuthority(ERole.SELLER.name(),ERole.BUYER.name())
+                .antMatchers("/api/history/**").hasAnyAuthority(ERole.SELLER.name(),ERole.BUYER.name())
                 .anyRequest().authenticated();
 
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);

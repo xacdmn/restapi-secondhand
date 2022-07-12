@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 @Tag(name = "History", description = "API for access get history user")
 @SecurityRequirement(name = "Authorization")
 @RequestMapping("/api/history/")
-@CrossOrigin(origins = {"http://localhost:3000"}, maxAge = 3600)
+@CrossOrigin(origins = {"http://localhost:3000", "https://final-project-21wa2388k-icem87.vercel.app/"}, maxAge = 3600)
 public class HistoryController {
 
     @Autowired

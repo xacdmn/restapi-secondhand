@@ -16,13 +16,16 @@ import java.util.List;
 public class OfferServiceImpl implements OfferService{
 
     @Autowired
-    OfferRepository offerRepository;
+    private OfferRepository offerRepository;
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    ProductRepository productRepository;
+    private ProductRepository productRepository;
+
+//    @Autowired
+//    private NotificationService notificationService;
 
     @Override
     public List<Offers> findByUser(String username) {

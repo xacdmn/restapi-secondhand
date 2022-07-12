@@ -1,4 +1,19 @@
 package com.finalproject.secondhand.service.transaction;
 
+import com.finalproject.secondhand.entity.Notification;
+import com.finalproject.secondhand.entity.Offers;
+import com.finalproject.secondhand.entity.Products;
+
+import java.util.List;
+
 public interface NotificationService {
+
+    void saveNotificationOffer(String info, Offers offers, Products products, String username);
+
+    void saveNotification(String title, Products products, Integer userId);
+
+    void updateIsRead(Integer id);
+
+    List<Notification> getNotification(Integer userId);
+
 }
