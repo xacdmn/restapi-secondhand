@@ -17,7 +17,7 @@ import java.util.List;
 public interface ProductRepository extends JpaRepository<Products, Integer> {
 
     List<Products> findByUsersAndIsSold(Users users, Boolean isSold);
-    Products findProductsByUsers(Users users);
+    List<Products> findByUsersAndIsWishlist(Users users, Boolean isWishlist);
 
     void deleteProductsByProductId(Integer productId);
 

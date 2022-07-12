@@ -16,16 +16,19 @@ import java.util.List;
 public class OfferServiceImpl implements OfferService{
 
     @Autowired
-    private OfferRepository offerRepository;
+    OfferRepository offerRepository;
 
     @Autowired
-    private UserRepository userRepository;
+    UserRepository userRepository;
 
     @Autowired
-    private ProductRepository productRepository;
+    ProductRepository productRepository;
 
-//    @Autowired
-//    private NotificationService notificationService;
+    @Override
+    public List<Offers> findOffersByProductUsersAndStatusProcess(Users users) {
+        EStatusProcess status = EStatusProcess.WAITING;
+        return offerRepository.findOffersByProduct_UsersAndStatusProcess(users, status);
+    }
 
     @Override
     public List<Offers> findByUser(String username) {

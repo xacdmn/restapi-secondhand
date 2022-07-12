@@ -1,10 +1,7 @@
 package com.finalproject.secondhand.service.product;
 
-import com.finalproject.secondhand.entity.Offers;
 import com.finalproject.secondhand.entity.Products;
 import com.finalproject.secondhand.entity.Users;
-import com.finalproject.secondhand.enums.EStatusProcess;
-import com.finalproject.secondhand.repository.OfferRepository;
 import com.finalproject.secondhand.repository.ProductRepository;
 import com.finalproject.secondhand.repository.UserRepository;
 import com.finalproject.secondhand.response.ProductResponse;
@@ -23,9 +20,6 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private UserRepository userRepository;
-
-    @Autowired
-    private OfferRepository offerRepository;
 
     @Override
     public List<Products> showAllProduct() {
@@ -84,14 +78,6 @@ public class ProductServiceImpl implements ProductService {
         Users users = userRepository.findByUsername(username);
         Boolean isSold = true;
         return productRepository.findByUsersAndIsSold(users, isSold);
-    }
-
-    @Override
-    public List<Offers> findProductByWishlist(String username) {
-        Users users = userRepository.findByUsername(username);
-        EStatusProcess status = EStatusProcess.WAITING;
-        Products products = productRepository.findProductsByUsers(users);
-        return offerRepository.findByProductAndStatusProcess(products, status);
     }
 
     @Override

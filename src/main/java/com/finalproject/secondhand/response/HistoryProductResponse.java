@@ -9,7 +9,7 @@ public class HistoryProductResponse {
     Integer productId;
     String image1;
     String productName;
-    String category;
+    Integer categoryId;
     String price;
     String description;
     String imageProfil;
@@ -23,7 +23,7 @@ public class HistoryProductResponse {
         this.productId=products.getProductId();
         this.image1=products.getImage1();
         this.productName=products.getProductName();
-        this.category=products.getProductName();
+        this.categoryId=products.getCategories().getId();
         this.price=products.getPrice();
         this.description=products.getDescription();
         this.imageProfil=products.getUsers().getImageProfil();

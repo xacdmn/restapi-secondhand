@@ -1,8 +1,6 @@
 package com.finalproject.secondhand.service.product;
 
-import com.finalproject.secondhand.entity.Offers;
 import com.finalproject.secondhand.entity.Products;
-import com.finalproject.secondhand.response.HistoryProductResponse;
 import com.finalproject.secondhand.response.ProductResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,7 +24,6 @@ public interface ProductService {
     //History
     List<Products> findProductByUser(String username);
     List<Products> findProductByUserByIsSold(String username);
-    List<Offers> findProductByWishlist(String username);
 
     // C R U D
     ProductResponse save(Products body);

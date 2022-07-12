@@ -29,13 +29,13 @@ import java.util.Objects;
 public class OfferController {
 
     @Autowired
-    OfferService offerService;
+    private OfferService offerService;
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @Autowired
-    ProductService productService;
+    private ProductService productService;
 
     @Operation(summary = "Api whatsapp")
     @GetMapping("show-offer/whastapp/{offerId}")
