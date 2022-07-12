@@ -10,6 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "Notification", description = "API for access notification")
 @SecurityRequirement(name = "Authorization")
 @RequestMapping("/api/notification/")
-@CrossOrigin(origins = {"http://localhost:3000", "https://final-project-21wa2388k-icem87.vercel.app/"}, maxAge = 3600)
+@CrossOrigin(origins = {"*"}, allowedHeaders = "*")
 public class NotificationController {
 }

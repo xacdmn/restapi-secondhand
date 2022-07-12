@@ -33,7 +33,7 @@ import java.util.Map;
 @Tag(name = "Product", description = "API for processing CRUD Products")
 @RequestMapping("/api/product/")
 @SecurityRequirement(name = "Authorization")
-@CrossOrigin(origins = {"http://localhost:3000", "https://final-project-21wa2388k-icem87.vercel.app/"}, maxAge = 3600)
+@CrossOrigin(origins = {"*"}, allowedHeaders = "*")
 public class ProductController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ProductController.class);
