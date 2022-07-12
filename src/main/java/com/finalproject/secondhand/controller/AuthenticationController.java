@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -94,6 +95,9 @@ public class AuthenticationController {
             response.put("error", "Username or password incorrect");
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
+        if (!passwordEncoder.matches(signin.getPassword(), userService.findByUsername(signin.getUsername()).getPassword())) {
+            throw new BadCredentialsException("Password incorrect");
+        }
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(signin.getUsername(),
                 signin.getPassword()));
         if (!authentication.isAuthenticated()) {
@@ -123,9 +127,12 @@ public class AuthenticationController {
         LOGGER.info("logging in");
         Users users = userService.findUserByEmail(signin.getEmail());
         HashMap<String, String> response = new HashMap();
-        if (!userService.existsUsername(signin.getEmail())){
+        if (!userService.existsEmail(signin.getEmail())){
             response.put("error", "Email or password incorrect");
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+        if (!passwordEncoder.matches(signin.getPassword(), userService.findByUsername(users.getUsername()).getPassword())) {
+            throw new BadCredentialsException("Password incorrect");
         }
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(users.getUsername(),
                 signin.getPassword()));

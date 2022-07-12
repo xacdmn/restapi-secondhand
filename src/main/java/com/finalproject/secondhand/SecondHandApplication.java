@@ -17,8 +17,4 @@ public class SecondHandApplication {
 		SpringApplication.run(SecondHandApplication.class, args);
 	}
 
-	@Bean
-	PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
 }

@@ -13,8 +13,8 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 public class ChangePasswordDto {
 
-    private @NotNull String oldPassword;
-    private @NotNull String newPassword;
-    private @NotNull String confirmPassword;
+    private String oldPassword;
+    private String newPassword;
+    private String confirmPassword;
 
 }

@@ -1,14 +1,12 @@
 package com.finalproject.secondhand.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.finalproject.secondhand.dto.user.ChangePasswordDto;
 import com.finalproject.secondhand.dto.user.UserUpdateDto;
 import com.finalproject.secondhand.entity.Users;
 import com.finalproject.secondhand.response.UserDetailResponse;
 import com.finalproject.secondhand.service.image.CloudinaryStorageService;
 import com.finalproject.secondhand.service.user.UserService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
@@ -17,8 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -40,9 +36,6 @@ public class UserController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    private AuthenticationManager authenticationManager;
 
     @Autowired
     private CloudinaryStorageService cloudinaryStorageService;
@@ -83,7 +76,7 @@ public class UserController {
         users.setPhone(update.getPhone());
         LOGGER.info(update.getFullname());
         if (imageProfil == null) {
-            LOGGER.info(String.valueOf(imageProfil));
+            LOGGER.info("Skip upload...");
         } else {
                 Map<?, ?> uploadImage = (Map<?, ?>) cloudinaryStorageService.upload(imageProfil).getData();
                 users.setImageProfil(uploadImage.get("url").toString());
@@ -93,24 +86,32 @@ public class UserController {
 
     @Operation(summary = "Change Password masih bug")
     @PutMapping( "change-password")
-    public ResponseEntity<?> changePassword(
-            @Schema(example = "{" +
-                    "\"oldPassword\":\"ellda123\"," +
-                    "\"newPassword\":\"baru123\"," +
-                    "\"confirmPassword\":\"baru123\"" +
-                    "}")
-            @ModelAttribute ChangePasswordDto change, Authentication valid) {
+    public ResponseEntity<?> changePassword(@RequestBody String oldPassword,
+                                            @RequestBody String newPassword,
+                                            @RequestBody String confirmPassword,
+                                            Authentication valid) {
         String username = valid.getName();
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, change.getOldPassword()));
-        if (!authentication.isAuthenticated()) {
-            return new ResponseEntity<>("Old password incorrect", HttpStatus.FORBIDDEN);
-        }
-        Users users = new Users();
-        if (change.getNewPassword().equals(change.getConfirmPassword())) {
-            users.setPassword(passwordEncoder.encode(change.getNewPassword()));
-            return new ResponseEntity<>(userService.changePassword(users, username), HttpStatus.ACCEPTED);
-        }else {
-            return new ResponseEntity<>("New password and confirm password not same", HttpStatus.FORBIDDEN);
+//        ChangePasswordDto change = new ChangePasswordDto();
+//        try {
+//            ObjectMapper om = new ObjectMapper();
+//            change = om.readValue(updateJson, ChangePasswordDto.class);
+//        }catch (Exception e){
+//            e.printStackTrace();
+//        }
+        Users users = userService.findByUsername(username);
+        if (oldPassword.isEmpty()) {
+            if (passwordEncoder.matches(oldPassword,users.getPassword())) {
+                if (newPassword.equals(confirmPassword)) {
+                    users.setPassword(passwordEncoder.encode(newPassword));
+                    return new ResponseEntity<>(userService.changePassword(users, username), HttpStatus.ACCEPTED);
+                }else {
+                    return new ResponseEntity<>("New password and confirm password not same", HttpStatus.BAD_REQUEST);
+                }
+            } else {
+                return new ResponseEntity<>("Old password incorrect", HttpStatus.BAD_REQUEST);
+            }
+        } else {
+            return new ResponseEntity<>("Old password null", HttpStatus.BAD_REQUEST);
         }
     }
 }
