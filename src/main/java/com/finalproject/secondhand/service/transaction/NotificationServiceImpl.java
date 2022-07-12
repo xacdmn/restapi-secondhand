@@ -30,10 +30,10 @@ public class NotificationServiceImpl implements NotificationService{
     private NotificationRepository notificationRepository;
 
     @Override
-    public void saveNotificationOffer(String info, Offers offers, Products products, String username) {
+    public void saveNotificationOffer(String title, String info, Offers offers, Products products, String username) {
         Notification notification = new Notification();
         Users users = userService.findByUsername(username);
-        notification.setTitle("Penawaran produk");
+        notification.setTitle(title);
         notification.setInfo(info);
         notification.setProductId(products);
         notification.setUserId(users);

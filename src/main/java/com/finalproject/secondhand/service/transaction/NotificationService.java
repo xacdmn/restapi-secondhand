@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface NotificationService {
 
-    void saveNotificationOffer(String info, Offers offers, Products products, String username);
+    void saveNotificationOffer(String title, String info, Offers offers, Products products, String username);
 
     void saveNotification(String title, Products products, Integer userId);
 
