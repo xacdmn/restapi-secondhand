@@ -5,6 +5,7 @@ import com.finalproject.secondhand.entity.Users;
 import com.finalproject.secondhand.repository.ProductRepository;
 import com.finalproject.secondhand.repository.UserRepository;
 import com.finalproject.secondhand.response.ProductResponse;
+import com.finalproject.secondhand.service.transaction.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -40,18 +41,16 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public String validasiProfil(String username) {
+    public Boolean validasiProfil(String username) {
         Users validasi = userRepository.findByUsername(username);
-        if (validasi.getFullname().length() > 0) {
-            if (validasi.getCity().length() > 0) {
-                if (validasi.getAddress().length() > 0) {
-                    if (validasi.getPhone().length() > 0) {
-                        return "User profil is complete";
-                    }
+        if (validasi.getFullname() != null) {
+            if (validasi.getCity() != null) {
+                if (validasi.getAddress() != null) {
+                    return validasi.getPhone() != null;
                 }
             }
         }
-        return "User profil not complete";
+        return false;
     }
 
 

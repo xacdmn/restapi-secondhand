@@ -11,13 +11,13 @@ import java.util.List;
 @Component
 public interface NotificationService {
 
-    void saveNotification(String title, String info, Offers offersId, Products productsId, Users usersId,
-                          Boolean isRead);
-    void saveNotification(String title, Products productsId, String username);
+    void saveNotificationOffer(String title, String info, Offers offersId, Products productsId, Users users,
+                               Boolean isRead);
+    void saveNotificationProduct(String title, Products productsId, Users users);
 
     void updateIsRead(Integer id);
 
-    List<Notification> getNotification(Integer userId);
+    List<Notification> getNotification(Users users);
 
 
 }

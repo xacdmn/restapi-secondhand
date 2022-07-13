@@ -8,6 +8,9 @@ public class HistoryProductResponse {
 
     Integer productId;
     String image1;
+    String image2;
+    String image3;
+    String image4;
     String productName;
     Integer categoryId;
     String price;
@@ -16,8 +19,6 @@ public class HistoryProductResponse {
     String fullname;
     String city;
     boolean isSold;
-
-    public HistoryProductResponse() {}
 
     public HistoryProductResponse(Products products) {
         this.productId=products.getProductId();

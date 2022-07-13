@@ -4,6 +4,7 @@ import com.finalproject.secondhand.entity.Products;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 public class ProductResponse {
@@ -17,6 +18,7 @@ public class ProductResponse {
     String category;
     String price;
     String description;
+    String imageProfil;
     String fullname;
     String city;
     boolean isPublished;
@@ -24,8 +26,6 @@ public class ProductResponse {
     boolean isWishlist;
     LocalDateTime createdAt;
     LocalDateTime updatedAt;
-
-    public ProductResponse() {}
 
     public ProductResponse(Products products) {
         this.productId=products.getProductId();
@@ -37,6 +37,7 @@ public class ProductResponse {
         this.category=products.getCategories().getName().name();
         this.price=products.getPrice();
         this.description=products.getDescription();
+        this.imageProfil=products.getUsers().getImageProfil();
         this.fullname=products.getUsers().getFullname();
         this.city=products.getUsers().getCity();
         this.isPublished=products.getIsPublished();

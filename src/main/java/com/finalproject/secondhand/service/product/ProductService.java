@@ -16,7 +16,7 @@ public interface ProductService {
     Page<Products> getAllProductPageByProductNameAndProductCategory(String productName, Integer categoryId, Pageable pageable);
 
     //Validasi klik tombol jual
-    String validasiProfil(String username);
+    Boolean validasiProfil(String username);
 
     Products findProductById(Integer productId);
     ProductResponse findByProductId(Integer productId);

@@ -24,25 +24,23 @@ public class NotificationServiceImpl implements NotificationService{
     private NotificationRepository notificationRepository;
 
     @Override
-    public void saveNotification(String title, String info, Offers offersId, Products productsId, Users users,
+    public void saveNotificationOffer(String title, String info, Offers offersId, Products productsId, Users users,
                                  Boolean isRead) {
-        Users user = userService.findByUsername(users.getUsername());
         Notification notification = new Notification();
         notification.setTitle(title);
         notification.setInfo(info);
         notification.setProductId(productsId);
-        notification.setUserId(user);
+        notification.setUserId(users);
         notification.setOfferId(offersId);
         notificationRepository.save(notification);
     }
 
     @Override
-    public void saveNotification(String title, Products productsId, String username) {
-        Users user = userService.findByUsername(username);
+    public void saveNotificationProduct(String title, Products productsId, Users users) {
         Notification notification = new Notification();
         notification.setTitle(title);
         notification.setProductId(productsId);
-        notification.setUserId(user);
+        notification.setUserId(users);
         notificationRepository.save(notification);
     }
 
@@ -56,8 +54,8 @@ public class NotificationServiceImpl implements NotificationService{
     }
 
     @Override
-    public List<Notification> getNotification(Integer userId) {
-        return notificationRepository.findNotif(userId);
+    public List<Notification> getNotification(Users users) {
+        return notificationRepository.findByUserId(users);
     }
 
 }
