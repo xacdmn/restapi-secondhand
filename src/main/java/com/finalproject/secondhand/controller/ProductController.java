@@ -10,6 +10,7 @@ import com.finalproject.secondhand.response.ProductResponse;
 import com.finalproject.secondhand.service.image.CloudinaryStorageService;
 import com.finalproject.secondhand.service.product.CategoriesService;
 import com.finalproject.secondhand.service.product.ProductService;
+import com.finalproject.secondhand.service.transaction.NotificationService;
 import com.finalproject.secondhand.service.user.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -48,6 +49,9 @@ public class ProductController {
     private UserService userService;
 
     @Autowired
+    private NotificationService notificationService;
+
+    @Autowired
     private CloudinaryStorageService cloudinaryStorageService;
 
     @Operation(summary = "Validasi profil")
@@ -59,7 +63,7 @@ public class ProductController {
 
     @Operation(summary = "Find product by productId")
     @GetMapping("{productId}")
-    public ResponseEntity<ProductResponse> findProductById(Integer productId) {
+    public ResponseEntity<ProductResponse> findProductById(@PathVariable ("productId") Integer productId) {
         return new ResponseEntity<>(productService.findByProductId(productId), HttpStatus.OK);
     }
 
@@ -68,54 +72,56 @@ public class ProductController {
             consumes = {MediaType.APPLICATION_JSON_VALUE,
                     MediaType.MULTIPART_FORM_DATA_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<?> saveProduct( @RequestPart (required = false) String addJson,
-                                          @RequestPart (name = "image", required = false) MultipartFile[] image,
+    public ResponseEntity<?> saveProduct( @RequestPart (name = "addJson") String addJson,
+                                          @RequestPart(name = "image") MultipartFile[] image,
                                           @PathVariable String isPublished, Authentication authentication) {
-        Products products = new Products();
-        if (isPublished.equals("preview")) {
-            products.setIsPublished(products.getIsPublished());
-        } else if (isPublished.equals("publish")) {
-            products.setIsPublished(true);
-        }
-        AddProductDto add = new AddProductDto();
-        try {
-            ObjectMapper om = new ObjectMapper();
-            add = om.readValue(addJson, AddProductDto.class);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        Categories categories = categoriesService.loadCategoryByCategoryId(add.getCategoryId());
         String username = authentication.getName();
-        Users users = userService.findByUsername(username);
-        products.setUsers(users);
-        products.setProductName(add.getProductName());
-        products.setCategories(categories);
-        products.setPrice(add.getPrice());
-        products.setDescription(add.getDescription());
-        products.setIsSold(products.getIsSold());
-        List<String> urlImage = new ArrayList<>();
-        if (image == null) {
-            LOGGER.info("skip upload...");
-        } else {
-            for (int i = 0; i < image.length; i++) {
-                Map<?, ?> uploadImage = (Map<?, ?>) cloudinaryStorageService.upload(image[i]).getData();
-                urlImage.add(i, uploadImage.get("url").toString());
-                if (urlImage.get(i) == null) {
-                    LOGGER.info("skip upload...");
-                } else {
-                    if (products.getImage1() == null) {
+        if (productService.validasiProfil(username).equals(true)) {
+            Products products = new Products();
+            AddProductDto add = new AddProductDto();
+            try {
+                ObjectMapper om = new ObjectMapper();
+                add = om.readValue(addJson, AddProductDto.class);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            Categories categories = categoriesService.loadCategoryByCategoryId(add.getCategoryId());
+            Users users = userService.findByUsername(username);
+            products.setUsers(users);
+            products.setProductName(add.getProductName());
+            products.setCategories(categories);
+            products.setPrice(add.getPrice());
+            products.setDescription(add.getDescription());
+            products.setIsSold(products.getIsSold());
+            List<String> urlImage = new ArrayList<>();
+            if (image == null) {
+                LOGGER.info("skip upload...");
+            } else {
+                for (int i = 0; i < image.length; i++) {
+                    Map<?, ?> uploadImage = (Map<?, ?>) cloudinaryStorageService.upload(image[i]).getData();
+                    urlImage.add(i, uploadImage.get("url").toString());
+                    if (urlImage.get(i) == null) {
+                        LOGGER.info("skip upload...");
+                    } else if (urlImage.get(0) != null) {
                         products.setImage1(urlImage.get(i));
-                    } else if (products.getImage2() == null) {
-                        products.setImage2(urlImage.get(i));
-                    } else if (products.getImage3() == null) {
-                        products.setImage3(urlImage.get(i));
-                    } else if (products.getImage4() == null) {
-                        products.setImage4(urlImage.get(i));
+                    } else if (urlImage.get(1) != null) {
+                        products.setImage1(urlImage.get(i));
+                    } else if (urlImage.get(2) != null) {
+                        products.setImage1(urlImage.get(i));
+                    } else if (urlImage.get(3) != null) {
+                        products.setImage1(urlImage.get(i));
                     }
                 }
             }
+            if (isPublished.equals("preview")) {
+                products.setIsPublished(products.getIsPublished());
+            } else if (isPublished.equals("publish")) {
+                notificationService.saveNotificationProduct("Produk berhasil diterbitkan", products, products.getUsers());
+                products.setIsPublished(true);
+            }
+            return new ResponseEntity<>(productService.save(products), HttpStatus.CREATED);
         }
-        return new ResponseEntity<>(productService.save(products), HttpStatus.CREATED);
+        return new ResponseEntity<>(false, HttpStatus.FORBIDDEN);
     }
 
     @Operation(summary = "Publish product")
@@ -123,6 +129,7 @@ public class ProductController {
     public ResponseEntity<?> publishProduct(@PathVariable Integer productId) {
         Products products = new Products();
         products.setIsPublished(true);
+        notificationService.saveNotificationProduct("Produk berhasil diterbitkan", products, products.getUsers());
         productService.publish(products, productId);
         return new ResponseEntity<>("Product published successfully", HttpStatus.ACCEPTED);
     }
@@ -131,8 +138,8 @@ public class ProductController {
     @PutMapping(value = "update/{productId}",
             consumes = {MediaType.APPLICATION_JSON_VALUE,
                     MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<?> updateProduct(@RequestPart(required = false) String updateJson,
-                                           @RequestPart(name = "image", required = false) List<MultipartFile> image,
+    public ResponseEntity<?> updateProduct(@RequestPart(name = "updateJson", required = false) String updateJson,
+                                           @RequestPart(name = "image", required = false) MultipartFile[] image,
                                            @PathVariable Integer productId) {
         Products products = new Products();
         UpdateProductDto update = new UpdateProductDto();
@@ -149,21 +156,22 @@ public class ProductController {
         if (image == null) {
             LOGGER.info("skip upload image");
         } else {
-            for (int i = 0; i < image.size(); i++) {
-                Map<?, ?> uploadImage = (Map<?, ?>) cloudinaryStorageService.upload(image.get(i)).getData();
+            for (int i = 0; i < image.length; i++) {
+                Map<?, ?> uploadImage = (Map<?, ?>) cloudinaryStorageService.upload(image[i]).getData();
                 urlImage.add(i, uploadImage.get("url").toString());
-                LOGGER.info(String.valueOf(image));
                 if (urlImage.get(i) == null) {
                     LOGGER.info("skip upload...");
                 } else {
-                    if (products.getImage1() == null) {
+                    if (urlImage.get(i) == null) {
+                        LOGGER.info("skip upload...");
+                    } else if (urlImage.get(0) != null) {
                         products.setImage1(urlImage.get(i));
-                    } else if (products.getImage2() == null) {
-                        products.setImage2(urlImage.get(i));
-                    } else if (products.getImage3() == null) {
-                        products.setImage3(urlImage.get(i));
-                    } else if (products.getImage4() == null) {
-                        products.setImage4(urlImage.get(i));
+                    } else if (urlImage.get(1) != null) {
+                        products.setImage1(urlImage.get(i));
+                    } else if (urlImage.get(2) != null) {
+                        products.setImage1(urlImage.get(i));
+                    } else if (urlImage.get(3) != null) {
+                        products.setImage1(urlImage.get(i));
                     }
                 }
             }
