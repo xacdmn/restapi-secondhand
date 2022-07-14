@@ -12,8 +12,9 @@ import java.util.Optional;
 @Repository
 public interface NotificationRepository extends JpaRepository<Notification, Integer> {
     Optional<Notification> findById(Integer id);
-
     List<Notification> findByUserId(Users users);
+
+    List<Notification> findNotificationByUserId(Users users);
 
     @Query(value ="select * from notification where user_id=?1 order by created_on DESC" ,
             nativeQuery = true)
