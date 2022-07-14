@@ -9,9 +9,9 @@ import java.util.List;
 
 public interface NotificationService {
 
-    void saveNotification(String title, String info, Offers offersId, Products productsId, Users usersId,
+    void saveNotificationOffer(String title, String info, Offers offersId, Products productsId, Users usersId,
                           Boolean isRead);
-    void saveNotification(String title, Products productsId, String username);
+    void saveNotificationProduct(String title, Products productsId, Users users);
 
     void updateIsRead(Integer id);
 

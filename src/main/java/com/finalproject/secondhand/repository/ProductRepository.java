@@ -10,7 +10,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
-import java.math.BigInteger;
 import java.util.List;
 
 @Repository
@@ -18,7 +17,6 @@ import java.util.List;
 public interface ProductRepository extends JpaRepository<Products, Integer> {
 
     List<Products> findByUsersAndIsSold(Users users, Boolean isSold);
-    List<Products> findByUsersAndIsWishlist(Users users, Boolean isWishlist);
     Products findProductsByProductId(Integer productId);
 
     void deleteProductsByProductId(Integer productId);
