@@ -37,13 +37,13 @@ public class OfferController {
     @Autowired
     private ProductService productService;
 
-    @Operation(summary = "Api whatsapp")
+    @Operation(summary = "Api whatsapp by status accepted")
     @GetMapping("show-offer/whastapp/{offerId}")
     public ResponseEntity<?> apiWhatsapp(@PathVariable Integer offerId) {
         return new ResponseEntity<>(offerService.whatsappSender(offerId), HttpStatus.OK);
     }
 
-    @Operation(summary = "Show offer by user")
+    @Operation(summary = "Show offer by Buyer")
     @GetMapping("show-offer/{offerId}")
     public ResponseEntity<OfferResponse> showOffer(@PathVariable Integer offerId) {
         Offers offers = offerService.findByOfferId(offerId);
@@ -74,7 +74,7 @@ public class OfferController {
         }
     }
 
-    @Operation(summary = "Update status offers")
+    @Operation(summary = "Update status offers accepted or rejected")
     @PutMapping("update/{offerId}/{status}")
     public ResponseEntity<?> updateStatusProcess(@PathVariable ("offerId") Integer offerId,
                                                   @PathVariable ("status") String status) {
@@ -99,7 +99,7 @@ public class OfferController {
         }
     }
 
-    @Operation(summary = "Update status offers")
+    @Operation(summary = "Update status offers sold or cancel tracation")
     @PutMapping("update/isSold/{offerId}/{status}")
     public ResponseEntity<?> updateStatusSold(@PathVariable ("offerId") Integer offerId,
                                               @PathVariable ("status") String status) {

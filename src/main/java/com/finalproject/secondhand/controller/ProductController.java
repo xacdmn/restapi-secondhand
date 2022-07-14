@@ -63,7 +63,7 @@ public class ProductController {
         return new ResponseEntity<>(productService.findByProductId(productId), HttpStatus.OK);
     }
 
-    @Operation(summary = "Preview product")
+    @Operation(summary = "Preview or publish product")
     @PostMapping(value = "add/{isPublished}",
             consumes = {MediaType.APPLICATION_JSON_VALUE,
                     MediaType.MULTIPART_FORM_DATA_VALUE},
@@ -119,7 +119,7 @@ public class ProductController {
         return new ResponseEntity<>(false, HttpStatus.FORBIDDEN);
     }
 
-    @Operation(summary = "Publish product")
+    @Operation(summary = "Publish product after preview")
     @PutMapping("update/publish/{productId})")
     public ResponseEntity<?> publishProduct(@PathVariable Integer productId) {
         Products products = new Products();

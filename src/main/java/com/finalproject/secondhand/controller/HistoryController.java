@@ -39,7 +39,7 @@ public class HistoryController {
     @Autowired
     private OfferService offerService;
 
-    @Operation(summary = "Find History All Product by User")
+    @Operation(summary = "Find History All Product by Seller")
     @GetMapping("/product-user")
     public ResponseEntity<List<HistoryProductResponse>> findProductByUser(Authentication valid) {
         String username = valid.getName();
@@ -50,7 +50,7 @@ public class HistoryController {
         return new ResponseEntity<>(historyProductResponses, HttpStatus.OK);
     }
 
-    @Operation(summary = "Find History All Product by User - wishlist")
+    @Operation(summary = "Find History All Product by Seller - wishlist")
     @GetMapping("/product-wishlist")
     public ResponseEntity<List<OfferResponse>> findProductByWishlist(Authentication valid) {
         String username = valid.getName();
@@ -62,7 +62,7 @@ public class HistoryController {
         return new ResponseEntity<>(offerRespons, HttpStatus.OK);
     }
 
-    @Operation(summary = "Find History All Product by User - sold")
+        @Operation(summary = "Find History All Product by Seller - sold")
     @GetMapping("/product-sold")
     public ResponseEntity<List<HistoryProductResponse>> findProductByUserBySold(Authentication valid) {
         String username = valid.getName();
