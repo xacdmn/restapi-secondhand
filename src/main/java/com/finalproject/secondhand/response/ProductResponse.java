@@ -28,17 +28,15 @@ public class ProductResponse {
 
     public ProductResponse(Products products) {
         this.productId=products.getProductId();
-        if (products.getImage1() != null) {
-            this.image1=products.getImage1();
-            if (products.getImage2() != null) {
-                this.image2=products.getImage2();
-                if (products.getImage2() != null){
-                    this.image3=products.getImage3();
-                    if (products.getImage2() != null){
-                        this.image4=products.getImage4();
-                    }
-                }
-            }
+        this.image1=products.getImage1();
+        if (products.getImage2() != null) {
+            this.image2=products.getImage2();
+        }
+        if (products.getImage3() != null){
+            this.image3=products.getImage3();
+        }
+        if (products.getImage4() != null){
+            this.image4=products.getImage4();
         }
         this.productName=products.getProductName();
         this.category=products.getCategories().getName().name();
