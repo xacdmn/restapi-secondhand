@@ -14,6 +14,10 @@ public class NotificationResponse {
     Integer offerId;
     Integer productId;
     Integer userId;
+    String image1;
+    String image2;
+    String image3;
+    String image4;
     String title;
     String info;
     String productName;
@@ -26,6 +30,16 @@ public class NotificationResponse {
         this.id=notification.getId();
         this.productId=notification.getProductId().getProductId();
         this.userId=notification.getUserId().getUserId();
+        this.image1=notification.getProductId().getImage1();
+        if (notification.getProductId().getImage2() != null){
+            this.image2=notification.getProductId().getImage2();
+        }
+        if (notification.getProductId().getImage3() != null){
+            this.image3=notification.getProductId().getImage3();
+        }
+        if (notification.getProductId().getImage4() != null){
+            this.image4=notification.getProductId().getImage4();
+        }
         this.title=notification.getTitle();
         this.info=notification.getInfo();
         this.productName=notification.getProductId().getProductName();
