@@ -117,7 +117,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void update(Products body, Integer productId) {
-        Products products = productRepository.getById(productId);
+        Products products = productRepository.findProductsByProductId(productId);
         if (body.getProductName() != null) {
             if (body.getProductName().length() > 0) {
                 products.setProductName(body.getProductName());
@@ -134,19 +134,19 @@ public class ProductServiceImpl implements ProductService {
                 products.setDescription(body.getDescription());
             }
         }
-        if (products.getImage1() != null) {
+        if (body.getImage1() != null) {
             products.setImage1(body.getImage1());
 
         }
-        if (products.getImage2() != null) {
+        if (body.getImage2()  != null) {
             products.setImage2(body.getImage2());
 
         }
-        if (products.getImage3() != null) {
+        if (body.getImage3()  != null) {
             products.setImage3(body.getImage3());
 
         }
-        if (products.getImage4() != null) {
+        if (body.getImage4()  != null) {
             products.setImage4(body.getImage4());
         }
         productRepository.save(products);

@@ -18,6 +18,7 @@ public interface ProductRepository extends JpaRepository<Products, Integer> {
 
     List<Products> findByUsersAndIsSold(Users users, Boolean isSold);
     List<Products> findByUsersAndIsWishlist(Users users, Boolean isWishlist);
+    Products findProductsByProductId(Integer productId);
 
     void deleteProductsByProductId(Integer productId);
 
