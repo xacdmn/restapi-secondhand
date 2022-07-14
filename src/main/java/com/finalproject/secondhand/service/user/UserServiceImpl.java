@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDetailResponse curentUserDetail(String username) {
-        Users users = userRepository.findByUsername(username);
+        Users users = userRepository.findUsersByUsername(username);
         return new UserDetailResponse(users);
     }
 
@@ -54,7 +54,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Users findByUsername(String username) {
-        return userRepository.findByUsername(username);
+        return userRepository.findUsersByUsername(username);
     }
 
     @Override

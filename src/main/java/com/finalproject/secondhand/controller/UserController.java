@@ -1,13 +1,13 @@
 package com.finalproject.secondhand.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.finalproject.secondhand.dto.user.ChangePasswordDto;
 import com.finalproject.secondhand.dto.user.UserUpdateDto;
 import com.finalproject.secondhand.entity.Users;
 import com.finalproject.secondhand.response.UserDetailResponse;
 import com.finalproject.secondhand.service.image.CloudinaryStorageService;
 import com.finalproject.secondhand.service.user.UserService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
@@ -21,7 +21,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.Valid;
 import java.util.Map;
 
 @RestController
@@ -87,30 +86,24 @@ public class UserController {
     }
 
     @Operation(summary = "Change Password masih bug")
-    @PutMapping( "change-password")
+    @PutMapping( value = "change-password",
+            consumes = {MediaType.APPLICATION_JSON_VALUE,
+            MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<?> changePassword(
-            @Valid
-            @Schema(example = "{" +
-                    "\"old\":\"ellda123\"," +
-                    "\"new\":\"elldabaru123\"," +
-                    "\"confirm\":\"elldabaru123\"" +
-                    "}")
-            @RequestBody Map<String, Object> oldPassword,
-            @RequestBody Map<String, Object> newPassword,
-            @RequestBody Map<String, Object> confirmPassword, Authentication valid) {
+            @RequestPart String changeJson, Authentication valid) {
         String username = valid.getName();
-//        ChangePasswordDto change = new ChangePasswordDto();
-//        try {
-//            ObjectMapper om = new ObjectMapper();
-//            change = om.readValue(updateJson, ChangePasswordDto.class);
-//        }catch (Exception e){
-//            e.printStackTrace();
-//        }
+        ChangePasswordDto change = new ChangePasswordDto();
+        try {
+            ObjectMapper om = new ObjectMapper();
+            change = om.readValue(changeJson, ChangePasswordDto.class);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         Users users = userService.findByUsername(username);
-        if (!oldPassword.get("old").toString().isEmpty()) {
-            if (passwordEncoder.matches(oldPassword.get("old").toString(),users.getPassword())) {
-                if (newPassword.get("new").toString().equals(confirmPassword.get("confirm").toString())) {
-                    users.setPassword(passwordEncoder.encode(newPassword.get("new").toString()));
+        if (change.getOldPassword() != null) {
+            if (passwordEncoder.matches(change.getOldPassword(),users.getPassword())) {
+                if (change.getNewPassword().equals(change.getConfirmPassword())) {
+                    users.setPassword(passwordEncoder.encode(change.getNewPassword()));
                     return new ResponseEntity<>(userService.changePassword(users, username), HttpStatus.ACCEPTED);
                 }else {
                     return new ResponseEntity<>("New password and confirm password not same", HttpStatus.BAD_REQUEST);
