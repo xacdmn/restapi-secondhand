@@ -38,8 +38,8 @@ public class OfferController {
     @Autowired
     private ProductService productService;
 
-    @Autowired
-    private NotificationService notificationService;
+//    @Autowired
+//    private NotificationService notificationService;
 
     @Operation(summary = "Api whatsapp")
     @GetMapping("show-offer/whastapp/{offerId}")
@@ -72,7 +72,7 @@ public class OfferController {
             offers.setPriceNegotiated(priceNegotiated.get("price").toString());
             offers.setStatusProcess(offers.getStatusProcess());
             offerService.saveOffer(offers);
-            notificationService.saveNotificationOffer("Penawaran produk", "Ada yang menawar barang anda", offers, offers.getProduct(), offers.getProduct().getUsers(), false);
+//            notificationService.saveNotificationOffer("Penawaran produk", "Ada yang menawar barang anda", offers, offers.getProduct(), offers.getProduct().getUsers(), false);
             return new ResponseEntity<>("Offer Added", HttpStatus.OK);
         }else {
             return new ResponseEntity<>("product has been offer", HttpStatus.OK);
@@ -90,13 +90,13 @@ public class OfferController {
                 offers.setStatusProcess(EStatusProcess.ACCEPTED);
                 products.setIsWishlist(true);
                 offerService.updateStatusOffer(products, offers, offerId);
-                notificationService.saveNotificationOffer("Penawaran produk", "penawaran anda telah diterima", offers, offers.getProduct(), offers.getProduct().getUsers(), false );
+//                notificationService.saveNotificationOffer("Penawaran produk", "penawaran anda telah diterima", offers, offers.getProduct(), offers.getProduct().getUsers(), false );
                 return new ResponseEntity<>("Status Accepted", HttpStatus.ACCEPTED);
             } else if (Objects.equals(status, "rejected")) {
                 offers.setStatusProcess(EStatusProcess.REJECTED);
                 products.setIsWishlist(false);
                 offerService.updateStatusOffer(products, offers, offerId);
-                notificationService.saveNotificationOffer("Penawaran produk", "penawaran anda ditolak", offers, offers.getProduct(), offers.getProduct().getUsers(), false );
+//                notificationService.saveNotificationOffer("Penawaran produk", "penawaran anda ditolak", offers, offers.getProduct(), offers.getProduct().getUsers(), false );
                 return new ResponseEntity<>("Status Rejected", HttpStatus.ACCEPTED);
             } else {
                 return new ResponseEntity<>("Status not updated", HttpStatus.FORBIDDEN);
@@ -120,7 +120,7 @@ public class OfferController {
             } else if (Objects.equals(status, "sold")) {
                 products.setIsSold(true);
                 offerService.updateStatusOffer(products, offers, offerId);
-                notificationService.saveNotificationOffer("Penawaran produk", "produk berhasil terjual", offers, offers.getProduct(), offers.getProduct().getUsers(), false );
+//                notificationService.saveNotificationOffer("Penawaran produk", "produk berhasil terjual", offers, offers.getProduct(), offers.getProduct().getUsers(), false );
                 return new ResponseEntity<>("Product status updated successfully", HttpStatus.ACCEPTED);
             } else {
                 return new ResponseEntity<>("Product status not updated", HttpStatus.FORBIDDEN);
