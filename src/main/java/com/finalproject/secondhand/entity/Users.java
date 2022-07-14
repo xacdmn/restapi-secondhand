@@ -3,6 +3,8 @@ package com.finalproject.secondhand.entity;
 import com.finalproject.secondhand.dto.user.SignupDto;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Collection;
