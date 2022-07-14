@@ -10,7 +10,6 @@ import com.finalproject.secondhand.response.ProductResponse;
 import com.finalproject.secondhand.service.image.CloudinaryStorageService;
 import com.finalproject.secondhand.service.product.CategoriesService;
 import com.finalproject.secondhand.service.product.ProductService;
-import com.finalproject.secondhand.service.transaction.NotificationService;
 import com.finalproject.secondhand.service.user.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -99,13 +98,13 @@ public class ProductController {
                     urlImage.add(i, uploadImage.get("url").toString());
                     if (urlImage.get(i) == null) {
                         LOGGER.info("skip upload...");
-                    } else if (urlImage.get(0) != null) {
+                    } else if (products.getImage1() == null) {
                         products.setImage1(urlImage.get(i));
-                    } else if (urlImage.get(1) != null) {
+                    } else if (products.getImage2() == null) {
                         products.setImage2(urlImage.get(i));
-                    } else if (urlImage.get(2) != null) {
+                    } else if (products.getImage3() == null) {
                         products.setImage3(urlImage.get(i));
-                    } else if (urlImage.get(3) != null) {
+                    } else if (products.getImage4() == null) {
                         products.setImage4(urlImage.get(i));
                     }
                 }
@@ -159,13 +158,13 @@ public class ProductController {
                 } else {
                     if (urlImage.get(i) == null) {
                         LOGGER.info("skip upload...");
-                    } else if (urlImage.get(0) != null) {
+                    } else if (products.getImage1() == null) {
                         products.setImage1(urlImage.get(i));
-                    } else if (urlImage.get(1) != null) {
+                    } else if (products.getImage2() == null) {
                         products.setImage2(urlImage.get(i));
-                    } else if (urlImage.get(2) != null) {
+                    } else if (products.getImage3() == null) {
                         products.setImage3(urlImage.get(i));
-                    } else if (urlImage.get(3) != null) {
+                    } else if (products.getImage4() == null) {
                         products.setImage4(urlImage.get(i));
                     }
                 }

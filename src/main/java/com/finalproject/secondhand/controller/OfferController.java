@@ -6,7 +6,6 @@ import com.finalproject.secondhand.entity.Users;
 import com.finalproject.secondhand.enums.EStatusProcess;
 import com.finalproject.secondhand.response.OfferResponse;
 import com.finalproject.secondhand.service.product.ProductService;
-import com.finalproject.secondhand.service.transaction.NotificationService;
 import com.finalproject.secondhand.service.transaction.OfferService;
 import com.finalproject.secondhand.service.user.UserService;
 import io.swagger.v3.oas.annotations.Operation;
