@@ -23,6 +23,15 @@ public class HistoryProductResponse {
     public HistoryProductResponse(Products products) {
         this.productId=products.getProductId();
         this.image1=products.getImage1();
+        if (products.getImage2() == null) {
+            this.image2=products.getImage2();
+        }
+        if (products.getImage3() == null) {
+            this.image3=products.getImage3();
+        }
+        if (products.getImage4() == null) {
+            this.image4=products.getImage4();
+        }
         this.productName=products.getProductName();
         this.categoryId=products.getCategories().getId();
         this.price=products.getPrice();
