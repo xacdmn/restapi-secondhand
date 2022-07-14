@@ -18,7 +18,8 @@ import java.util.List;
 public interface ProductRepository extends JpaRepository<Products, Integer> {
 
     List<Products> findByUsersAndIsSold(Users users, Boolean isSold);
-    Products findProductsByUsers(Users users);
+    List<Products> findByUsersAndIsWishlist(Users users, Boolean isWishlist);
+    Products findProductsByProductId(Integer productId);
 
     void deleteProductsByProductId(Integer productId);
 
@@ -37,7 +38,7 @@ public interface ProductRepository extends JpaRepository<Products, Integer> {
     Page<Products> findByProductName(String productName, Pageable pageable);
 
     @Query("select  p from products p " +
-            "where p.categories =:categoryId " +
+            "where p.categories.id =:categoryId " +
             "and p.isPublished = true " +
             "and p.isWishlist = false " +
             "and p.isSold = false ")

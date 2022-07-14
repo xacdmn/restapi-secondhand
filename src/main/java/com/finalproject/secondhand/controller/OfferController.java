@@ -25,17 +25,17 @@ import java.util.Objects;
 @Tag(name = "Offer", description = "API for processing Transaction")
 @RequestMapping("/api/offer/")
 @SecurityRequirement(name = "Authorization")
-@CrossOrigin(origins = {"http://localhost:3000"}, maxAge = 3600)
+@CrossOrigin(origins = {"*"}, allowedHeaders = "*")
 public class OfferController {
 
     @Autowired
-    OfferService offerService;
+    private OfferService offerService;
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @Autowired
-    ProductService productService;
+    private ProductService productService;
 
     @Operation(summary = "Api whatsapp")
     @GetMapping("show-offer/whastapp/{offerId}")
@@ -53,10 +53,10 @@ public class OfferController {
 
     @Operation(summary = "Add offers")
     @PostMapping("add/{productId}")
-    public ResponseEntity<?> saveOffer(@Schema (example = "{\n" + "  \"price\": \"250000\"\n" + "}")
-                                           @RequestBody Map<String, Object> priceNegotiated,
-                                       @PathVariable (name = "productId") Integer productId,
-                                       Authentication valid) {
+    public ResponseEntity<?> saveOffer(
+            @Schema (example = "{\n" + "  \"price\": \"250000\"\n" + "}")
+            @RequestBody Map<String, Object> priceNegotiated,
+            @PathVariable (name = "productId") Integer productId, Authentication valid) {
         Products products = productService.findProductById(productId);
         String username = valid.getName();
         Users users = userService.findByUsername(username);

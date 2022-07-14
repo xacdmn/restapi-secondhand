@@ -1,13 +1,11 @@
 package com.finalproject.secondhand.service.product;
 
-import com.finalproject.secondhand.entity.Offers;
 import com.finalproject.secondhand.entity.Products;
 import com.finalproject.secondhand.entity.Users;
-import com.finalproject.secondhand.enums.EStatusProcess;
-import com.finalproject.secondhand.repository.OfferRepository;
 import com.finalproject.secondhand.repository.ProductRepository;
 import com.finalproject.secondhand.repository.UserRepository;
 import com.finalproject.secondhand.response.ProductResponse;
+import com.finalproject.secondhand.service.transaction.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,13 +22,13 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private OfferRepository offerRepository;
-
     @Override
     public List<Products> showAllProduct() {
         return productRepository.findAll();
     }
+
+    @Autowired
+    private NotificationService notificationService;
 
     @Override
     public Page<Products> getAllProductPageByProductNameAndProductCategory(String productName, Integer category, Pageable pageable) {
@@ -46,18 +44,16 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public String validasiProfil(String username) {
+    public Boolean validasiProfil(String username) {
         Users validasi = userRepository.findByUsername(username);
-        if (validasi.getFullname().length() > 0) {
-            if (validasi.getCity().length() > 0) {
-                if (validasi.getAddress().length() > 0) {
-                    if (validasi.getPhone().length() > 0) {
-                        return "User profil is complete";
-                    }
+        if (validasi.getFullname() != null) {
+            if (validasi.getCity() != null) {
+                if (validasi.getAddress() != null) {
+                    return validasi.getPhone() != null;
                 }
             }
         }
-        return "User profil not complete";
+        return false;
     }
 
 
@@ -87,14 +83,6 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Offers> findProductByWishlist(String username) {
-        Users users = userRepository.findByUsername(username);
-        EStatusProcess status = EStatusProcess.WAITING;
-        Products products = productRepository.findProductsByUsers(users);
-        return offerRepository.findByProductAndStatusProcess(products, status);
-    }
-
-    @Override
     public ProductResponse save(Products body) {
         Products products = new Products();
         products.setProductName(body.getProductName());
@@ -109,7 +97,12 @@ public class ProductServiceImpl implements ProductService {
         products.setIsPublished(body.getIsPublished());
         products.setIsSold(body.getIsSold());
         productRepository.save(products);
-        return new ProductResponse(products);
+        if (products.getIsPublished().equals(true)) {
+            notificationService.saveNotificationProduct("Produk berhasil diterbitkan", products, products.getUsers());
+            return new ProductResponse(products);
+        } else {
+            return new ProductResponse(products);
+        }
     }
 
     @Override
@@ -117,11 +110,14 @@ public class ProductServiceImpl implements ProductService {
         Products products = productRepository.getById(productId);
         products.setIsPublished(body.getIsPublished());
         productRepository.save(products);
+        if (products.getIsPublished().equals(true)) {
+            notificationService.saveNotificationProduct("Produk berhasil diterbitkan", products, products.getUsers());
+        }
     }
 
     @Override
     public void update(Products body, Integer productId) {
-        Products products = productRepository.getById(productId);
+        Products products = productRepository.findProductsByProductId(productId);
         if (body.getProductName() != null) {
             if (body.getProductName().length() > 0) {
                 products.setProductName(body.getProductName());
@@ -138,19 +134,19 @@ public class ProductServiceImpl implements ProductService {
                 products.setDescription(body.getDescription());
             }
         }
-        if (products.getImage1() != null) {
+        if (body.getImage1() != null) {
             products.setImage1(body.getImage1());
 
         }
-        if (products.getImage2() != null) {
+        if (body.getImage2()  != null) {
             products.setImage2(body.getImage2());
 
         }
-        if (products.getImage3() != null) {
+        if (body.getImage3()  != null) {
             products.setImage3(body.getImage3());
 
         }
-        if (products.getImage4() != null) {
+        if (body.getImage4()  != null) {
             products.setImage4(body.getImage4());
         }
         productRepository.save(products);

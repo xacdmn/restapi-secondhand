@@ -2,9 +2,12 @@ package com.finalproject.secondhand.controller;
 
 import com.finalproject.secondhand.entity.Offers;
 import com.finalproject.secondhand.entity.Products;
+import com.finalproject.secondhand.entity.Users;
 import com.finalproject.secondhand.response.HistoryProductResponse;
 import com.finalproject.secondhand.response.OfferResponse;
 import com.finalproject.secondhand.service.product.ProductService;
+import com.finalproject.secondhand.service.transaction.OfferService;
+import com.finalproject.secondhand.service.user.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -24,11 +27,17 @@ import java.util.stream.Collectors;
 @Tag(name = "History", description = "API for access get history user")
 @SecurityRequirement(name = "Authorization")
 @RequestMapping("/api/history/")
-@CrossOrigin(origins = {"http://localhost:3000"}, maxAge = 3600)
+@CrossOrigin(origins = {"*"}, allowedHeaders = "*")
 public class HistoryController {
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
     private ProductService productService;
+
+    @Autowired
+    private OfferService offerService;
 
     @Operation(summary = "Find History All Product by User")
     @GetMapping("/product-user")
@@ -45,7 +54,8 @@ public class HistoryController {
     @GetMapping("/product-wishlist")
     public ResponseEntity<List<OfferResponse>> findProductByWishlist(Authentication valid) {
         String username = valid.getName();
-        List<Offers> offers = productService.findProductByWishlist(username);
+        Users users = userService.findByUsername(username);
+        List<Offers> offers = offerService.findOffersByProductUsersAndStatusProcess(users);
         List<OfferResponse> offerRespons = offers.stream()
                 .map(OfferResponse::new)
                 .collect(Collectors.toList());

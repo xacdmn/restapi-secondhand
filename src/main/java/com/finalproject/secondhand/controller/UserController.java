@@ -7,6 +7,7 @@ import com.finalproject.secondhand.response.UserDetailResponse;
 import com.finalproject.secondhand.service.image.CloudinaryStorageService;
 import com.finalproject.secondhand.service.user.UserService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
@@ -20,13 +21,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.util.Map;
 
 @RestController
 @Tag(name = "User", description = "API for processing CRUD Users")
 @RequestMapping("/api/user/")
 @SecurityRequirement(name = "Authorization")
-@CrossOrigin(origins = {"http://localhost:3000"}, maxAge = 3600)
+@CrossOrigin(origins = {"*"}, allowedHeaders = "*")
 public class UserController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
@@ -58,9 +60,9 @@ public class UserController {
             consumes = {MediaType.APPLICATION_JSON_VALUE,
                         MediaType.MULTIPART_FORM_DATA_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<Users> updateUsers(@RequestPart (required = false) String updateJson,
-                                             @RequestPart (required = false) MultipartFile imageProfil,
-                                             Authentication authentication) {
+    public ResponseEntity<Users> updateUsers(
+            @RequestPart (required = false) String updateJson,
+            @RequestPart (name = "imageProfil", required = false) MultipartFile imageProfil, Authentication authentication) {
         String username = authentication.getName();
         Users users = new Users();
         UserUpdateDto update = new UserUpdateDto();
@@ -86,10 +88,16 @@ public class UserController {
 
     @Operation(summary = "Change Password masih bug")
     @PutMapping( "change-password")
-    public ResponseEntity<?> changePassword(@RequestBody String oldPassword,
-                                            @RequestBody String newPassword,
-                                            @RequestBody String confirmPassword,
-                                            Authentication valid) {
+    public ResponseEntity<?> changePassword(
+            @Valid
+            @Schema(example = "{" +
+                    "\"old\":\"ellda123\"," +
+                    "\"new\":\"elldabaru123\"," +
+                    "\"confirm\":\"elldabaru123\"" +
+                    "}")
+            @RequestBody Map<String, Object> oldPassword,
+            @RequestBody Map<String, Object> newPassword,
+            @RequestBody Map<String, Object> confirmPassword, Authentication valid) {
         String username = valid.getName();
 //        ChangePasswordDto change = new ChangePasswordDto();
 //        try {
@@ -99,10 +107,10 @@ public class UserController {
 //            e.printStackTrace();
 //        }
         Users users = userService.findByUsername(username);
-        if (oldPassword.isEmpty()) {
-            if (passwordEncoder.matches(oldPassword,users.getPassword())) {
-                if (newPassword.equals(confirmPassword)) {
-                    users.setPassword(passwordEncoder.encode(newPassword));
+        if (!oldPassword.get("old").toString().isEmpty()) {
+            if (passwordEncoder.matches(oldPassword.get("old").toString(),users.getPassword())) {
+                if (newPassword.get("new").toString().equals(confirmPassword.get("confirm").toString())) {
+                    users.setPassword(passwordEncoder.encode(newPassword.get("new").toString()));
                     return new ResponseEntity<>(userService.changePassword(users, username), HttpStatus.ACCEPTED);
                 }else {
                     return new ResponseEntity<>("New password and confirm password not same", HttpStatus.BAD_REQUEST);

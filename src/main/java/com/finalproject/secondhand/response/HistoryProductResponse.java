@@ -8,8 +8,11 @@ public class HistoryProductResponse {
 
     Integer productId;
     String image1;
+    String image2;
+    String image3;
+    String image4;
     String productName;
-    String category;
+    Integer categoryId;
     String price;
     String description;
     String imageProfil;
@@ -17,13 +20,20 @@ public class HistoryProductResponse {
     String city;
     boolean isSold;
 
-    public HistoryProductResponse() {}
-
     public HistoryProductResponse(Products products) {
         this.productId=products.getProductId();
         this.image1=products.getImage1();
+        if (products.getImage2() == null) {
+            this.image2=products.getImage2();
+        }
+        if (products.getImage3() == null) {
+            this.image3=products.getImage3();
+        }
+        if (products.getImage4() == null) {
+            this.image4=products.getImage4();
+        }
         this.productName=products.getProductName();
-        this.category=products.getProductName();
+        this.categoryId=products.getCategories().getId();
         this.price=products.getPrice();
         this.description=products.getDescription();
         this.imageProfil=products.getUsers().getImageProfil();

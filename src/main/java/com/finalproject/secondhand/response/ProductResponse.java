@@ -17,6 +17,7 @@ public class ProductResponse {
     String category;
     String price;
     String description;
+    String imageProfil;
     String fullname;
     String city;
     boolean isPublished;
@@ -25,18 +26,23 @@ public class ProductResponse {
     LocalDateTime createdAt;
     LocalDateTime updatedAt;
 
-    public ProductResponse() {}
-
     public ProductResponse(Products products) {
         this.productId=products.getProductId();
         this.image1=products.getImage1();
-        this.image2=products.getImage2();
-        this.image3=products.getImage3();
-        this.image4=products.getImage4();
+        if (products.getImage2() != null) {
+            this.image2=products.getImage2();
+        }
+        if (products.getImage3() != null){
+            this.image3=products.getImage3();
+        }
+        if (products.getImage4() != null){
+            this.image4=products.getImage4();
+        }
         this.productName=products.getProductName();
         this.category=products.getCategories().getName().name();
         this.price=products.getPrice();
         this.description=products.getDescription();
+        this.imageProfil=products.getUsers().getImageProfil();
         this.fullname=products.getUsers().getFullname();
         this.city=products.getUsers().getCity();
         this.isPublished=products.getIsPublished();

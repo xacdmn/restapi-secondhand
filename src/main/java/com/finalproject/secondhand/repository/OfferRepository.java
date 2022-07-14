@@ -15,7 +15,9 @@ import java.util.List;
 public interface OfferRepository extends JpaRepository<Offers, Integer> {
 
     Offers findByOfferId(Integer offerId);
+    List<Offers> findOffersByProduct_ProductId(Integer products);
     List<Offers> findByUsers(Users users);
     List<Offers> findByProductAndStatusProcess(Products products, EStatusProcess status);
+    List<Offers> findOffersByProduct_UsersAndStatusProcess(Users users, EStatusProcess status);
 
 }
