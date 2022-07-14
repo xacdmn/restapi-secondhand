@@ -24,6 +24,9 @@ public class OfferServiceImpl implements OfferService{
     @Autowired
     private ProductRepository productRepository;
 
+    @Autowired
+    private NotificationService notificationService;
+
     @Override
     public List<Offers> findOffersByProductUsersAndStatusProcess(Users users) {
         EStatusProcess status = EStatusProcess.WAITING;
@@ -61,11 +64,19 @@ public class OfferServiceImpl implements OfferService{
         offers.setPriceNegotiated(body.getPriceNegotiated());
         offers.setStatusProcess(body.getStatusProcess());
         offerRepository.save(offers);
+        notificationService.saveNotificationOffer("Penawaran produk", "Ada yang menawar barang anda", offers, offers.getProduct(), offers.getProduct().getUsers(), false);
     }
 
     @Override
-    public void updateStatusOffer(Products body1, Offers body2, Integer offerId) {
-        productRepository.save(body1);
-        offerRepository.save(body2);
+    public void updateStatusOffer(Products products, Offers offers, Integer offerId) {
+        productRepository.save(products);
+        offerRepository.save(offers);
+        if (offers.getStatusProcess().equals(EStatusProcess.ACCEPTED)) {
+            notificationService.saveNotificationOffer("Penawaran produk", "penawaran anda telah diterima", offers, offers.getProduct(), offers.getProduct().getUsers(), false );
+        } else if (offers.getStatusProcess().equals(EStatusProcess.REJECTED)) {
+            notificationService.saveNotificationOffer("Penawaran produk", "penawaran anda ditolak", offers, offers.getProduct(), offers.getProduct().getUsers(), false );
+        } else if (offers.getStatusProcess().equals(EStatusProcess.ACCEPTED) && products.getIsSold().equals(true)) {
+            notificationService.saveNotificationOffer("Penawaran produk", "produk berhasil terjual", offers, offers.getProduct(), offers.getProduct().getUsers(), false );
+        }
     }
 }
