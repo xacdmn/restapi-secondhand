@@ -49,9 +49,6 @@ public class ProductController {
     private UserService userService;
 
     @Autowired
-    private NotificationService notificationService;
-
-    @Autowired
     private CloudinaryStorageService cloudinaryStorageService;
 
     @Operation(summary = "Validasi profil")
@@ -105,18 +102,17 @@ public class ProductController {
                     } else if (urlImage.get(0) != null) {
                         products.setImage1(urlImage.get(i));
                     } else if (urlImage.get(1) != null) {
-                        products.setImage1(urlImage.get(i));
+                        products.setImage2(urlImage.get(i));
                     } else if (urlImage.get(2) != null) {
-                        products.setImage1(urlImage.get(i));
+                        products.setImage3(urlImage.get(i));
                     } else if (urlImage.get(3) != null) {
-                        products.setImage1(urlImage.get(i));
+                        products.setImage4(urlImage.get(i));
                     }
                 }
             }
             if (isPublished.equals("preview")) {
                 products.setIsPublished(products.getIsPublished());
             } else if (isPublished.equals("publish")) {
-                notificationService.saveNotificationProduct("Produk berhasil diterbitkan", products, products.getUsers());
                 products.setIsPublished(true);
             }
             return new ResponseEntity<>(productService.save(products), HttpStatus.CREATED);
@@ -129,7 +125,6 @@ public class ProductController {
     public ResponseEntity<?> publishProduct(@PathVariable Integer productId) {
         Products products = new Products();
         products.setIsPublished(true);
-        notificationService.saveNotificationProduct("Produk berhasil diterbitkan", products, products.getUsers());
         productService.publish(products, productId);
         return new ResponseEntity<>("Product published successfully", HttpStatus.ACCEPTED);
     }
@@ -167,11 +162,11 @@ public class ProductController {
                     } else if (urlImage.get(0) != null) {
                         products.setImage1(urlImage.get(i));
                     } else if (urlImage.get(1) != null) {
-                        products.setImage1(urlImage.get(i));
+                        products.setImage2(urlImage.get(i));
                     } else if (urlImage.get(2) != null) {
-                        products.setImage1(urlImage.get(i));
+                        products.setImage3(urlImage.get(i));
                     } else if (urlImage.get(3) != null) {
-                        products.setImage1(urlImage.get(i));
+                        products.setImage4(urlImage.get(i));
                     }
                 }
             }

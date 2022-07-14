@@ -89,14 +89,14 @@ public class OfferController {
             if (Objects.equals(status, "accepted")) {
                 offers.setStatusProcess(EStatusProcess.ACCEPTED);
                 products.setIsWishlist(true);
-                notificationService.saveNotificationOffer("Penawaran produk", "penawaran anda telah diterima", offers, offers.getProduct(), offers.getProduct().getUsers(), false );
                 offerService.updateStatusOffer(products, offers, offerId);
+                notificationService.saveNotificationOffer("Penawaran produk", "penawaran anda telah diterima", offers, offers.getProduct(), offers.getProduct().getUsers(), false );
                 return new ResponseEntity<>("Status Accepted", HttpStatus.ACCEPTED);
             } else if (Objects.equals(status, "rejected")) {
                 offers.setStatusProcess(EStatusProcess.REJECTED);
                 products.setIsWishlist(false);
-                notificationService.saveNotificationOffer("Penawaran produk", "penawaran anda ditolak", offers, offers.getProduct(), offers.getProduct().getUsers(), false );
                 offerService.updateStatusOffer(products, offers, offerId);
+                notificationService.saveNotificationOffer("Penawaran produk", "penawaran anda ditolak", offers, offers.getProduct(), offers.getProduct().getUsers(), false );
                 return new ResponseEntity<>("Status Rejected", HttpStatus.ACCEPTED);
             } else {
                 return new ResponseEntity<>("Status not updated", HttpStatus.FORBIDDEN);
@@ -119,8 +119,8 @@ public class OfferController {
                 return new ResponseEntity<>("Product status updated successfully", HttpStatus.ACCEPTED);
             } else if (Objects.equals(status, "sold")) {
                 products.setIsSold(true);
-                notificationService.saveNotificationOffer("Penawaran produk", "produk berhasil terjual", offers, offers.getProduct(), offers.getProduct().getUsers(), false );
                 offerService.updateStatusOffer(products, offers, offerId);
+                notificationService.saveNotificationOffer("Penawaran produk", "produk berhasil terjual", offers, offers.getProduct(), offers.getProduct().getUsers(), false );
                 return new ResponseEntity<>("Product status updated successfully", HttpStatus.ACCEPTED);
             } else {
                 return new ResponseEntity<>("Product status not updated", HttpStatus.FORBIDDEN);

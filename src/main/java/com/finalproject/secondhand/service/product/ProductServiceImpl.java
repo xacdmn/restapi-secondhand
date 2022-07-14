@@ -27,6 +27,9 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.findAll();
     }
 
+    @Autowired
+    private NotificationService notificationService;
+
     @Override
     public Page<Products> getAllProductPageByProductNameAndProductCategory(String productName, Integer category, Pageable pageable) {
         if (productName == null && category == null){
@@ -94,7 +97,12 @@ public class ProductServiceImpl implements ProductService {
         products.setIsPublished(body.getIsPublished());
         products.setIsSold(body.getIsSold());
         productRepository.save(products);
-        return new ProductResponse(products);
+        if (products.getIsPublished().equals(true)) {
+            notificationService.saveNotificationProduct("Produk berhasil diterbitkan", products, products.getUsers());
+            return new ProductResponse(products);
+        } else {
+            return new ProductResponse(products);
+        }
     }
 
     @Override
@@ -102,6 +110,9 @@ public class ProductServiceImpl implements ProductService {
         Products products = productRepository.getById(productId);
         products.setIsPublished(body.getIsPublished());
         productRepository.save(products);
+        if (products.getIsPublished().equals(true)) {
+            notificationService.saveNotificationProduct("Produk berhasil diterbitkan", products, products.getUsers());
+        }
     }
 
     @Override
