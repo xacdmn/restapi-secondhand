@@ -50,7 +50,7 @@ public class AuthenticationController {
     @Autowired
     private JwtUtil jwtUtil;
 
-    @Operation(summary = "Hanya untuk pribadi cek user")
+    @Operation(summary = "NOT FOR PUBLIC")
     @GetMapping("/list-user")
     public List<Users> listAll() {
         return userService.findAll();

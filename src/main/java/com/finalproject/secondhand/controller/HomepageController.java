@@ -2,11 +2,9 @@ package com.finalproject.secondhand.controller;
 
 import com.finalproject.secondhand.entity.Categories;
 import com.finalproject.secondhand.entity.Products;
-import com.finalproject.secondhand.response.CustomResponse;
 import com.finalproject.secondhand.response.ProductResponse;
 import com.finalproject.secondhand.service.product.CategoriesService;
 import com.finalproject.secondhand.service.product.ProductService;
-import com.finalproject.secondhand.service.user.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -17,7 +15,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;

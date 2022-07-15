@@ -85,7 +85,7 @@ public class UserController {
         return new ResponseEntity<>(userService.update(users, username), HttpStatus.ACCEPTED);
     }
 
-    @Operation(summary = "Change Password masih bug")
+    @Operation(summary = "Change Password")
     @PutMapping( value = "change-password",
             consumes = {MediaType.APPLICATION_JSON_VALUE,
             MediaType.MULTIPART_FORM_DATA_VALUE})
