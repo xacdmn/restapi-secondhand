@@ -55,7 +55,7 @@ public class HistoryController {
     public ResponseEntity<List<OfferResponse>> findProductByWishlist(Authentication valid) {
         String username = valid.getName();
         Users users = userService.findByUsername(username);
-        List<Offers> offers = offerService.findOffersByProductUsersAndStatusProcess(users);
+        List<Offers> offers = offerService.findWishlistUser(users);
         List<OfferResponse> offerRespons = offers.stream()
                 .map(OfferResponse::new)
                 .collect(Collectors.toList());

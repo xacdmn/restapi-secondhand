@@ -12,6 +12,7 @@ import java.util.List;
 public interface OfferService {
 
     List<Offers> findOffersByProductUsersAndStatusProcess(Users users);
+    List<Offers> findWishlistUser(Users users);
     List<Offers> findByUser(String username);
     Offers findByOfferId(Integer offerId);
     String whatsappSender(Integer offerId);

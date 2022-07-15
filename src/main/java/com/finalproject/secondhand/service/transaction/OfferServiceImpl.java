@@ -34,6 +34,11 @@ public class OfferServiceImpl implements OfferService{
     }
 
     @Override
+    public List<Offers> findWishlistUser(Users users) {
+        return offerRepository.findOffersByProduct_UsersAndProduct_IsWishlistAAndProduct_IsSold(users, true, false);
+    }
+
+    @Override
     public List<Offers> findByUser(String username) {
         Users users = userRepository.findByUsername(username);
         return offerRepository.findByUsers(users);

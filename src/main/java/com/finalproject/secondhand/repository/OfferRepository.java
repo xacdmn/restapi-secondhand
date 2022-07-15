@@ -15,6 +15,7 @@ public interface OfferRepository extends JpaRepository<Offers, Integer> {
 
     Offers findByOfferId(Integer offerId);
     List<Offers> findByUsers(Users users);
+    List<Offers> findOffersByProduct_UsersAndProduct_IsWishlistAAndProduct_IsSold(Users users, Boolean status1, Boolean status2);
     List<Offers> findOffersByProduct_UsersAndStatusProcess(Users users, EStatusProcess status);
 
 }
