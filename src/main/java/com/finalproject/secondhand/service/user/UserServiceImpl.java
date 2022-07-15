@@ -23,6 +23,7 @@ public class UserServiceImpl implements UserService {
     public void save(SignupDto signupDto) {
         Users users = new Users(signupDto);
         addRoleToUsers(users, users.getRoles());
+        users.setFullname(users.getFullname());
         users.setPassword(users.getPassword());
         userRepository.save(users);
     }

@@ -61,6 +61,7 @@ public class AuthenticationController {
     public ResponseEntity<?> signup(
             @Valid
             @Schema(example = "{" +
+                    "\"fullname\":\"Ellda Artha Airlannga\"," +
                     "\"username\":\"ellda\"," +
                     "\"email\":\"ellda@gmail.com\"," +
                     "\"password\":\"ellda123\"" +
