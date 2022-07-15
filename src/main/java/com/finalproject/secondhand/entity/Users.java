@@ -41,6 +41,7 @@ public class Users extends BaseEntity{
     private Collection<Roles> roles;
 
     public Users(SignupDto signup) {
+        this.fullname= signup.getFullname();
         this.username = signup.getUsername();
         this.email = signup.getEmail();
         this.password = signup.getPassword();
