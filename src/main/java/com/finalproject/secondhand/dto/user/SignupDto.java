@@ -10,6 +10,8 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 public class SignupDto {
 
+    @NotBlank(message = "Nama Lengkap harus diisi!")
+    private String fullname;
     @NotBlank(message = "Username harus diisi!")
     private String username;
     @Email(message = "Email tidak valid!")
