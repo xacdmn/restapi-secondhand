@@ -35,6 +35,12 @@ public class HomepageController {
     @Autowired
     private CategoriesService categoriesService;
 
+    @Operation(summary = "Find product by productId")
+    @GetMapping("{productId}")
+    public ResponseEntity<ProductResponse> findProductById(@PathVariable ("productId") Integer productId) {
+        return new ResponseEntity<>(productService.findByProductId(productId), HttpStatus.OK);
+    }
+
     @Operation(summary = "Show all product untuk pribadi")
     @GetMapping("show-products")
     public ResponseEntity<List<ProductResponse>> allProduct(){

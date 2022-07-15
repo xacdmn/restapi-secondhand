@@ -1,5 +1,7 @@
 package com.finalproject.secondhand.service.user;
 
+import com.finalproject.secondhand.dto.auth.JwtTokenDto;
+import com.finalproject.secondhand.dto.user.SigninUsernameDto;
 import com.finalproject.secondhand.dto.user.SignupDto;
 import com.finalproject.secondhand.entity.Users;
 import com.finalproject.secondhand.response.UserDetailResponse;
@@ -17,6 +19,10 @@ public interface UserService {
     List<Users> findAll();
     Users findUserByEmail(String email);
     UserDetailResponse curentUserDetail(String username);
+
+    //LOGIN
+    JwtTokenDto loginEmail(SigninUsernameDto signin);
+    JwtTokenDto loginUsername(SigninUsernameDto signin);
 
     boolean existsUsername(String username);
     boolean existsEmail(String email);

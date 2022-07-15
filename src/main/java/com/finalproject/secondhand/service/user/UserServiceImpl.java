@@ -1,18 +1,32 @@
 package com.finalproject.secondhand.service.user;
 
+import com.finalproject.secondhand.config.security.JwtUtil;
+import com.finalproject.secondhand.dto.auth.JwtTokenDto;
+import com.finalproject.secondhand.dto.user.SigninUsernameDto;
 import com.finalproject.secondhand.dto.user.SignupDto;
 import com.finalproject.secondhand.entity.Roles;
+import com.finalproject.secondhand.entity.UserDetailsImpl;
 import com.finalproject.secondhand.entity.Users;
 import com.finalproject.secondhand.repository.RoleRepository;
 import com.finalproject.secondhand.repository.UserRepository;
 import com.finalproject.secondhand.response.UserDetailResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
 
     @Autowired
     private UserRepository userRepository;
@@ -20,6 +34,13 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private RoleRepository roleRepository;
 
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private JwtUtil jwtUtil;
+
+    @Override
     public void save(SignupDto signupDto) {
         Users users = new Users(signupDto);
         addRoleToUsers(users, users.getRoles());
@@ -42,6 +63,45 @@ public class UserServiceImpl implements UserService {
     public UserDetailResponse curentUserDetail(String username) {
         Users users = userRepository.findUsersByUsername(username);
         return new UserDetailResponse(users);
+    }
+
+    @Override
+    public JwtTokenDto loginEmail(SigninUsernameDto signin) {
+        Users users = userRepository.findUsersByEmail(signin.getUsername());
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(users.getUsername(),
+                signin.getPassword()));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String token = jwtUtil.generateAccessToken(authentication);
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        LOGGER.info("User " + userDetails.getUsername() + " logged in.");
+        LOGGER.info(token);
+        List<String> roles = userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toList());
+        return new JwtTokenDto(token,
+                userDetails.getUserId(),
+                userDetails.getUsername(),
+                userDetails.getEmail(),
+                roles);
+    }
+
+    @Override
+    public JwtTokenDto loginUsername(SigninUsernameDto signin) {
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(signin.getUsername(),
+                signin.getPassword()));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String token = jwtUtil.generateAccessToken(authentication);
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        LOGGER.info("User " + userDetails.getUsername() + " logged in.");
+        LOGGER.info(token);
+        List<String> roles = userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toList());
+        return new JwtTokenDto(token,
+                userDetails.getUserId(),
+                userDetails.getUsername(),
+                userDetails.getEmail(),
+                roles);
     }
 
     private void addRoleToUsers(Users users, Collection<Roles> request) {
@@ -109,4 +169,6 @@ public class UserServiceImpl implements UserService {
         userRepository.deleteById(userId);
         return "Account Deleted";
     }
+
+
 }

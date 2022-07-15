@@ -69,10 +69,10 @@ public class AuthenticationController {
             @RequestBody SignupDto signup) {
         HashMap<String, String> response = new HashMap();
         if (userService.existsUsername(signup.getUsername())) {
-            response.put(signup.getUsername(), "Username already used");
+            response.put("error", "Username already used");
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         } else if (userService.existsEmail(signup.getEmail())) {
-            response.put(signup.getUsername(), "Email already used");
+            response.put("error", "Email already used");
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
         LOGGER.info(signup.toString());
@@ -128,12 +128,12 @@ public class AuthenticationController {
                     "}")
             @RequestBody SigninEmailDto signin) {
         LOGGER.info("logging in");
-        Users users = userService.findUserByEmail(signin.getEmail());
         HashMap<String, String> response = new HashMap();
         if (!userService.existsEmail(signin.getEmail())){
             response.put("error", "User not found");
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
+        Users users = userService.findUserByEmail(signin.getEmail());
         if (!passwordEncoder.matches(signin.getPassword(), userService.findByUsername(users.getUsername()).getPassword())) {
             response.put("error", "Password incorrect");
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);

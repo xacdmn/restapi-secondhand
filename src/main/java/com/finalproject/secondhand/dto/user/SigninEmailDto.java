@@ -14,7 +14,7 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 public class SigninEmailDto {
 
-    @NotBlank(message = "Username harus diisi!")
+    @NotBlank(message = "Email harus diisi!")
     @Email(message = "Email tidak valid")
     private String email;
     @NotBlank(message = "Password harus diisi!")
