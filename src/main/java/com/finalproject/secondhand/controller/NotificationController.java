@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 @Tag(name = "Notification", description = "API for access notification")
 @SecurityRequirement(name = "Authorization")
 @RequestMapping("/api/notification/")
-@CrossOrigin(origins = {"*"}, allowedHeaders = "*")
+@CrossOrigin(origins = {"http://localhost:3000", "*"}, allowedHeaders = "*")
 public class NotificationController {
 
     @Autowired
