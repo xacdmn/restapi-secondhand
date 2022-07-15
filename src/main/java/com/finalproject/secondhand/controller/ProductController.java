@@ -57,6 +57,12 @@ public class ProductController {
         return new ResponseEntity<>(productService.validasiProfil(username), HttpStatus.OK);
     }
 
+    @Operation(summary = "Find product by productId")
+    @GetMapping("{productId}")
+    public ResponseEntity<ProductResponse> findProductById(@PathVariable ("productId") Integer productId) {
+        return new ResponseEntity<>(productService.findByProductId(productId), HttpStatus.OK);
+    }
+
     @Operation(summary = "Preview or publish product")
     @PostMapping(value = "add/{isPublished}",
             consumes = {MediaType.APPLICATION_JSON_VALUE,
