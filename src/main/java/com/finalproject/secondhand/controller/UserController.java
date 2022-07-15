@@ -27,7 +27,7 @@ import java.util.Map;
 @Tag(name = "User", description = "API for processing CRUD Users")
 @RequestMapping("/api/user/")
 @SecurityRequirement(name = "Authorization")
-@CrossOrigin(origins = {"http://localhost:3000", "*"}, allowedHeaders = "*")
+@CrossOrigin(origins = {"http://localhost:3000"}, allowedHeaders = "*")
 public class UserController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);

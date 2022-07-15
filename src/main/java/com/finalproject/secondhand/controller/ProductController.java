@@ -33,7 +33,7 @@ import java.util.Map;
 @Tag(name = "Product", description = "API for processing CRUD Products")
 @RequestMapping("/api/product/")
 @SecurityRequirement(name = "Authorization")
-@CrossOrigin(origins = {"http://localhost:3000", "*"}, allowedHeaders = "*")
+@CrossOrigin(origins = {"http://localhost:3000"}, allowedHeaders = "*")
 public class ProductController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ProductController.class);

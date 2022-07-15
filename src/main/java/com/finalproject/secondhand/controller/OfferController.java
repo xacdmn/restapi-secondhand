@@ -25,7 +25,7 @@ import java.util.Objects;
 @Tag(name = "Offer", description = "API for processing Transaction")
 @RequestMapping("/api/offer/")
 @SecurityRequirement(name = "Authorization")
-@CrossOrigin(origins = {"http://localhost:3000", "*"}, allowedHeaders = "*")
+@CrossOrigin(origins = {"http://localhost:3000"}, allowedHeaders = "*")
 public class OfferController {
 
     @Autowired
