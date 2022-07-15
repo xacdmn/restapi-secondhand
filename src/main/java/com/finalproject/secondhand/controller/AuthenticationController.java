@@ -77,6 +77,8 @@ public class AuthenticationController {
         }
         LOGGER.info(signup.toString());
         signup.setPassword(passwordEncoder.encode(signup.getPassword()));
+        signup.setFullname(signup.getFullname());
+        LOGGER.info(signup.getFullname());
         userService.save(signup);
         return new ResponseEntity<>("User Registered", HttpStatus.CREATED);
     }
