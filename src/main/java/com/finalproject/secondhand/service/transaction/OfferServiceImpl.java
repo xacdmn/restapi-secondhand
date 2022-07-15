@@ -35,7 +35,7 @@ public class OfferServiceImpl implements OfferService{
 
     @Override
     public List<Offers> findWishlistUser(Users users) {
-        return offerRepository.findOffersByProduct_UsersAndProduct_IsWishlistAAndProduct_IsSold(users, true, false);
+        return offerRepository.findOffersByProduct_UsersAndProduct_IsWishlistAndProduct_IsSold(users, true, false);
     }
 
     @Override
