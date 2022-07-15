@@ -49,4 +49,38 @@ public interface ProductRepository extends JpaRepository<Products, Integer> {
             "and p.isWishlist = false " +
             "and p.isSold = false")
     Page<Products> findByProductNameContainingIgnoreCaseAndCategoryIgnoreCase(String productName, Integer categoryId, Pageable pageable);
+
+    @NonNull
+    @Query("select p from products p " +
+            "where not p.users.userId = ?1 " +
+            "and p.isPublished = true " +
+            "and p.isWishlist = false " +
+            "and p.isSold = false")
+    Page<Products> findAllLogin(Integer userId, @NonNull Pageable pageable);
+
+    @Query("select p from products p " +
+            "where upper (p.productName) like upper (concat('%', ?2, '%'))" +
+            "and not p.users.userId = ?1 " +
+            "and p.isPublished = true " +
+            "and p.isWishlist = false " +
+            "and p.isSold = false")
+    Page<Products> findByProductNameLogin(Integer userId, String productName, Pageable pageable);
+
+    @Query("select  p from products p " +
+            "where p.categories.id = ?2 " +
+            "and not p.users.userId = ?1 " +
+            "and p.isPublished = true " +
+            "and p.isWishlist = false " +
+            "and p.isSold = false ")
+    Page<Products> findByCategoryLogin(Integer userId, Integer categoryId, Pageable pageable);
+
+    @Query("select p from products p " +
+            "where upper(p.productName) like upper(concat('%', ?2, '%')) " +
+            "and upper(p.categories)  like upper(concat('%', ?3, '%'))" +
+            "and not p.users.userId = ?1 " +
+            "and p.isPublished = true " +
+            "and p.isWishlist = false " +
+            "and p.isSold = false")
+    Page<Products> findByProductNameContainingIgnoreCaseAndCategoryIgnoreCaseLogin(Integer userId, String productName, Integer categoryId, Pageable pageable);
+
 }

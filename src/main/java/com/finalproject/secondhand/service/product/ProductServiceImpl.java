@@ -9,6 +9,7 @@ import com.finalproject.secondhand.service.transaction.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,16 +31,32 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private NotificationService notificationService;
 
+    Authentication authentication;
+
     @Override
     public Page<Products> getAllProductPageByProductNameAndProductCategory(String productName, Integer category, Pageable pageable) {
-        if (productName == null && category == null){
-            return productRepository.findAll(pageable);
-        } else if (productName == null) {
-            return productRepository.findByCategory(category, pageable);
-        } else if (category == null) {
-            return productRepository.findByProductName(productName, pageable);
-        } else {
-            return productRepository.findByProductNameContainingIgnoreCaseAndCategoryIgnoreCase(productName, category, pageable);
+        try {
+            Users users = userRepository.findUsersByUsername(authentication.getName());
+            Integer userId = users.getUserId();
+            if (productName == null && category == null){
+                return productRepository.findAllLogin(userId, pageable);
+            } else if (productName == null) {
+                return productRepository.findByCategoryLogin(userId, category, pageable);
+            } else if (category == null) {
+                return productRepository.findByProductNameLogin(userId, productName, pageable);
+            } else {
+                return productRepository.findByProductNameContainingIgnoreCaseAndCategoryIgnoreCaseLogin(userId, productName, category, pageable);
+            }
+        }catch (NullPointerException e) {
+            if (productName == null && category == null){
+                return productRepository.findAll(pageable);
+            } else if (productName == null) {
+                return productRepository.findByCategory(category, pageable);
+            } else if (category == null) {
+                return productRepository.findByProductName(productName, pageable);
+            } else {
+                return productRepository.findByProductNameContainingIgnoreCaseAndCategoryIgnoreCase(productName, category, pageable);
+            }
         }
     }
 

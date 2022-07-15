@@ -13,7 +13,7 @@ public interface ProductService {
 
     //Homepage
     List<Products> showAllProduct();
-    Page<Products> getAllProductPageByProductNameAndProductCategory(String productName, Integer categoryId, Pageable pageable);
+    Page<Products> getAllProductPageByProductNameAndProductCategory(String productName, Integer category, Pageable pageable);
 
     //Validasi klik tombol jual
     Boolean validasiProfil(String username);
