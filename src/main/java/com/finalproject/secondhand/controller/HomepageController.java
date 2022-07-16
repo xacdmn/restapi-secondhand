@@ -57,7 +57,7 @@ public class HomepageController {
         return new ResponseEntity<>(categoriesService.findAllCategories(), HttpStatus.OK);
     }
 
-    @Operation(summary = "Show homepage all products sort and filter")
+    @Operation(summary = "Show homepage all products sort and filter (validasi user login)")
     @GetMapping("get-product")
     public ResponseEntity<Map<String, Object>> getAllProductPage(
             @RequestParam(required = false) String productName,
