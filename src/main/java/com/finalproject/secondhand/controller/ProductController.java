@@ -50,7 +50,7 @@ public class ProductController {
     @Autowired
     private CloudinaryStorageService cloudinaryStorageService;
 
-    @Operation(summary = "Validasi profil")
+    @Operation(summary = "Validasi profil not null")
     @GetMapping("/sell")
     public ResponseEntity<?> validasiProfil(Authentication valid) {
         String username = valid.getName();

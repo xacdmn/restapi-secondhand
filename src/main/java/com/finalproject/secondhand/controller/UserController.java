@@ -54,7 +54,7 @@ public class UserController {
         return new ResponseEntity<>(userService.curentUserDetail(username), HttpStatus.OK);
     }
 
-    @Operation(summary = "Update user profil")
+    @Operation(summary = "Edit user profil")
     @PutMapping(value = "update",
             consumes = {MediaType.APPLICATION_JSON_VALUE,
                         MediaType.MULTIPART_FORM_DATA_VALUE},

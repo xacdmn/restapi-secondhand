@@ -99,7 +99,7 @@ public class OfferController {
         }
     }
 
-    @Operation(summary = "Update status offers sold or cancel tracation")
+    @Operation(summary = "Update status offers sold or notSold")
     @PutMapping("update/isSold/{offerId}/{status}")
     public ResponseEntity<?> updateStatusSold(@PathVariable ("offerId") Integer offerId,
                                               @PathVariable ("status") String status) {

@@ -83,7 +83,7 @@ public class AuthenticationController {
         return new ResponseEntity<>("User Registered", HttpStatus.CREATED);
     }
 
-    @Operation(summary = "Login user with username")
+    @Operation(summary = "Login user with username or email")
     @PostMapping("/signin")
     public ResponseEntity<?> signin(
             @Schema(example = "{" +
@@ -93,30 +93,23 @@ public class AuthenticationController {
             @RequestBody SigninUsernameDto signin) {
         LOGGER.info("logging in");
         HashMap<String, String> response = new HashMap();
-        if (!userService.existsUsername(signin.getUsername())){
+        if (userService.existsUsername(signin.getUsername())) {
+            if (!passwordEncoder.matches(signin.getPassword(), userService.findByUsername(signin.getUsername()).getPassword())) {
+                response.put("error", "Password incorrect");
+                return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+            }
+            return new ResponseEntity<>(userService.loginUsername(signin), HttpStatus.OK);
+        } else if (userService.existsEmail(signin.getUsername())){
+            Users users = userService.findUserByEmail(signin.getUsername());
+            if (!passwordEncoder.matches(signin.getPassword(), userService.findByUsername(users.getUsername()).getPassword())) {
+                response.put("error", "Password incorrect");
+                return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+            }
+            return new ResponseEntity<>(userService.loginEmail(signin), HttpStatus.OK);
+        } else {
             response.put("error", "user not found");
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
-        if (!passwordEncoder.matches(signin.getPassword(), userService.findByUsername(signin.getUsername()).getPassword())) {
-            response.put("error", "Password incorrect");
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-        }
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(signin.getUsername(),
-                signin.getPassword()));
-        if (!authentication.isAuthenticated()) {
-            return new ResponseEntity<>("Username or password incorrect", HttpStatus.FORBIDDEN);
-        }
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String token = jwtUtil.generateAccessToken(authentication);
-        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-        LOGGER.info("User " + userDetails.getUsername() + " logged in.");
-        LOGGER.info(token);
-        List<String> roles = userDetails.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(new JwtTokenDto(token,
-                userDetails.getUserId(), userDetails.getUsername(), userDetails.getEmail(),
-                roles));
     }
 
     @Operation(summary = "Login user with email")

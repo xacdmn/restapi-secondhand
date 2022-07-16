@@ -41,7 +41,7 @@ public class HomepageController {
         return new ResponseEntity<>(productService.findByProductId(productId), HttpStatus.OK);
     }
 
-    @Operation(summary = "Show all product untuk pribadi")
+    @Operation(summary = "NOT FOR PUBLIC")
     @GetMapping("show-products")
     public ResponseEntity<List<ProductResponse>> allProduct(){
         List<Products> product = productService.showAllProduct();
