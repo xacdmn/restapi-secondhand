@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 @Tag(name = "Homepage", description = "API for access homepage")
 @SecurityRequirement(name = "Authorization")
 @RequestMapping("/api/homepage/")
-@CrossOrigin(origins = {"http://localhost:3000", "https://final-project-21wa2388k-icem87.vercel.app/"}, allowedHeaders = "*")
+@CrossOrigin(origins = {"http://localhost:3000", "*"}, allowedHeaders = "*")
 public class HomepageController {
 
     @Autowired
