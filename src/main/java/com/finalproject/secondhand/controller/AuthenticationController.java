@@ -7,6 +7,7 @@ import com.finalproject.secondhand.dto.user.SigninEmailDto;
 import com.finalproject.secondhand.dto.user.SignupDto;
 import com.finalproject.secondhand.entity.UserDetailsImpl;
 import com.finalproject.secondhand.entity.Users;
+import com.finalproject.secondhand.service.user.EmailService;
 import com.finalproject.secondhand.service.user.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -25,10 +26,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
+
+import static com.finalproject.secondhand.config.utils.SiteUrl.getSiteURL;
 
 @RestController
 @Tag(name = "Authentication", description = "API for Login and Register")
@@ -49,6 +54,9 @@ public class AuthenticationController {
 
     @Autowired
     private JwtUtil jwtUtil;
+
+    @Autowired
+    private EmailService emailService;
 
     @Operation(summary = "NOT FOR PUBLIC")
     @GetMapping("/list-user")
@@ -149,4 +157,29 @@ public class AuthenticationController {
                 roles));
     }
 
+//    @Operation(summary = "reset password")
+//    @PostMapping("/reset-password")
+//    public ResponseEntity<?> resetPassword(@RequestParam String email,
+//                                           HttpServletRequest request) {
+//        Users users = userService.findUserByEmail(email);
+//        HashMap<String, String> response = new HashMap();
+//        if (users == null) {
+//            response.put("error", "user not found");
+//            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+//        }
+//        String token = UUID.randomUUID().toString();
+//        try {
+//            userService.createPasswordResetToken(users, token);
+//            String resetPasswordLink = getSiteURL(request) + "/reset-password?token=" + token;
+//
+//            emailService.sendMail(email, resetPasswordLink);
+//
+//            response.put("email", email);
+//            response.put("token", token);
+//            return new ResponseEntity<>(response, HttpStatus.CREATED);
+//        } catch (Exception e) {
+//            response.put("error", "email not found!");
+//        }
+//        return new ResponseEntity<>("Back to form reset password", HttpStatus.NOT_FOUND);
+//    }
 }

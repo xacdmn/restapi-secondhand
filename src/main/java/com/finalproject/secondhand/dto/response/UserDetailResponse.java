@@ -1,4 +1,4 @@
-package com.finalproject.secondhand.response;
+package com.finalproject.secondhand.dto.response;
 
 import com.finalproject.secondhand.entity.Users;
 import lombok.Data;

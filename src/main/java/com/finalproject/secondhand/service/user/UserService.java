@@ -4,7 +4,7 @@ import com.finalproject.secondhand.dto.auth.JwtTokenDto;
 import com.finalproject.secondhand.dto.user.SigninUsernameDto;
 import com.finalproject.secondhand.dto.user.SignupDto;
 import com.finalproject.secondhand.entity.Users;
-import com.finalproject.secondhand.response.UserDetailResponse;
+import com.finalproject.secondhand.dto.response.UserDetailResponse;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -36,5 +36,9 @@ public interface UserService {
 
     //AUTH
     Users findByUsername(String username);
+
+    //RESET PASSWORD
+    void createPasswordResetToken(Users users, String token);
+    void updateResetPassword(Users users, String newPassword);
 
 }

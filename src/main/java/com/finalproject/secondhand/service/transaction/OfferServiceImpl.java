@@ -4,9 +4,9 @@ import com.finalproject.secondhand.entity.Offers;
 import com.finalproject.secondhand.entity.Products;
 import com.finalproject.secondhand.entity.Users;
 import com.finalproject.secondhand.enums.EStatusProcess;
-import com.finalproject.secondhand.repository.OfferRepository;
-import com.finalproject.secondhand.repository.ProductRepository;
-import com.finalproject.secondhand.repository.UserRepository;
+import com.finalproject.secondhand.enums.repository.OfferRepository;
+import com.finalproject.secondhand.enums.repository.ProductRepository;
+import com.finalproject.secondhand.enums.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

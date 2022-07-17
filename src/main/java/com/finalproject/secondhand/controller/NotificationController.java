@@ -2,7 +2,7 @@ package com.finalproject.secondhand.controller;
 
 import com.finalproject.secondhand.entity.Notification;
 import com.finalproject.secondhand.entity.Users;
-import com.finalproject.secondhand.response.NotificationResponse;
+import com.finalproject.secondhand.dto.response.NotificationResponse;
 import com.finalproject.secondhand.service.transaction.NotificationService;
 import com.finalproject.secondhand.service.user.UserService;
 import io.swagger.v3.oas.annotations.Operation;

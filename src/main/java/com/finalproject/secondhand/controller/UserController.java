@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.finalproject.secondhand.dto.user.ChangePasswordDto;
 import com.finalproject.secondhand.dto.user.UserUpdateDto;
 import com.finalproject.secondhand.entity.Users;
-import com.finalproject.secondhand.response.UserDetailResponse;
+import com.finalproject.secondhand.dto.response.UserDetailResponse;
 import com.finalproject.secondhand.service.image.CloudinaryStorageService;
 import com.finalproject.secondhand.service.user.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -112,7 +112,7 @@ public class UserController {
                 return new ResponseEntity<>("Old password incorrect", HttpStatus.BAD_REQUEST);
             }
         } else {
-            return new ResponseEntity<>("Old password null", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Old password null", HttpStatus.NOT_FOUND);
         }
     }
 }

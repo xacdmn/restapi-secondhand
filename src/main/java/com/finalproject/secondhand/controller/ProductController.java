@@ -6,7 +6,7 @@ import com.finalproject.secondhand.dto.product.UpdateProductDto;
 import com.finalproject.secondhand.entity.Categories;
 import com.finalproject.secondhand.entity.Products;
 import com.finalproject.secondhand.entity.Users;
-import com.finalproject.secondhand.response.ProductResponse;
+import com.finalproject.secondhand.dto.response.ProductResponse;
 import com.finalproject.secondhand.service.image.CloudinaryStorageService;
 import com.finalproject.secondhand.service.product.CategoriesService;
 import com.finalproject.secondhand.service.product.ProductService;
@@ -25,9 +25,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import static com.finalproject.secondhand.config.utils.SiteUrl.getSiteURL;
 
 @RestController
 @Tag(name = "Product", description = "API for processing CRUD Products")
@@ -52,9 +55,15 @@ public class ProductController {
 
     @Operation(summary = "Validasi profil not null")
     @GetMapping("/sell")
-    public ResponseEntity<?> validasiProfil(Authentication valid) {
+    public ResponseEntity<?> validasiProfil(Authentication valid, HttpServletRequest request) {
         String username = valid.getName();
-        return new ResponseEntity<>(productService.validasiProfil(username), HttpStatus.OK);
+        if (productService.validasiProfil(username).equals(true)) {
+            String infoProduct = getSiteURL(request) + "/info-produk";
+            return new ResponseEntity<>(infoProduct, HttpStatus.OK);
+        } else {
+            String infoProfil =  getSiteURL(request) + "/info-profil";
+            return new ResponseEntity<>(infoProfil, HttpStatus.OK);
+        }
     }
 
     @Operation(summary = "Find product by productId")

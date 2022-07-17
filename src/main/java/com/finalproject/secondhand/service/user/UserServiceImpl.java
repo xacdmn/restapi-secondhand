@@ -4,12 +4,14 @@ import com.finalproject.secondhand.config.security.JwtUtil;
 import com.finalproject.secondhand.dto.auth.JwtTokenDto;
 import com.finalproject.secondhand.dto.user.SigninUsernameDto;
 import com.finalproject.secondhand.dto.user.SignupDto;
+import com.finalproject.secondhand.entity.PasswordResetToken;
 import com.finalproject.secondhand.entity.Roles;
 import com.finalproject.secondhand.entity.UserDetailsImpl;
 import com.finalproject.secondhand.entity.Users;
-import com.finalproject.secondhand.repository.RoleRepository;
-import com.finalproject.secondhand.repository.UserRepository;
-import com.finalproject.secondhand.response.UserDetailResponse;
+import com.finalproject.secondhand.enums.repository.PasswordTokenRepository;
+import com.finalproject.secondhand.enums.repository.RoleRepository;
+import com.finalproject.secondhand.enums.repository.UserRepository;
+import com.finalproject.secondhand.dto.response.UserDetailResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -35,7 +38,13 @@ public class UserServiceImpl implements UserService {
     private RoleRepository roleRepository;
 
     @Autowired
+    private PasswordTokenRepository passwordTokenRepository;
+
+    @Autowired
     private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     private JwtUtil jwtUtil;
@@ -116,6 +125,19 @@ public class UserServiceImpl implements UserService {
     @Override
     public Users findByUsername(String username) {
         return userRepository.findUsersByUsername(username);
+    }
+
+    @Override
+    public void createPasswordResetToken(Users users, String token) {
+        PasswordResetToken myToken = new PasswordResetToken(users, token);
+        passwordTokenRepository.save(myToken);
+    }
+
+    @Override
+    public void updateResetPassword(Users body, String newPassword) {
+        Users users = findByUsername(body.getUsername());
+        users.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(users);
     }
 
     @Override

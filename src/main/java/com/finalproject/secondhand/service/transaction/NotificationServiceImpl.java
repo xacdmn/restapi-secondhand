@@ -4,7 +4,7 @@ import com.finalproject.secondhand.entity.Notification;
 import com.finalproject.secondhand.entity.Offers;
 import com.finalproject.secondhand.entity.Products;
 import com.finalproject.secondhand.entity.Users;
-import com.finalproject.secondhand.repository.NotificationRepository;
+import com.finalproject.secondhand.enums.repository.NotificationRepository;
 import com.finalproject.secondhand.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

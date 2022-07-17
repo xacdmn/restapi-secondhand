@@ -2,7 +2,7 @@ package com.finalproject.secondhand.controller;
 
 import com.finalproject.secondhand.entity.Categories;
 import com.finalproject.secondhand.entity.Products;
-import com.finalproject.secondhand.response.ProductResponse;
+import com.finalproject.secondhand.dto.response.ProductResponse;
 import com.finalproject.secondhand.service.product.CategoriesService;
 import com.finalproject.secondhand.service.product.ProductService;
 import io.swagger.v3.oas.annotations.Operation;

@@ -1,4 +1,4 @@
-package com.finalproject.secondhand.repository;
+package com.finalproject.secondhand.enums.repository;
 
 import com.finalproject.secondhand.entity.Offers;
 import com.finalproject.secondhand.entity.Users;

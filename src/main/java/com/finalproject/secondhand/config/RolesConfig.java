@@ -2,7 +2,7 @@ package com.finalproject.secondhand.config;
 
 import com.finalproject.secondhand.entity.Roles;
 import com.finalproject.secondhand.enums.ERole;
-import com.finalproject.secondhand.repository.RoleRepository;
+import com.finalproject.secondhand.enums.repository.RoleRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;

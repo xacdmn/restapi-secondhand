@@ -1,7 +1,7 @@
 package com.finalproject.secondhand.service.product;
 
 import com.finalproject.secondhand.entity.Products;
-import com.finalproject.secondhand.response.ProductResponse;
+import com.finalproject.secondhand.dto.response.ProductResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;

@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.Valid;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -12,7 +14,7 @@ import lombok.Setter;
 public class ChangePasswordDto {
 
     private String oldPassword;
-    private String newPassword;
-    private String confirmPassword;
+    private @Valid String newPassword;
+    private @Valid String confirmPassword;
 
 }
