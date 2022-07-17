@@ -79,7 +79,9 @@ public class ProductController {
             produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<?> saveProduct( @RequestPart (name = "addJson") String addJson,
                                           @RequestPart(name = "image") MultipartFile[] image,
-                                          @PathVariable String isPublished, Authentication authentication) {
+                                          @PathVariable String isPublished,
+                                          Authentication authentication,
+                                          HttpServletRequest request) {
         String username = authentication.getName();
         if (productService.validasiProfil(username).equals(true)) {
             Products products = new Products();
@@ -125,7 +127,8 @@ public class ProductController {
             }
             return new ResponseEntity<>(productService.save(products), HttpStatus.CREATED);
         }
-        return new ResponseEntity<>(false, HttpStatus.FORBIDDEN);
+        String throwInfoProfil = getSiteURL(request) + "/info-profil";
+        return new ResponseEntity<>(throwInfoProfil, HttpStatus.FORBIDDEN);
     }
 
     @Operation(summary = "Publish product after preview")
