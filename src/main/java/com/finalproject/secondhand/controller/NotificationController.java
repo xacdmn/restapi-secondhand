@@ -45,7 +45,8 @@ public class NotificationController {
     @Operation(summary = "Notification isRead by id")
     @PutMapping("read/{id}")
     public ResponseEntity<?> isRead(Integer id) {
-        return new ResponseEntity<>(notificationService.updateIsRead(id), HttpStatus.OK);
+        notificationService.updateIsRead(id);
+        return new ResponseEntity<>("Read Notification", HttpStatus.OK);
     }
 
 }
