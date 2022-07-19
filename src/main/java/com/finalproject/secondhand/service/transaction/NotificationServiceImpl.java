@@ -46,16 +46,19 @@ public class NotificationServiceImpl implements NotificationService{
 
     @Override
     public void updateIsRead(Integer id) {
-        Optional<Notification> notification = notificationRepository.findById(id);
-        notification.ifPresent(notification1 -> {
-            notification1.setIsRead(true);
-            notificationRepository.save(notification1);
-        });
+        Notification notification = notificationRepository.findNotificationById(id);
+        notification.setIsRead(true);
+        notificationRepository.save(notification);
     }
 
     @Override
     public List<Notification> findNotificationByUserId(Users users) {
         return notificationRepository.findNotificationByUserId(users);
+    }
+
+    @Override
+    public List<Notification> findAll() {
+        return notificationRepository.findAll();
     }
 
     @Override
@@ -69,6 +72,7 @@ public class NotificationServiceImpl implements NotificationService{
         Notification notification = notificationRepository.findNotificationByProductId(productId);
         return new NotificationResponse(notification);
     }
+
 
 
 }

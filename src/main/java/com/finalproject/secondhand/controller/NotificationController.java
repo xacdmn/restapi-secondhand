@@ -30,7 +30,7 @@ public class NotificationController {
     @Autowired
     private NotificationService notificationService;
 
-    @Operation(summary = "List notification")
+    @Operation(summary = "List notification by user")
     @GetMapping("get")
     public ResponseEntity<List<NotificationResponse>> listNotification(Authentication auth) {
         String username = auth.getName();
@@ -47,6 +47,16 @@ public class NotificationController {
     public ResponseEntity<?> isRead(Integer id) {
         notificationService.updateIsRead(id);
         return new ResponseEntity<>(true, HttpStatus.OK);
+    }
+
+    @Operation(summary = "NOT FOR PUBLIC")
+    @GetMapping("list-all")
+    public ResponseEntity<?> listAllNotification() {
+        List<Notification> notification = notificationService.findAll();
+        if (notification.isEmpty()) {
+            return new ResponseEntity<>("NO CONTENT", HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(notificationService.findAll(), HttpStatus.OK);
     }
 
 }

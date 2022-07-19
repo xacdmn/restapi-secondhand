@@ -14,6 +14,7 @@ import java.util.List;
 public interface NotificationRepository extends JpaRepository<Notification, Integer> {
     List<Notification> findNotificationByUserId(Users users);
 
+    Notification findNotificationById(Integer id);
     Notification findNotificationByOfferId(Offers offerId);
     Notification findNotificationByProductId(Products productId);
 
