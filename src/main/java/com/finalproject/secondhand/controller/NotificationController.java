@@ -49,14 +49,4 @@ public class NotificationController {
         return new ResponseEntity<>(true, HttpStatus.OK);
     }
 
-    @Operation(summary = "NOT FOR PUBLIC")
-    @GetMapping("list-all")
-    public ResponseEntity<?> listAllNotification() {
-        List<Notification> notification = notificationService.findAll();
-        if (notification.isEmpty()) {
-            return new ResponseEntity<>("NO CONTENT", HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(notificationService.findAll(), HttpStatus.OK);
-    }
-
 }

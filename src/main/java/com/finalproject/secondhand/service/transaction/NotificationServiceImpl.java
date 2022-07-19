@@ -57,11 +57,6 @@ public class NotificationServiceImpl implements NotificationService{
     }
 
     @Override
-    public List<Notification> findAll() {
-        return notificationRepository.findAll();
-    }
-
-    @Override
     public NotificationResponse findNotificationByOfferId(Offers offerId) {
         Notification notification = notificationRepository.findNotificationByOfferId(offerId);
         return new NotificationResponse(notification);

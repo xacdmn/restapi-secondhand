@@ -19,7 +19,6 @@ public interface NotificationService {
     void updateIsRead(Integer id);
 
     List<Notification> findNotificationByUserId(Users users);
-    List<Notification> findAll();
 
     NotificationResponse findNotificationByOfferId(Offers offerId);
     NotificationResponse findNotificationByProductId(Products productId);
