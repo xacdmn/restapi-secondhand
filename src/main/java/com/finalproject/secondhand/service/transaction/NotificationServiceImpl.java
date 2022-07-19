@@ -44,10 +44,10 @@ public class NotificationServiceImpl implements NotificationService{
     }
 
     @Override
-    public Notification updateIsRead(Integer id) {
+    public void updateIsRead(Integer id) {
         Notification notification = notificationRepository.findNotificationById(id);
         notification.setIsRead(true);
-        return notificationRepository.save(notification);
+        notificationRepository.save(notification);
     }
 
     @Override

@@ -16,7 +16,7 @@ public interface NotificationService {
                           Boolean isRead);
     void saveNotificationProduct(String title, Products productsId, Users users);
 
-    Notification updateIsRead(Integer id);
+    void updateIsRead(Integer id);
 
     List<Notification> findNotificationByUserId(Users users);
 
