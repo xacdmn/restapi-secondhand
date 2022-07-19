@@ -12,7 +12,7 @@ import java.util.List;
 
 @Repository
 public interface NotificationRepository extends JpaRepository<Notification, Integer> {
-    List<Notification> findNotificationByUserId(Users users);
+    List<Notification> findNotificationByUserIdAndIsRead(Users users, Boolean status);
 
     Notification findNotificationById(Integer id);
     Notification findNotificationByOfferId(Offers offerId);

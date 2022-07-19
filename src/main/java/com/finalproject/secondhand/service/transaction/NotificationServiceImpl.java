@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class NotificationServiceImpl implements NotificationService{
@@ -45,15 +44,15 @@ public class NotificationServiceImpl implements NotificationService{
     }
 
     @Override
-    public void updateIsRead(Integer id) {
+    public Notification updateIsRead(Integer id) {
         Notification notification = notificationRepository.findNotificationById(id);
         notification.setIsRead(true);
-        notificationRepository.save(notification);
+        return notificationRepository.save(notification);
     }
 
     @Override
     public List<Notification> findNotificationByUserId(Users users) {
-        return notificationRepository.findNotificationByUserId(users);
+        return notificationRepository.findNotificationByUserIdAndIsRead(users, false);
     }
 
     @Override
