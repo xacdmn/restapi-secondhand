@@ -1,11 +1,10 @@
 package com.finalproject.secondhand.controller;
 
 import com.finalproject.secondhand.config.security.JwtUtil;
-import com.finalproject.secondhand.dto.auth.JwtTokenDto;
-import com.finalproject.secondhand.dto.user.SigninUsernameDto;
+import com.finalproject.secondhand.dto.response.JwtTokenDto;
 import com.finalproject.secondhand.dto.user.SigninEmailDto;
+import com.finalproject.secondhand.dto.user.SigninUsernameDto;
 import com.finalproject.secondhand.dto.user.SignupDto;
-import com.finalproject.secondhand.entity.PasswordResetToken;
 import com.finalproject.secondhand.entity.UserDetailsImpl;
 import com.finalproject.secondhand.entity.Users;
 import com.finalproject.secondhand.repository.PasswordTokenRepository;
@@ -28,15 +27,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 import java.util.stream.Collectors;
-
-import static com.finalproject.secondhand.config.utils.SiteUrl.getSiteURL;
 
 @RestController
 @Tag(name = "Authentication", description = "API for Login and Register")
@@ -98,23 +92,23 @@ public class AuthenticationController {
     }
 
     @Operation(summary = "Login user with username or email")
-    @PostMapping("/signin/email")
+    @PostMapping("/signin")
     public ResponseEntity<?> signin(
             @Schema(example = "{" +
                     "\"email\":\"ellda\"," +
                     "\"password\":\"ellda123\"" +
                     "}")
-            @RequestBody SigninEmailDto signin) {
+            @RequestBody SigninUsernameDto signin) {
         LOGGER.info("logging in");
         HashMap<String, String> response = new HashMap();
-        if (userService.existsUsername(signin.getEmail())) {
-            if (!passwordEncoder.matches(signin.getPassword(), userService.findByUsername(signin.getEmail()).getPassword())) {
+        if (userService.existsUsername(signin.getUsername())) {
+            if (!passwordEncoder.matches(signin.getPassword(), userService.findByUsername(signin.getUsername()).getPassword())) {
                 response.put("error", "Password incorrect");
                 return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
             }
             return new ResponseEntity<>(userService.loginUsername(signin), HttpStatus.OK);
-        } else if (userService.existsEmail(signin.getEmail())){
-            Users users = userService.findUserByEmail(signin.getEmail());
+        } else if (userService.existsEmail(signin.getUsername())){
+            Users users = userService.findUserByEmail(signin.getUsername());
             if (!passwordEncoder.matches(signin.getPassword(), userService.findByUsername(users.getUsername()).getPassword())) {
                 response.put("error", "Password incorrect");
                 return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
@@ -126,42 +120,42 @@ public class AuthenticationController {
         }
     }
 
-//    @Operation(summary = "Login user with email")
-//    @PostMapping("/signin/email")
-//    public ResponseEntity<?> signinEmail(
-//            @Schema(example = "{" +
-//                    "\"email\":\"ellda@gmail.com\"," +
-//                    "\"password\":\"ellda123\"" +
-//                    "}")
-//            @RequestBody SigninEmailDto signin) {
-//        LOGGER.info("logging in");
-//        HashMap<String, String> response = new HashMap();
-//        if (!userService.existsEmail(signin.getEmail())){
-//            response.put("error", "User not found");
-//            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-//        }
-//        Users users = userService.findUserByEmail(signin.getEmail());
-//        if (!passwordEncoder.matches(signin.getPassword(), userService.findByUsername(users.getUsername()).getPassword())) {
-//            response.put("error", "Password incorrect");
-//            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-//        }
-//        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(users.getUsername(),
-//                signin.getPassword()));
-//        if (!authentication.isAuthenticated()) {
-//            return new ResponseEntity<>("Email or password incorrect", HttpStatus.OK);
-//        }
-//        SecurityContextHolder.getContext().setAuthentication(authentication);
-//        String token = jwtUtil.generateAccessToken(authentication);
-//        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-//        LOGGER.info("User " + userDetails.getUsername() + " logged in.");
-//        LOGGER.info(token);
-//        List<String> roles = userDetails.getAuthorities().stream()
-//                .map(GrantedAuthority::getAuthority)
-//                .collect(Collectors.toList());
-//        return ResponseEntity.ok(new JwtTokenDto(token,
-//                userDetails.getUserId(), userDetails.getUsername(), userDetails.getEmail(),
-//                roles));
-//    }
+    @Operation(summary = "Login user with email")
+    @PostMapping("/signin/email")
+    public ResponseEntity<?> signinEmail(
+            @Schema(example = "{" +
+                    "\"email\":\"ellda@gmail.com\"," +
+                    "\"password\":\"ellda123\"" +
+                    "}")
+            @RequestBody SigninEmailDto signin) {
+        LOGGER.info("logging in");
+        HashMap<String, String> response = new HashMap();
+        if (!userService.existsEmail(signin.getEmail())){
+            response.put("error", "User not found");
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+        Users users = userService.findUserByEmail(signin.getEmail());
+        if (!passwordEncoder.matches(signin.getPassword(), userService.findByUsername(users.getUsername()).getPassword())) {
+            response.put("error", "Password incorrect");
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(users.getUsername(),
+                signin.getPassword()));
+        if (!authentication.isAuthenticated()) {
+            return new ResponseEntity<>("Email or password incorrect", HttpStatus.OK);
+        }
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String token = jwtUtil.generateAccessToken(authentication);
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        LOGGER.info("User " + userDetails.getUsername() + " logged in.");
+        LOGGER.info(token);
+        List<String> roles = userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(new JwtTokenDto(token,
+                userDetails.getUserId(), userDetails.getUsername(), userDetails.getEmail(),
+                roles));
+    }
 
 //    @Operation(summary = "reset password")
 //    @PostMapping("/reset-password")

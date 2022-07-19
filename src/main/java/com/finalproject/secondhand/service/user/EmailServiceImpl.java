@@ -35,8 +35,7 @@ public class EmailServiceImpl implements EmailService{
         String subject = "Second Hand E-Commerce - Password Reset Instructions.";
         String content = "<p>Hello,</p>"
                 + "<p>You have requested to reset your password.</p>"
-                + "<p>Click the link below to change your password:</p>"
-                + "<p><a href=\"" + resetPasswordLink + "\">Change my password</a></p>"
+                + "<p>Code verification :" + resetPasswordLink + "</p>"
                 + "<br>"
                 + "<p>Ignore this email if you do remember your password, "
                 + "or you have not made the request.</p>";

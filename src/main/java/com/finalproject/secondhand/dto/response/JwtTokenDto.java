@@ -1,4 +1,4 @@
-package com.finalproject.secondhand.dto.auth;
+package com.finalproject.secondhand.dto.response;
 
 import lombok.Getter;
 import lombok.Setter;
