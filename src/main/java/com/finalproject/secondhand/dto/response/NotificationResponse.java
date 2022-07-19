@@ -23,6 +23,8 @@ public class NotificationResponse {
     String productName;
     String price;
     String priceNegotiated;
+    Boolean isRead;
+    Boolean isSold;
     LocalDateTime createdAt;
     LocalDateTime updatedAt;
 
@@ -48,6 +50,8 @@ public class NotificationResponse {
             this.offerId = notification.getOfferId().getOfferId();
             this.priceNegotiated=notification.getOfferId().getPriceNegotiated();
         }
+        this.isRead=notification.getIsRead();
+        this.isSold=notification.getProductId().getIsSold();
         this.createdAt=notification.getCreatedAt();
         this.updatedAt=notification.getUpdatedAt();
     }

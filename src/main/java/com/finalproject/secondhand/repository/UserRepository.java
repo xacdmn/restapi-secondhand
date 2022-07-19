@@ -1,4 +1,4 @@
-package com.finalproject.secondhand.enums.repository;
+package com.finalproject.secondhand.repository;
 
 import com.finalproject.secondhand.entity.Users;
 import org.springframework.data.jpa.repository.JpaRepository;

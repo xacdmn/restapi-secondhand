@@ -8,4 +8,7 @@ import java.io.UnsupportedEncodingException;
 @Component
 public interface EmailService {
     void sendMail(String email, String resetPasswordLink) throws MessagingException, UnsupportedEncodingException;
+
+    String validatePasswordResetToken(String token);
+
 }

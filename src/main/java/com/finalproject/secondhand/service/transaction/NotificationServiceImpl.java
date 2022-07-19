@@ -1,10 +1,11 @@
 package com.finalproject.secondhand.service.transaction;
 
+import com.finalproject.secondhand.dto.response.NotificationResponse;
 import com.finalproject.secondhand.entity.Notification;
 import com.finalproject.secondhand.entity.Offers;
 import com.finalproject.secondhand.entity.Products;
 import com.finalproject.secondhand.entity.Users;
-import com.finalproject.secondhand.enums.repository.NotificationRepository;
+import com.finalproject.secondhand.repository.NotificationRepository;
 import com.finalproject.secondhand.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,8 +21,6 @@ public class NotificationServiceImpl implements NotificationService{
 
     @Autowired
     private NotificationRepository notificationRepository;
-
-
 
     @Override
     public void saveNotificationOffer(String title, String info, Offers offersId, Products productsId, Users users,
@@ -58,4 +57,18 @@ public class NotificationServiceImpl implements NotificationService{
     public List<Notification> findNotificationByUserId(Users users) {
         return notificationRepository.findNotificationByUserId(users);
     }
+
+    @Override
+    public NotificationResponse findNotificationByOfferId(Offers offerId) {
+        Notification notification = notificationRepository.findNotificationByOfferId(offerId);
+        return new NotificationResponse(notification);
+    }
+
+    @Override
+    public NotificationResponse findNotificationByProductId(Products productId) {
+        Notification notification = notificationRepository.findNotificationByProductId(productId);
+        return new NotificationResponse(notification);
+    }
+
+
 }

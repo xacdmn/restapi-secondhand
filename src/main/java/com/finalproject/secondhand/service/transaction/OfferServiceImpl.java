@@ -1,12 +1,14 @@
 package com.finalproject.secondhand.service.transaction;
 
+import com.finalproject.secondhand.dto.response.NotificationResponse;
 import com.finalproject.secondhand.entity.Offers;
 import com.finalproject.secondhand.entity.Products;
 import com.finalproject.secondhand.entity.Users;
 import com.finalproject.secondhand.enums.EStatusProcess;
-import com.finalproject.secondhand.enums.repository.OfferRepository;
-import com.finalproject.secondhand.enums.repository.ProductRepository;
-import com.finalproject.secondhand.enums.repository.UserRepository;
+import com.finalproject.secondhand.repository.OfferRepository;
+import com.finalproject.secondhand.repository.ProductRepository;
+import com.finalproject.secondhand.repository.UserRepository;
+import com.finalproject.secondhand.service.pushnotification.FirebaseMessagingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +28,9 @@ public class OfferServiceImpl implements OfferService{
 
     @Autowired
     private NotificationService notificationService;
+
+//    @Autowired
+//    private FirebaseMessagingService firebaseMessagingService;
 
     @Override
     public List<Offers> findOffersByProductUsersAndStatusProcess(Users users) {
@@ -70,6 +75,8 @@ public class OfferServiceImpl implements OfferService{
         offers.setStatusProcess(body.getStatusProcess());
         offerRepository.save(offers);
         notificationService.saveNotificationOffer("Penawaran produk", "Ada yang menawar barang anda", offers, offers.getProduct(), offers.getProduct().getUsers(), false);
+//        NotificationResponse response = notificationService.findNotificationByOfferId(offers);
+//        firebaseMessagingService.sendNotification("Penawaran Produk", "Ada yang menawar barang anda", response);
     }
 
     @Override

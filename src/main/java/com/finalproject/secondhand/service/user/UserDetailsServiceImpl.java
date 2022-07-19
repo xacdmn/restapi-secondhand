@@ -2,7 +2,7 @@ package com.finalproject.secondhand.service.user;
 
 import com.finalproject.secondhand.entity.UserDetailsImpl;
 import com.finalproject.secondhand.entity.Users;
-import com.finalproject.secondhand.enums.repository.UserRepository;
+import com.finalproject.secondhand.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

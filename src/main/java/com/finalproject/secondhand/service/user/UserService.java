@@ -1,7 +1,7 @@
 package com.finalproject.secondhand.service.user;
 
 import com.finalproject.secondhand.dto.auth.JwtTokenDto;
-import com.finalproject.secondhand.dto.user.SigninUsernameDto;
+import com.finalproject.secondhand.dto.user.SigninEmailDto;
 import com.finalproject.secondhand.dto.user.SignupDto;
 import com.finalproject.secondhand.entity.Users;
 import com.finalproject.secondhand.dto.response.UserDetailResponse;
@@ -21,8 +21,8 @@ public interface UserService {
     UserDetailResponse curentUserDetail(String username);
 
     //LOGIN
-    JwtTokenDto loginEmail(SigninUsernameDto signin);
-    JwtTokenDto loginUsername(SigninUsernameDto signin);
+    JwtTokenDto loginEmail(SigninEmailDto signin);
+    JwtTokenDto loginUsername(SigninEmailDto signin);
 
     boolean existsUsername(String username);
     boolean existsEmail(String email);

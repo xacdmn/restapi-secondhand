@@ -2,7 +2,7 @@ package com.finalproject.secondhand.service.product;
 
 import com.finalproject.secondhand.entity.Categories;
 import com.finalproject.secondhand.enums.CategoryList;
-import com.finalproject.secondhand.enums.repository.CategoriesRepository;
+import com.finalproject.secondhand.repository.CategoriesRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;

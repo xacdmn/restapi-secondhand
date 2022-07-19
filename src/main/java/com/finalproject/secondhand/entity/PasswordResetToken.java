@@ -1,6 +1,5 @@
 package com.finalproject.secondhand.entity;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

@@ -2,15 +2,15 @@ package com.finalproject.secondhand.service.user;
 
 import com.finalproject.secondhand.config.security.JwtUtil;
 import com.finalproject.secondhand.dto.auth.JwtTokenDto;
-import com.finalproject.secondhand.dto.user.SigninUsernameDto;
+import com.finalproject.secondhand.dto.user.SigninEmailDto;
 import com.finalproject.secondhand.dto.user.SignupDto;
 import com.finalproject.secondhand.entity.PasswordResetToken;
 import com.finalproject.secondhand.entity.Roles;
 import com.finalproject.secondhand.entity.UserDetailsImpl;
 import com.finalproject.secondhand.entity.Users;
-import com.finalproject.secondhand.enums.repository.PasswordTokenRepository;
-import com.finalproject.secondhand.enums.repository.RoleRepository;
-import com.finalproject.secondhand.enums.repository.UserRepository;
+import com.finalproject.secondhand.repository.PasswordTokenRepository;
+import com.finalproject.secondhand.repository.RoleRepository;
+import com.finalproject.secondhand.repository.UserRepository;
 import com.finalproject.secondhand.dto.response.UserDetailResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -75,8 +75,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public JwtTokenDto loginEmail(SigninUsernameDto signin) {
-        Users users = userRepository.findUsersByEmail(signin.getUsername());
+    public JwtTokenDto loginEmail(SigninEmailDto signin) {
+        Users users = userRepository.findUsersByEmail(signin.getEmail());
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(users.getUsername(),
                 signin.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -95,8 +95,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public JwtTokenDto loginUsername(SigninUsernameDto signin) {
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(signin.getUsername(),
+    public JwtTokenDto loginUsername(SigninEmailDto signin) {
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(signin.getEmail(),
                 signin.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = jwtUtil.generateAccessToken(authentication);
@@ -132,6 +132,7 @@ public class UserServiceImpl implements UserService {
         PasswordResetToken myToken = new PasswordResetToken(users, token);
         passwordTokenRepository.save(myToken);
     }
+
 
     @Override
     public void updateResetPassword(Users body, String newPassword) {

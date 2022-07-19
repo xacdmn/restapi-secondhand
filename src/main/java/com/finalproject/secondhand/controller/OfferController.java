@@ -108,10 +108,12 @@ public class OfferController {
         if (offers.getStatusProcess().equals(EStatusProcess.ACCEPTED)) {
             if (Objects.equals(status, "notSold")) {
                 products.setIsSold(false);
+                products.setIsWishlist(false);
                 offerService.updateStatusOffer(products, offers, offerId);
                 return new ResponseEntity<>("Product status updated successfully", HttpStatus.ACCEPTED);
             } else if (Objects.equals(status, "sold")) {
                 products.setIsSold(true);
+                products.setIsWishlist(false);
                 offerService.updateStatusOffer(products, offers, offerId);
                 return new ResponseEntity<>("Product status updated successfully", HttpStatus.ACCEPTED);
             } else {

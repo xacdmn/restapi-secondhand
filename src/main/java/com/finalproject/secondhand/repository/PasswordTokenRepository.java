@@ -1,4 +1,4 @@
-package com.finalproject.secondhand.enums.repository;
+package com.finalproject.secondhand.repository;
 
 import com.finalproject.secondhand.entity.PasswordResetToken;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -9,4 +9,6 @@ import javax.transaction.Transactional;
 @Repository
 @Transactional
 public interface PasswordTokenRepository extends JpaRepository<PasswordResetToken, Integer> {
+
+    PasswordResetToken findByToken(String token);
 }

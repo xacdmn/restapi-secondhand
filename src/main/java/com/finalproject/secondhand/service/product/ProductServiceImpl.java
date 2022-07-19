@@ -2,8 +2,8 @@ package com.finalproject.secondhand.service.product;
 
 import com.finalproject.secondhand.entity.Products;
 import com.finalproject.secondhand.entity.Users;
-import com.finalproject.secondhand.enums.repository.ProductRepository;
-import com.finalproject.secondhand.enums.repository.UserRepository;
+import com.finalproject.secondhand.repository.ProductRepository;
+import com.finalproject.secondhand.repository.UserRepository;
 import com.finalproject.secondhand.dto.response.ProductResponse;
 import com.finalproject.secondhand.service.transaction.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
