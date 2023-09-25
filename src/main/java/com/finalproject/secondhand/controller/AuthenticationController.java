@@ -7,8 +7,6 @@ import com.finalproject.secondhand.dto.user.SigninUsernameDto;
 import com.finalproject.secondhand.dto.user.SignupDto;
 import com.finalproject.secondhand.entity.UserDetailsImpl;
 import com.finalproject.secondhand.entity.Users;
-import com.finalproject.secondhand.repository.PasswordTokenRepository;
-import com.finalproject.secondhand.service.user.EmailService;
 import com.finalproject.secondhand.service.user.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -51,12 +49,6 @@ public class AuthenticationController {
 
     @Autowired
     private JwtUtil jwtUtil;
-
-    @Autowired
-    private EmailService emailService;
-
-    @Autowired
-    PasswordTokenRepository passwordTokenRepository;
 
     @Operation(summary = "NOT FOR PUBLIC")
     @GetMapping("/list-user")

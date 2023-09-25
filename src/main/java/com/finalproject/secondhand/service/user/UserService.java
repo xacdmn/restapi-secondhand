@@ -37,8 +37,4 @@ public interface UserService {
     //AUTH
     Users findByUsername(String username);
 
-    //RESET PASSWORD
-    void createPasswordResetToken(Users users, String token);
-    void updateResetPassword(Users users, String newPassword);
-
 }

@@ -4,11 +4,9 @@ import com.finalproject.secondhand.config.security.JwtUtil;
 import com.finalproject.secondhand.dto.response.JwtTokenDto;
 import com.finalproject.secondhand.dto.user.SigninUsernameDto;
 import com.finalproject.secondhand.dto.user.SignupDto;
-import com.finalproject.secondhand.entity.PasswordResetToken;
 import com.finalproject.secondhand.entity.Roles;
 import com.finalproject.secondhand.entity.UserDetailsImpl;
 import com.finalproject.secondhand.entity.Users;
-import com.finalproject.secondhand.repository.PasswordTokenRepository;
 import com.finalproject.secondhand.repository.RoleRepository;
 import com.finalproject.secondhand.repository.UserRepository;
 import com.finalproject.secondhand.dto.response.UserDetailResponse;
@@ -36,9 +34,6 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private RoleRepository roleRepository;
-
-    @Autowired
-    private PasswordTokenRepository passwordTokenRepository;
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -128,20 +123,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void createPasswordResetToken(Users users, String token) {
-        PasswordResetToken myToken = new PasswordResetToken(users, token);
-        passwordTokenRepository.save(myToken);
-    }
-
-
-    @Override
-    public void updateResetPassword(Users body, String newPassword) {
-        Users users = findByUsername(body.getUsername());
-        users.setPassword(passwordEncoder.encode(newPassword));
-        userRepository.save(users);
-    }
-
-    @Override
     public boolean existsUsername(String username) {
         return userRepository.existsByUsername(username);
     }
@@ -192,6 +173,5 @@ public class UserServiceImpl implements UserService {
         userRepository.deleteById(userId);
         return "Account Deleted";
     }
-
 
 }
